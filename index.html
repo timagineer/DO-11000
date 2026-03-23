@@ -8,6 +8,9 @@
     <link rel="preconnect" href="https://ajax.googleapis.com">
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.3/angular.min.js"></script>
     <style>
+        * {
+            /* outline: .5px dashed deeppink */
+        }
 
         @layer config, base, components, utils;
 
@@ -290,10 +293,13 @@
                     --duration-6: 360ms;
                     --duration-7: 420ms;
                     --duration-8: 480ms;
+                    --duration-9: 960ms;
                     /* Easing */
                     --ease-hover: cubic-bezier(0.25, 0.1, 0.25, 1);
                     --ease-out: cubic-bezier(.165, .84, .44, 1);
                     --ease-in-out: cubic-bezier(.77, 0, .175, 1);
+                    --ease-spring-1: linear(0, 0.01, 0.04 1.6%, 0.161 3.3%, 0.816 9.4%, 1.046, 1.189 14.4%, 1.231, 1.254 17%, 1.259, 1.257 18.6%, 1.236, 1.194 22.3%, 1.057 27%, 0.999 29.4%, 0.955 32.1%, 0.942, 0.935 34.9%, 0.933, 0.939 38.4%, 1 47.3%, 1.011, 1.017 52.6%, 1.016 56.4%, 1 65.2%, 0.996 70.2%, 1.001 87.2%, 1);
+                    --ease-spring-2: linear(0, 0.009, 0.035 2.1%, 0.141 4.4%, 0.723 12.9%, 0.938 16.7%, 1.017, 1.077, 1.121, 1.149 24.3%, 1.159, 1.163, 1.161, 1.154 29.9%, 1.129 32.8%, 1.051 39.6%, 1.017 43.1%, 0.991, 0.977 51%, 0.974 53.8%, 0.975 57.1%, 0.997 69.8%, 1.003 76.9%, 1);
                     /* Motion */
                     --voila: fadeIn var(--duration-7) ease var(--duration-3) backwards;
                 }
@@ -478,6 +484,7 @@
                 grid-template-rows: var(--topbar-height) 1fr;
                 grid-template-areas: "topbar topbar" "sidenav main";
                 min-block-size: 100dvh;
+                background: var(--surface);
             }
 
             .skip-link {
@@ -547,6 +554,112 @@
                 vertical-align: 0.175em;
                 line-height: var(--leading-none);
                 margin-inline-start: -0.05em;
+            }
+
+            .topbar-logo-symbol {
+                position: relative;
+                display: inline-block;
+                vertical-align: baseline;
+                line-height: var(--leading-none);
+            }
+
+            .topbar-logo-symbol-plus,
+            .topbar-logo-symbol-times {
+                display: inline-block;
+                line-height: 1;
+                transform-origin: 50% 58%;
+            }
+
+            .topbar-logo-symbol-times {
+                position: absolute;
+                inset: 0;
+                opacity: 0;
+            }
+
+            @media (prefers-reduced-motion: no-preference) {
+
+                /* Plus spins and fades out */
+                @keyframes logoPlusSpin {
+                    0% {
+                        rotate: 0deg;
+                        opacity: 1;
+                    }
+
+                    40% {
+                        filter: blur(0);
+                        opacity: 1;
+                    }
+
+                    47% {
+                        filter: blur(1.5px);
+                        opacity: 1;
+                    }
+
+                    53% {
+                        filter: blur(1.5px);
+                        opacity: 0;
+                    }
+
+                    100% {
+                        rotate: 3600deg;
+                        filter: blur(0);
+                        opacity: 0;
+                    }
+                }
+
+                /* Times spins in */
+                @keyframes logoTimesSpin {
+                    0% {
+                        rotate: 0deg;
+                        filter: blur(1.5px);
+                        opacity: 0;
+                    }
+
+                    47% {
+                        filter: blur(1.5px);
+                        opacity: 0;
+                    }
+
+                    53% {
+                        filter: blur(1.5px);
+                        opacity: 1;
+                    }
+
+                    60% {
+                        filter: blur(0);
+                    }
+
+                    100% {
+                        rotate: 3600deg;
+                        filter: blur(0);
+                        opacity: 1;
+                    }
+                }
+
+                /* Wrapper rises to sup position */
+                @keyframes logoRise {
+                    0% {
+                        translate: 0 0;
+                    }
+
+                    100% {
+                        translate: -0.075em -0.18em;
+                    }
+                }
+
+
+
+                .topbar-logo-symbol.is-spinning .topbar-logo-symbol-plus {
+                    animation: logoPlusSpin var(--duration-9) var(--ease-spring-1) forwards;
+                }
+
+                .topbar-logo-symbol.is-spinning .topbar-logo-symbol-times {
+                    animation: logoTimesSpin var(--duration-9) var(--ease-spring-1) forwards;
+                }
+
+                .topbar-logo-symbol.is-spinning {
+                    animation: logoRise var(--duration-9) var(--ease-spring-2) forwards;
+                }
             }
 
             .search-wrap {
@@ -923,6 +1036,7 @@
                 border-inline-start: 1px solid var(--gray-500);
                 border-start-start-radius: var(--radius-lg);
                 background: var(--bg);
+                background-clip: padding-box;
             }
 
             .page-body {
@@ -3264,7 +3378,7 @@
         <!-- ── Topbar ── -->
         <header class="topbar">
             <div class="topbar-logo-slot">
-                <span class="topbar-logo" aria-label="ICANotes"><span class="topbar-logo-ica">ICA</span><span class="topbar-logo-notes">Notes</span><sup class="topbar-logo-ica">&times;</sup></span>
+                <span class="topbar-logo" aria-label="ICANotes times"><span class="topbar-logo-ica">ICA</span><span class="topbar-logo-notes">Notes</span><span class="topbar-logo-symbol topbar-logo-ica" id="logo-symbol"><span class="topbar-logo-symbol-plus">&plus;</span><span class="topbar-logo-symbol-times">&times;</span></span></span>
             </div>
 
             <div class="topbar-context">
@@ -3373,7 +3487,7 @@
                         <div class="dx-main-list" ng-if="vm.activeDx.length > 0">
                             <div class="dx-main-row" ng-repeat="dx in vm.activeDx | limitTo: (vm.dxExpanded ? vm.activeDx.length : 3) track by dx.code" ng-class="{'just-added': dx.justAdded}">
                                 <span class="dx-main-code">{{dx.code}}</span>
-                                <span class="dx-main-desc" title="{{dx.description}}">{{dx.description}}</span>
+                                <span class="dx-main-desc" title="{{dx.code}} {{dx.description}}">{{dx.description}}</span>
                                 <select class="dx-main-status" ng-model="dx.status">
                                     <option ng-repeat="s in vm.dxStatuses" value="{{s}}">{{s}}</option>
                                 </select>
@@ -3481,7 +3595,7 @@
 
                 <div ng-if="vm.modalTab === 'shortlist'">
                     <div class="dx-modal-shortlist" ng-if="vm.favorites.length > 0">
-                        <div class="favorite-chip" ng-repeat="fav in vm.favorites track by fav.code" ng-class="{'already-added': vm.isDxActive(fav.code)}" title="{{fav.code}}  {{fav.fullDescription}}">
+                        <div class="favorite-chip" ng-repeat="fav in vm.favorites track by fav.code" ng-class="{'already-added': vm.isDxActive(fav.code)}" title="{{fav.code}} {{fav.fullDescription}}">
                             <span class="favorite-chip-add" ng-click="!vm.isDxActive(fav.code) && vm.addFromFavorite(fav)">
                                 <span class="favorite-chip-code">{{fav.code}}</span>
                                 <span class="favorite-chip-name">{{fav.shortName}}</span>
@@ -3541,7 +3655,7 @@
                     <div class="dx-modal-active-list" ng-if="vm.activeDx.length > 0">
                         <div class="dx-modal-active-row" ng-repeat="dx in vm.activeDx track by dx.code">
                             <span class="dx-modal-active-code">{{dx.code}}</span>
-                            <span class="dx-modal-active-desc" title="{{dx.description}}">{{dx.description}}</span>
+                            <span class="dx-modal-active-desc" title="{{dx.code}} {{dx.description}}">{{dx.description}}</span>
                             <select class="dx-main-status" ng-model="dx.status">
                                 <option ng-repeat="s in vm.dxStatuses" value="{{s}}">{{s}}</option>
                             </select>
@@ -3808,7 +3922,7 @@
                         description: 'Anxiety disorder, unspecified',
                         confidence: 'high',
                         confidenceLabel: 'High',
-                        rationale: 'Suggested because: note mentions excessive worry about multiple domains (work, health, family), difficulty controlling worry, muscle tension, and GAD-7 score of 14.',
+                        rationale: 'Suggested because note mentions excessive worry about multiple domains (work, health, family), difficulty controlling worry, muscle tension, and GAD-7 score of 14.',
                         showRationale: false,
                         dismissed: false,
                         showFeedback: false,
@@ -3820,7 +3934,7 @@
                         description: 'Insomnia, unspecified',
                         confidence: 'moderate',
                         confidenceLabel: 'Medium',
-                        rationale: 'Suggested because: patient reports difficulty falling asleep and waking at 3 AM; sleep disruption referenced in context of depression but may warrant independent code if impairing function.',
+                        rationale: 'Suggested because patient reports difficulty falling asleep and waking at 3 AM; sleep disruption referenced in context of depression but may warrant independent code if impairing function.',
                         showRationale: false,
                         dismissed: false,
                         showFeedback: false,
@@ -3832,7 +3946,7 @@
                         description: 'Post-traumatic stress disorder, unspecified',
                         confidence: 'moderate',
                         confidenceLabel: 'Medium',
-                        rationale: 'Suggested because: note documents hypervigilance, nightmares, and avoidance behaviors following reported trauma history; patient endorses re-experiencing symptoms.',
+                        rationale: 'Suggested because note documents hypervigilance, nightmares, and avoidance behaviors following reported trauma history; patient endorses re-experiencing symptoms.',
                         showRationale: false,
                         dismissed: false,
                         showFeedback: false,
@@ -3844,7 +3958,7 @@
                         description: 'Major depressive disorder, single episode, moderate',
                         confidence: 'low',
                         confidenceLabel: 'Low',
-                        rationale: 'Suggested because: if this is a first episode rather than recurrent, F32.1 may be more appropriate than F33.1; clinical history should clarify.',
+                        rationale: 'Suggested because if this is a first episode rather than recurrent, F32.1 may be more appropriate than F33.1; clinical history should clarify.',
                         showRationale: false,
                         dismissed: false,
                         showFeedback: false,
@@ -3859,7 +3973,7 @@
                         description: 'Anxiety disorder, unspecified',
                         confidence: 'high',
                         confidenceLabel: 'High',
-                        rationale: 'Suggested because: note mentions excessive worry about multiple domains (work, health, family), difficulty controlling worry, muscle tension, and GAD-7 score of 14.',
+                        rationale: 'Suggested because note mentions excessive worry about multiple domains (work, health, family), difficulty controlling worry, muscle tension, and GAD-7 score of 14.',
                         showRationale: false,
                         dismissed: false,
                         showFeedback: false,
@@ -3871,7 +3985,7 @@
                         description: 'Adjustment disorder, unspecified',
                         confidence: 'moderate',
                         confidenceLabel: 'Medium',
-                        rationale: 'Suggested because: recent psychosocial stressors noted (job change, relationship conflict) with emotional and behavioral symptoms emerging within 3 months of onset.',
+                        rationale: 'Suggested because recent psychosocial stressors noted (job change, relationship conflict) with emotional and behavioral symptoms emerging within 3 months of onset.',
                         showRationale: false,
                         dismissed: false,
                         showFeedback: false,
@@ -3883,7 +3997,7 @@
                         description: 'Insomnia, unspecified',
                         confidence: 'low',
                         confidenceLabel: 'Low',
-                        rationale: 'Suggested because: patient reports difficulty falling asleep and waking at 3 AM; sleep disruption may warrant independent code if impairing function.',
+                        rationale: 'Suggested because patient reports difficulty falling asleep and waking at 3 AM; sleep disruption may warrant independent code if impairing function.',
                         showRationale: false,
                         dismissed: false,
                         showFeedback: false,
@@ -4166,6 +4280,13 @@
                 $timeout(function () {
                     vm.reAnalyze();
                 }, 600);
+
+                // ── Logo animation: + → × ──
+                $timeout(function () {
+                    var el = document.getElementById('logo-symbol');
+                    if (!el || !window.matchMedia('(prefers-reduced-motion: no-preference)').matches) return;
+                    el.classList.add('is-spinning');
+                }, 3000);
             }]);
     </script>
 
@@ -4190,7 +4311,7 @@
                         dp.style.left = left + 'px';
                         dp.style.top = top + 'px';
                     });
-                }, 120);
+                }, 240);
                 return;
             }
             var dynTrigger = e.target.closest('[data-tooltip-text]');
@@ -4220,7 +4341,7 @@
                         popover.style.left = left + 'px';
                         popover.style.top = top + 'px';
                     });
-                }, 120);
+                }, 360);
                 return;
             }
             const trigger = e.target.closest('[popovertarget], [data-tooltip]');
@@ -4243,11 +4364,7 @@
                         popover.style.top = top + 'px';
                     });
                 };
-                if (popover.classList.contains('ai-info-popover')) {
-                    trigger._ttTimer = setTimeout(showTip, 120);
-                } else {
-                    trigger._ttTimer = setTimeout(showTip, 120);
-                }
+                trigger._ttTimer = setTimeout(showTip, 240);
             }
         });
         document.addEventListener('mouseout', function (e) {
@@ -4255,14 +4372,18 @@
             if (darkTrigger) {
                 if (e.relatedTarget && darkTrigger.contains(e.relatedTarget)) return;
                 clearTimeout(darkTrigger._ttTimer);
-                try { document.getElementById('dx-dark-tip').hidePopover(); } catch (err) { }
+                darkTrigger._ttTimer = setTimeout(function () {
+                    try { document.getElementById('dx-dark-tip').hidePopover(); } catch (err) { }
+                }, 60);
                 return;
             }
             var dynTrigger = e.target.closest('[data-tooltip-text]');
             if (dynTrigger) {
                 if (e.relatedTarget && dynTrigger.contains(e.relatedTarget)) return;
                 clearTimeout(dynTrigger._ttTimer);
-                try { document.getElementById('dx-rationale-tip').hidePopover(); } catch (err) { }
+                dynTrigger._ttTimer = setTimeout(function () {
+                    try { document.getElementById('dx-rationale-tip').hidePopover(); } catch (err) { }
+                }, 180);
                 return;
             }
             const trigger = e.target.closest('[popovertarget], [data-tooltip]');
@@ -4271,7 +4392,11 @@
                 clearTimeout(trigger._ttTimer);
                 const id = trigger.getAttribute('popovertarget') || trigger.getAttribute('data-tooltip');
                 const popover = document.getElementById(id);
-                if (popover && popover.id !== 'create-menu') try { popover.hidePopover(); } catch (err) { }
+                if (popover && popover.id !== 'create-menu') {
+                    trigger._ttTimer = setTimeout(function () {
+                        try { popover.hidePopover(); } catch (err) { }
+                    }, 60);
+                }
             }
         });
         document.getElementById('dx-modal').addEventListener('cancel', function (e) {
@@ -4300,166 +4425,6 @@
         });
     </script>
 
-    <!--
-    ═══════════════════════════════════════════════════════════
-    ARCHIVED: Dx Superpanel HTML — reference for modal build
-    ═══════════════════════════════════════════════════════════
-
-    <div class="dx-panel">
-        <div class="dx-panel-header">
-            <div class="dx-panel-title">
-                Diagnosis Codes
-                <span class="badge badge-neutral">{{vm.activeDx.length}}</span>
-            </div>
-            <div class="dx-panel-search">
-                <svg class="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-search" /></svg>
-                <label for="dx-search" class="visually-hidden">Search ICD-10 codes</label>
-                <input type="search" id="dx-search" placeholder="Search by code or description..." ng-model="vm.searchQuery" ng-change="vm.onSearchChange()" ng-model-options="{ debounce: 200 }" autocomplete="off" role="combobox" aria-expanded="{{vm.searchResults.length > 0 && vm.searchQuery.length >= 2}}" aria-controls="search-results-list" aria-label="Search ICD-10 codes">
-                <button class="search-clear" ng-if="vm.searchQuery" ng-click="vm.clearSearch()" aria-label="Clear search">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-close" /></svg>
-                </button>
-                <div class="search-results" id="search-results-list" role="listbox" aria-label="Search results" ng-if="vm.searchResults.length > 0 && vm.searchQuery.length >= 2">
-                    <div class="search-result-item" role="option" ng-repeat="result in vm.searchResults track by result.code" ng-click="!vm.isDxActive(result.code) && vm.addFromSearch(result)" ng-attr-aria-disabled="{{vm.isDxActive(result.code) ? 'true' : undefined}}" ng-attr-aria-selected="false">
-                        <span class="search-result-code">{{result.code}}</span>
-                        <span class="search-result-description">{{result.description}}</span>
-                        <span class="search-result-add" ng-if="!vm.isDxActive(result.code)">+ Add</span>
-                        <span class="search-result-exists" ng-if="vm.isDxActive(result.code)">Already added</span>
-                    </div>
-                </div>
-                <div class="search-results" ng-if="vm.searchQuery.length >= 2 && vm.searchResults.length === 0 && !vm.searching">
-                    <div class="search-no-results">No codes matching "{{vm.searchQuery}}"</div>
-                </div>
-            </div>
-            <div class="dx-panel-actions">
-                <button class="dx-icon-btn" popovertarget="ai-info-popover" aria-label="How AI suggestions work">
-                    <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-info" /></svg>
-                </button>
-                <span class="separator"></span>
-                <button class="dx-icon-btn" ng-click="vm.reAnalyze()" ng-class="{spinning: vm.analyzing}" aria-label="Re-analyze note for AI suggestions" ng-disabled="vm.analyzing">
-                    <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-refresh" /></svg>
-                </button>
-            </div>
-        </div>
-
-        <details class="dx-shortlist" open ng-if="vm.favorites.length > 0">
-            <summary class="dx-shortlist-summary">Shortlist <span class="dx-shortlist-count">{{vm.favorites.length}} codes</span></summary>
-            <div class="dx-shortlist-reel">
-                <div class="favorite-chip" ng-repeat="fav in vm.favorites track by fav.code" ng-class="{'already-added': vm.isDxActive(fav.code)}">
-                    <span class="favorite-chip-add" ng-click="!vm.isDxActive(fav.code) && vm.addFromFavorite(fav)" role="button" aria-label="Add {{fav.code}} {{fav.shortName}}">
-                        <span class="favorite-chip-code">{{fav.code}}</span>
-                        <span class="favorite-chip-name">{{fav.shortName}}</span>
-                    </span>
-                    <button class="favorite-chip-remove" ng-click="vm.removeFavorite(fav, $event)" aria-label="Remove {{fav.code}} from shortlist">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-close" /></svg>
-                    </button>
-                </div>
-            </div>
-        </details>
-
-        <div ng-if="vm.activeDx.length > 0">
-            <div class="dx-row" ng-repeat="dx in vm.activeDx track by dx.code" ng-class="{'just-added': dx.justAdded}">
-                <span class="dx-row-order">{{$index + 1}}</span>
-                <div class="dx-row-content">
-                    <div class="dx-row-top">
-                        <span class="dx-row-code">{{dx.code}}</span>
-                        <span class="dx-row-description">{{dx.description}}</span>
-                    </div>
-                    <div class="dx-row-meta">
-                        <span class="dx-row-status">{{dx.status}}</span>
-                        <span class="badge badge-ai" ng-if="dx.aiSuggested"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-wand" /></svg> AI Added</span>
-                    </div>
-                </div>
-                <div class="dx-row-actions">
-                    <button class="dx-remove-btn" ng-click="vm.removeDx(dx)" aria-label="Remove {{dx.code}}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-close" /></svg></button>
-                </div>
-            </div>
-        </div>
-
-        <div class="empty-state" ng-if="vm.activeDx.length === 0 && !vm.analyzing && vm.visibleSuggestions().length === 0">
-            <div class="empty-state-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-list" /></svg></div>
-            <p class="empty-state-text">No diagnoses assigned yet</p>
-            <p class="empty-state-hint">Search for codes above or use AI suggestions</p>
-        </div>
-
-        <div class="ai-analyzing" ng-if="vm.analyzing">
-            <div class="ai-analyzing-bar"><div class="ai-analyzing-bar-inner"></div></div>
-            <p class="ai-analyzing-text">Analyzing clinical note...</p>
-        </div>
-
-        <div class="dx-section-divider" ng-if="!vm.analyzing && vm.visibleSuggestions().length > 0">
-            <div class="dx-section-divider-label">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-wand" /></svg>
-                AI Suggested
-                <span class="badge badge-neutral badge-inline">{{vm.visibleSuggestions().length}}</span>
-            </div>
-        </div>
-
-        <div ng-if="!vm.analyzing && vm.visibleSuggestions().length > 0">
-            <div class="dx-row" ng-repeat="s in vm.visibleSuggestions() track by s.code" ng-class="{'dismissed': s.dismissed}">
-                <div class="dx-row-content">
-                    <div class="dx-row-top">
-                        <span class="dx-row-code">{{s.code}}</span>
-                        <span class="badge" ng-class="{'badge-positive': s.confidence === 'high', 'badge-notice': s.confidence === 'moderate', 'badge-neutral': s.confidence === 'low'}" ng-if="!s.dismissed">{{s.confidenceLabel}}</span>
-                        <span class="badge badge-neutral" ng-if="s.dismissed">Dismissed</span>
-                        <span class="dx-row-description">{{s.description}}</span>
-                    </div>
-                    <div class="dx-rationale" ng-if="!s.dismissed">
-                        <button class="dx-rationale-toggle" ng-click="s.showRationale = !s.showRationale" ng-class="{open: s.showRationale}">
-                            <svg viewBox="0 0 16 16" fill="currentColor"><use href="#icon-chevron-right-sm" /></svg>
-                            Why this code?
-                        </button>
-                        <p class="dx-rationale-text" ng-if="s.showRationale">{{s.rationale}}</p>
-                    </div>
-                    <div class="dismiss-feedback" ng-if="s.showFeedback">
-                        <p class="dismiss-feedback-label">Optional: why did you dismiss this?</p>
-                        <div class="dismiss-feedback-options">
-                            <button class="dismiss-feedback-btn" ng-repeat="reason in vm.dismissReasons" ng-class="{selected: s.feedbackReason === reason}" ng-click="vm.setFeedbackReason(s, reason)">{{reason}}</button>
-                        </div>
-                        <div class="dismiss-feedback-freetext">
-                            <input type="text" placeholder="Other feedback..." ng-model="s.feedbackText">
-                            <button class="dismiss-feedback-submit btn-xs" ng-click="vm.submitFeedback(s)">Done</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="dx-row-actions" ng-if="!s.dismissed">
-                    <button class="dx-add-btn" ng-click="vm.addSuggestion(s)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-plus" /></svg> Add</button>
-                    <button class="dx-icon-btn" ng-click="vm.dismissSuggestion(s)" aria-label="Dismiss suggestion"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-thumbs-down" /></svg></button>
-                </div>
-            </div>
-        </div>
-
-        <div class="empty-state" ng-if="!vm.analyzing && vm.visibleSuggestions().length === 0 && vm.suggestionsLoaded && vm.activeDx.length > 0">
-            <p class="empty-state-text" ng-if="vm.suggestions.length === 0">Not enough clinical detail to suggest codes</p>
-            <p class="empty-state-text" ng-if="vm.suggestions.length > 0">All suggestions have been added or dismissed</p>
-        </div>
-    </div>
-
-    <div class="include-toggle">
-        <label><input type="checkbox" ng-model="vm.includeInNote" checked> Add Dx to note</label>
-    </div>
-
-    <details class="audit-log">
-        <summary class="audit-log-summary">
-            <div class="audit-log-summary-label">
-                <span class="audit-log-icon"><svg viewBox="0 0 16 16" fill="currentColor"><use href="#icon-chevron-right-sm" /></svg></span>
-                Audit Trail
-                <span class="badge badge-neutral">{{vm.auditLog.length}}</span>
-            </div>
-        </summary>
-        <div class="audit-log-content">
-            <div class="audit-entry" ng-repeat="entry in vm.auditLog track by $index">
-                <span class="audit-time">{{entry.time}}</span>
-                <span class="audit-action"> &mdash; {{entry.action}}</span>
-                <span class="audit-source" ng-if="entry.source"> ({{entry.source}})</span>
-            </div>
-            <div class="audit-empty" ng-if="vm.auditLog.length === 0">No activity yet</div>
-        </div>
-    </details>
-
-    ═══════════════════════════════════════════════════════════
-    END ARCHIVED Dx Superpanel
-    ═══════════════════════════════════════════════════════════
-    -->
 
     <!-- SVG Symbols -->
     <svg xmlns="http://www.w3.org/2000/svg" style="display:none">
