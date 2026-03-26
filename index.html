@@ -2658,7 +2658,7 @@
                     <svg viewBox="0 0 24 24" aria-hidden="true">
                         <use href="#icon-plus" />
                     </svg>
-                    <svg viewBox="0 0 16 16" aria-hidden="true" class="chevron">
+                    <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" class="chevron">
                         <use href="#icon-chevron-down-fill" />
                     </svg>
                 </button>
@@ -2729,12 +2729,12 @@
             <div class="page-body">
 
                 <!-- ── Left: form column ── -->
-                <div class="pn-left">
+                <aside class="pn-left">
 
                     <!-- ── Main Dx View ── -->
-                    <div class="dx-main">
-                        <div class="dx-main-header">
-                            <span class="dx-main-title">Diagnosis Codes <span class="badge badge-neutral">{{vm.activeDx.length}}</span></span>
+                    <section class="dx-main" aria-labelledby="dx-main-heading">
+                        <header class="dx-main-header">
+                            <h3 class="dx-main-title" id="dx-main-heading">Diagnosis Codes <span class="badge badge-neutral">{{vm.activeDx.length}}</span></h3>
                             <label class="dx-main-toggle"><span>Add to note</span><input type="checkbox" ng-model="vm.includeInNote"></label>
                             <button class="btn-xs btn-primary" ng-click="vm.openDxModal()">
                                 <svg viewBox="0 0 24 24" stroke-width="2.5" class="btn-icon-sm">
@@ -2742,7 +2742,7 @@
                                 </svg>
                                 Add
                             </button>
-                        </div>
+                        </header>
 
                         <div class="dx-main-list" ng-if="vm.activeDx.length > 0">
                             <div class="dx-main-row" ng-repeat="dx in vm.activeDx | limitTo: (vm.dxExpanded ? vm.activeDx.length : 3) track by dx.code" ng-class="{'just-added': dx.justAdded}">
@@ -2762,10 +2762,10 @@
                             </button>
                         </div>
 
-                        <div class="dx-main-empty" ng-if="vm.activeDx.length === 0">
+                        <p class="dx-main-empty" ng-if="vm.activeDx.length === 0">
                             No diagnoses assigned
-                        </div>
-                    </div>
+                        </p>
+                    </section>
                     <div class="pn-card"></div>
                     <div class="pn-btn-grid">
                         <div class="pn-btn-placeholder"></div>
@@ -2779,13 +2779,14 @@
                         <div class="pn-card-pink"></div>
                         <div class="pn-card-pink"></div>
                     </div>
-                </div><!-- /.pn-left -->
+                </aside><!-- /.pn-left -->
 
 
                 <!-- ── Right: note panel ── -->
-                <div class="pn-right"></div><!-- /.pn-right -->
+                <section class="pn-right"></section><!-- /.pn-right -->
 
             </div><!-- /.page-body -->
+
         </main><!-- /.app-main -->
 
         <button type="button" class="fab-support" aria-label="Support" data-tooltip="tt-support">
@@ -2829,7 +2830,7 @@
                     </div>
                 </div>
 
-                <div class="dx-modal-tabs">
+                <nav class="dx-modal-tabs" aria-label="Code sources">
                     <div class="dx-modal-tab-group">
                         <button class="dx-modal-tab" ng-class="{active: vm.modalTab === 'shortlist'}" ng-click="vm.modalTab = 'shortlist'">Shortlist</button>
                         <button class="dx-modal-tab-icon" aria-label="Shortlist settings" data-tooltip-dark="Settings">
@@ -2851,7 +2852,7 @@
                             <use href="#icon-info" />
                         </svg>
                     </button>
-                </div>
+                </nav>
 
                 <div ng-if="vm.modalTab === 'shortlist'">
                     <div class="dx-modal-shortlist" ng-if="vm.favorites.length > 0">
@@ -2867,7 +2868,7 @@
                             </button>
                         </div>
                     </div>
-                    <div class="dx-modal-empty" ng-if="vm.favorites.length === 0">No favorites saved</div>
+                    <p class="dx-modal-empty" ng-if="vm.favorites.length === 0">No favorites saved</p>
                 </div>
 
                 <div ng-if="vm.modalTab === 'aidx'">
@@ -2897,21 +2898,21 @@
 
                     </div><!-- /.ai-analyzing-wrap -->
 
-                    <div class="dx-modal-empty" ng-if="!vm.analyzing && vm.visibleSuggestions().length === 0 && vm.suggestionsLoaded">
+                    <p class="dx-modal-empty" ng-if="!vm.analyzing && vm.visibleSuggestions().length === 0 && vm.suggestionsLoaded">
                         <span ng-if="vm.suggestions.length === 0">Not enough clinical detail to suggest codes</span>
                         <span ng-if="vm.suggestions.length > 0">All suggestions have been added or dismissed</span>
-                    </div>
+                    </p>
                 </div>
 
-                <div class="dx-modal-active">
-                    <div class="dx-modal-active-header">
-                        <span class="dx-modal-active-title">Active Codes <span class="badge badge-neutral">{{vm.activeDx.length}}</span></span>
+                <section class="dx-modal-active" aria-labelledby="dx-modal-active-heading">
+                    <header class="dx-modal-active-header">
+                        <h3 class="dx-modal-active-title" id="dx-modal-active-heading">Active Codes <span class="badge badge-neutral">{{vm.activeDx.length}}</span></h3>
                         <button class="dx-icon-btn" popovertarget="dx-fields-info" aria-label="About Omit and Rule Out">
                             <svg viewBox="0 0 24 24" aria-hidden="true">
                                 <use href="#icon-info" />
                             </svg>
                         </button>
-                    </div>
+                    </header>
                     <div class="dx-modal-active-list" ng-if="vm.activeDx.length > 0">
                         <div class="dx-modal-active-row" ng-repeat="dx in vm.activeDx track by dx.code">
                             <span class="dx-modal-active-code">{{dx.code}}</span>
@@ -2928,8 +2929,8 @@
                             </button>
                         </div>
                     </div>
-                    <div class="dx-modal-empty" ng-if="vm.activeDx.length === 0">No diagnoses assigned</div>
-                </div>
+                    <p class="dx-modal-empty" ng-if="vm.activeDx.length === 0">No diagnoses assigned</p>
+                </section>
             </div>
             <footer>
                 <button class="btn-primary dx-modal-save" ng-click="vm.closeDxModal()">Done</button>
@@ -3017,12 +3018,12 @@
 
     <!-- Toasts -->
     <div class="toast-container">
-        <div class="toast" ng-class="toast.type" ng-repeat="toast in vm.toasts track by toast.id">
+        <output class="toast" ng-class="toast.type" ng-repeat="toast in vm.toasts track by toast.id">
             <svg viewBox="0 0 24 24" ng-if="toast.type === 'success'">
                 <use href="#icon-check-circle" />
             </svg>
             {{toast.message}}
-        </div>
+        </output>
     </div>
 
     <script>
@@ -3847,7 +3848,7 @@
             <rect width="20" height="16" x="2" y="4" rx="2" />
             <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
         </symbol>
-        <symbol id="icon-chevron-down-fill" viewBox="0 0 16 16">
+        <symbol id="icon-chevron-down-fill" viewBox="0 0 16 16" class="fill-icon">
             <path d="m4.427 7.427 3.396 3.396a.25.25 0 0 0 .354 0l3.396-3.396A.25.25 0 0 0 11.396 7H4.604a.25.25 0 0 0-.177.427Z" fill="currentColor" />
         </symbol>
         <symbol id="icon-chevron-right-sm" viewBox="0 0 16 16">
