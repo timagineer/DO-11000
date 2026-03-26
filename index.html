@@ -8,9 +8,6 @@
     <link rel="preconnect" href="https://ajax.googleapis.com">
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.3/angular.min.js"></script>
     <style>
-        * {
-            /* outline: .5px dashed deeppink */
-        }
 
         @layer config, base, components, utils;
 
@@ -701,9 +698,18 @@
             @media (prefers-reduced-motion: no-preference) {
 
                 /* Plus spins and fades out */
+                @keyframes logoWindUp {
+                    0% { rotate: 0deg; }
+                    40% { rotate: -20deg; }
+                    65% { rotate: -68deg; }
+                    82% { rotate: -108deg; }
+                    90% { rotate: -106deg; }
+                    100% { rotate: -108deg; }
+                }
+
                 @keyframes logoPlusSpin {
                     0% {
-                        rotate: 0deg;
+                        rotate: -108deg;
                         opacity: 1;
                     }
 
@@ -772,15 +778,17 @@
 
 
                 .topbar-logo-symbol.is-spinning .topbar-logo-symbol-plus {
-                    animation: logoPlusSpin var(--duration-9) var(--ease-spring-1) forwards;
+                    animation:
+                        logoWindUp var(--duration-9) linear forwards,
+                        logoPlusSpin var(--duration-9) var(--ease-spring-1) var(--duration-9) forwards;
                 }
 
                 .topbar-logo-symbol.is-spinning .topbar-logo-symbol-times {
-                    animation: logoTimesSpin var(--duration-9) var(--ease-spring-1) forwards;
+                    animation: logoTimesSpin var(--duration-9) var(--ease-spring-1) var(--duration-9) forwards;
                 }
 
                 .topbar-logo-symbol.is-spinning {
-                    animation: logoRise var(--duration-9) var(--ease-spring-2) forwards;
+                    animation: logoRise var(--duration-8) var(--ease-spring-2) calc(var(--duration-9) + var(--duration-5)) forwards;
                 }
             }
 
@@ -2299,10 +2307,10 @@
                 max-inline-size: 24rem;
             }
 
-            .rationale-tip-title {
+            #dx-rationale-tip .rationale-tip-title {
                 font-weight: var(--font-weight-semibold);
                 color: var(--text);
-                margin-block-end: var(--space-20);
+                margin-block-end: 0;
             }
 
 
