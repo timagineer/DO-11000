@@ -22,12 +22,44 @@
             }
 
             @layer config.typography {
+                @layer primitives, semantic, override;
+            }
+
+            /* Web fonts — uncomment when font files are available
+            @font-face {
+                font-family: 'Literata';
+                src: url('/fonts/Literata-var.woff2') format('woff2') tech(variations);
+                font-weight: 1 1000;
+                font-style: normal;
+                font-display: fallback;
+            }
+            @font-face {
+                font-family: 'Literata';
+                src: url('/fonts/Literata-Italic-var.woff2') format('woff2') tech(variations);
+                font-weight: 1 1000;
+                font-style: italic;
+                font-display: swap;
+            }
+            @font-face {
+                font-family: 'Inconsolata';
+                src: url('/fonts/Inconsolata.woff2') format('woff2') tech(variations);
+                font-weight: 1 1000;
+                font-style: normal;
+                font-display: fallback;
+                size-adjust: 105%;
+            }
+            */
+
+            @layer config.typography.primitives {
                 :where(:host, :root) {
                     --font-system-ui: system-ui, sans-serif;
                     --font-sans: var(--font-system-ui);
                     --font-serif: ;
+                    /* future: 'Literata', Georgia, serif */
                     --font-mono: ;
+                    /* future: 'Inconsolata', ui-monospace, monospace */
 
+                    /* Size scale */
                     --font-size-10: 0.625rem;
                     --font-size-11: 0.6875rem;
                     --font-size-12: 0.75rem;
@@ -38,24 +70,101 @@
                     --font-size-18: 1.125rem;
                     --font-size-20: 1.25rem;
                     --font-size-24: 1.5rem;
+                    --font-size-28: 1.75rem;
                     --font-size-32: 2rem;
+                    --font-size-36: 2.25rem;
+                    --font-size-42: 2.625rem;
+                    --font-size-48: 3rem;
                     --font-size-base: var(--font-size-16);
 
+                    /* Leading */
                     --leading-none: 1;
                     --leading-tight: 1.125;
                     --leading-slight: 1.25;
                     --leading-normal: 1.5;
                     --leading-open: 1.75;
 
+                    /* Tracking */
                     --tracking-tight: 0;
                     --tracking-normal: 0.015em;
                     --tracking-wide: 0.05em;
 
+                    /* Weights */
                     --font-weight-normal: 400;
                     --font-weight-medium: 500;
                     --font-weight-semibold: 600;
                     --font-weight-bold: 700;
+
+                    /* font-size-adjust — uncomment when mixing typefaces or inline mono */
+                    /* --font-size-adjust-sans: 0.507; */
+                    /* --font-size-adjust-mono: 0.48; */
                 }
+            }
+
+            @layer config.typography.semantic {
+                :where(:host, :root) {
+                    /* Body & Prose */
+                    --text-xs: var(--font-size-12);
+                    --text-sm: var(--font-size-14);
+                    --text-base: var(--font-size-16);
+                    --text-md: var(--font-size-18);
+                    --text-lg: var(--font-size-20);
+
+                    /* Headings */
+                    --text-heading-xs: var(--font-size-14);
+                    --text-heading-sm: var(--font-size-16);
+                    --text-heading-md: var(--font-size-20);
+                    --text-heading-lg: var(--font-size-24);
+                    --text-heading-xl: var(--font-size-32);
+                    --text-heading-2xl: var(--font-size-42);
+
+                    /* UI Chrome */
+                    --text-ui-xs: var(--font-size-11);
+                    --text-ui-sm: var(--font-size-12);
+                    --text-ui-base: var(--font-size-14);
+                    --text-ui-md: var(--font-size-16);
+
+                    /* Navigation */
+                    --text-nav-item: var(--font-size-14);
+                    --text-nav-item-sm: var(--font-size-12);
+                    --text-nav-label: var(--font-size-12);
+
+                    /* Forms & Inputs */
+                    --text-input: var(--font-size-16);
+                    --text-input-sm: var(--font-size-13);
+                    --text-label: var(--font-size-14);
+                    --text-label-sm: var(--font-size-12);
+                    --text-helper: var(--font-size-12);
+                    --text-placeholder: var(--font-size-16);
+
+                    /* Tables & Data */
+                    --text-table-header: var(--font-size-12);
+                    --text-table-body: var(--font-size-13);
+
+                    /* Badges, Chips & Pills */
+                    --text-badge: var(--font-size-11);
+                    --text-chip: var(--font-size-12);
+
+                    /* Tooltips & Popovers */
+                    --text-tooltip: var(--font-size-12);
+                    --text-popover-heading: var(--font-size-14);
+                    --text-popover-body: var(--font-size-13);
+
+                    /* Toast */
+                    --text-toast: var(--font-size-14);
+                }
+            }
+
+            @layer config.typography.override {
+                /* Typeface-specific optical overrides go here.
+                   Example: large x-height face reads heavy at default sizes:
+                   [data-typeface="large-x-height"] {
+                       --text-base: var(--font-size-15);
+                       --text-ui-base: var(--font-size-15);
+                       --text-table-body: var(--font-size-13);
+                       --text-input: var(--font-size-16);
+                   }
+                */
             }
 
             @layer config.spacing {
@@ -415,6 +524,14 @@
                 height: auto;
             }
 
+            :where(symbol:not(.fill-icon)) {
+                fill: none;
+                stroke: currentColor;
+                stroke-width: 2;
+                stroke-linecap: round;
+                stroke-linejoin: round;
+            }
+
             :where(ul, ol) {
                 list-style: none;
             }
@@ -432,8 +549,13 @@
                 background: var(--bg);
                 color: var(--text);
                 font-family: var(--font-sans);
-                font-size: var(--font-size-base);
+                font-size: var(--text-base);
                 line-height: var(--leading-normal);
+                font-optical-sizing: auto;
+                font-kerning: normal;
+                font-variant-ligatures: common-ligatures no-discretionary-ligatures no-historical-ligatures contextual;
+                text-decoration-skip-ink: auto;
+                /* hanging-punctuation: first allow-end last; — enable for prose content */
             }
 
             h1,
@@ -444,11 +566,11 @@
             }
 
             h1 {
-                font-size: var(--font-size-24);
+                font-size: var(--text-heading-lg);
             }
 
             h2 {
-                font-size: var(--font-size-16);
+                font-size: var(--text-heading-sm);
                 margin-block-end: var(--space-40);
             }
 
@@ -495,7 +617,7 @@
                 background: var(--surface);
                 color: var(--primary-350);
                 border-radius: var(--radius);
-                font-size: var(--font-size-12);
+                font-size: var(--text-ui-sm);
                 font-weight: var(--font-weight-semibold);
                 text-decoration: none;
                 z-index: 200;
@@ -687,7 +809,7 @@
                 border-radius: var(--radius);
                 padding-inline-start: var(--space-60);
                 padding-inline-end: var(--space-40);
-                font-size: var(--font-size-12);
+                font-size: var(--text-ui-sm);
                 background: var(--bg);
                 color: var(--text);
             }
@@ -712,14 +834,14 @@
             }
 
             .topbar-context-primary {
-                font-size: var(--font-size-12);
+                font-size: var(--text-ui-sm);
                 font-weight: var(--font-weight-medium);
                 color: var(--text);
                 line-height: var(--leading-slight);
             }
 
             .topbar-context-secondary {
-                font-size: var(--font-size-11);
+                font-size: var(--text-ui-xs);
                 color: var(--text-secondary);
                 line-height: var(--leading-slight);
                 display: flex;
@@ -833,7 +955,7 @@
                 background: none;
                 border: none;
                 color: var(--text);
-                font-size: var(--font-size-12);
+                font-size: var(--text-ui-sm);
                 font-weight: var(--font-weight-medium);
             }
 
@@ -894,7 +1016,7 @@
                 border: none;
                 border-radius: 0;
                 color: var(--text);
-                font-size: var(--font-size-12);
+                font-size: var(--text-nav-item-sm);
                 font-weight: var(--font-weight-medium);
                 letter-spacing: var(--tracking-normal);
                 text-align: center;
@@ -971,7 +1093,7 @@
                 background: none;
                 border: none;
                 color: var(--text);
-                font-size: var(--font-size-14);
+                font-size: var(--text-ui-base);
                 text-align: start;
                 border-radius: 0;
             }
@@ -1050,7 +1172,7 @@
                 padding: var(--space-30) var(--space-40);
                 border: 1px solid var(--border);
                 background: var(--surface);
-                font-size: var(--font-size-13);
+                font-size: var(--text-popover-body);
                 border-radius: var(--radius);
                 transition: background-color var(--duration-3) var(--ease-hover), border-color var(--duration-3) var(--ease-hover);
             }
@@ -1104,7 +1226,7 @@
             }
 
             .btn-xs {
-                font-size: var(--font-size-12);
+                font-size: var(--text-ui-sm);
                 padding: 0.25rem 0.5rem;
                 font-weight: 400;
             }
@@ -1115,7 +1237,7 @@
                 align-items: center;
                 gap: var(--space-20);
                 padding: 0.125rem var(--space-30);
-                font-size: var(--font-size-11);
+                font-size: var(--text-badge);
                 font-weight: var(--font-weight-semibold);
                 border-radius: var(--radius);
             }
@@ -1170,21 +1292,21 @@
             }
 
             .search-result-code {
-                font-size: var(--font-size-13);
+                font-size: var(--text-table-body);
                 font-weight: var(--font-weight-semibold);
                 color: var(--primary-300);
                 white-space: nowrap;
-                font-variant-numeric: tabular-nums;
+                font-variant-numeric: tabular-nums slashed-zero;
             }
 
             .search-result-description {
-                font-size: var(--font-size-13);
+                font-size: var(--text-table-body);
                 color: var(--text);
                 flex: 1;
             }
 
             .search-result-add {
-                font-size: var(--font-size-13);
+                font-size: var(--text-table-body);
                 color: var(--positive-300);
                 white-space: nowrap;
                 flex-shrink: 0;
@@ -1193,7 +1315,7 @@
             }
 
             .search-result-exists {
-                font-size: var(--font-size-13);
+                font-size: var(--text-table-body);
                 color: var(--text-secondary);
                 font-style: italic;
                 white-space: nowrap;
@@ -1204,7 +1326,7 @@
             .search-no-results {
                 padding: var(--space-40);
                 text-align: center;
-                font-size: var(--font-size-13);
+                font-size: var(--text-table-body);
                 color: var(--text-secondary);
             }
 
@@ -1242,7 +1364,7 @@
                 background: var(--surface);
                 border: 1px solid var(--border-subtle);
                 border-radius: var(--radius-full);
-                font-size: var(--font-size-12);
+                font-size: var(--text-chip);
                 white-space: nowrap;
                 flex-shrink: 0;
             }
@@ -1266,7 +1388,7 @@
             .favorite-chip-code {
                 font-weight: var(--font-weight-semibold);
                 color: var(--primary-300);
-                font-variant-numeric: tabular-nums;
+                font-variant-numeric: tabular-nums slashed-zero;
             }
 
             .favorite-chip-name {
@@ -1389,7 +1511,7 @@
             }
 
             .ai-analyzing-text {
-                font-size: var(--font-size-12);
+                font-size: var(--text-helper);
                 color: var(--text-secondary);
             }
 
@@ -1405,7 +1527,7 @@
                 margin: 0 !important;
                 inset: auto;
                 position: fixed !important;
-                font-size: var(--font-size-13);
+                font-size: var(--text-popover-body);
                 color: var(--text);
                 line-height: var(--leading-normal);
             }
@@ -1431,7 +1553,7 @@
 
             .ai-info-popover p {
                 margin-block-end: var(--space-25);
-                font-size: var(--font-size-12);
+                font-size: var(--text-helper);
                 color: var(--text-secondary);
                 line-height: var(--leading-normal);
             }
@@ -1442,7 +1564,7 @@
 
             .ai-info-dl {
                 margin: 0;
-                font-size: var(--font-size-12);
+                font-size: var(--text-helper);
                 line-height: var(--leading-normal);
             }
 
@@ -1467,7 +1589,7 @@
                 background: var(--notice-600);
                 border: 1px solid var(--notice-500);
                 border-radius: var(--radius);
-                font-size: var(--font-size-12);
+                font-size: var(--text-helper);
                 line-height: var(--leading-normal);
                 color: var(--notice-200);
             }
@@ -1494,7 +1616,7 @@
                 gap: var(--space-30);
                 padding: var(--space-40) var(--space-50);
                 border-radius: var(--radius);
-                font-size: var(--font-size-14);
+                font-size: var(--text-toast);
                 font-weight: var(--font-weight-medium);
                 box-shadow: var(--elevation-md);
                 max-inline-size: 24rem;
@@ -1567,7 +1689,7 @@
             }
 
             .dx-main-title {
-                font-size: var(--font-size-14);
+                font-size: var(--text-label);
                 font-weight: var(--font-weight-semibold);
                 display: flex;
                 align-items: center;
@@ -1585,7 +1707,7 @@
                 gap: var(--space-25);
                 padding: var(--space-25) var(--space-20);
                 border-block-end: 1px solid var(--border-subtle);
-                font-size: var(--font-size-13);
+                font-size: var(--text-table-body);
                 min-block-size: 2rem;
             }
 
@@ -1602,7 +1724,7 @@
                 font-weight: var(--font-weight-semibold);
                 color: var(--primary-300);
                 white-space: nowrap;
-                font-variant-numeric: tabular-nums;
+                font-variant-numeric: tabular-nums slashed-zero;
                 inline-size: 3.25rem;
                 flex-shrink: 0;
             }
@@ -1616,7 +1738,7 @@
             }
 
             .dx-main-status {
-                font-size: var(--font-size-13);
+                font-size: var(--text-table-body);
                 padding: var(--space-10) var(--space-50) var(--space-10) var(--space-30);
                 border: 1px solid var(--border);
                 border-radius: var(--radius);
@@ -1659,7 +1781,7 @@
             .dx-main-empty {
                 padding: var(--space-45) 0;
                 text-align: center;
-                font-size: var(--font-size-13);
+                font-size: var(--text-table-body);
                 color: var(--text-secondary);
                 border-block-start: 1px solid var(--border-subtle);
             }
@@ -1670,7 +1792,7 @@
                 padding: var(--space-20) 0 0;
                 background: none;
                 border: none;
-                font-size: var(--font-size-12);
+                font-size: var(--text-helper);
                 color: var(--text-secondary);
                 text-align: center;
             }
@@ -1688,7 +1810,7 @@
                 gap: var(--space-25);
                 margin-inline-start: auto;
                 margin-inline-end: var(--space-45);
-                font-size: var(--font-size-12);
+                font-size: var(--text-ui-sm);
                 color: var(--text-secondary);
                 cursor: pointer;
             }
@@ -1801,7 +1923,7 @@
             }
 
             .dx-modal>header h2 {
-                font-size: var(--font-size-16);
+                font-size: var(--text-heading-sm);
                 font-weight: var(--font-weight-medium);
                 margin: 0;
             }
@@ -1875,7 +1997,7 @@
                 padding-inline-end: calc(var(--space-40) + 1.25rem);
                 border: 1px solid var(--border);
                 border-radius: var(--radius);
-                font-size: var(--font-size-13);
+                font-size: var(--text-input-sm);
                 background: var(--gray-750);
                 color: var(--text);
                 appearance: none;
@@ -1949,7 +2071,7 @@
             }
 
             .search-result-remove {
-                font-size: var(--font-size-13);
+                font-size: var(--text-table-body);
                 color: var(--warning-300);
                 white-space: nowrap;
                 flex-shrink: 0;
@@ -1974,7 +2096,7 @@
                 align-items: center;
                 gap: var(--space-25);
                 padding: var(--space-25) var(--space-40);
-                font-size: var(--font-size-13);
+                font-size: var(--text-table-body);
                 font-weight: var(--font-weight-medium);
                 color: var(--text-secondary);
                 background: none;
@@ -2081,7 +2203,7 @@
                 gap: var(--space-25);
                 padding: var(--space-25) var(--space-35) var(--space-25) var(--space-35);
                 padding-inline-end: var(--space-25);
-                font-size: var(--font-size-13);
+                font-size: var(--text-table-body);
                 max-block-size: 3rem;
             }
 
@@ -2099,7 +2221,7 @@
                 font-weight: var(--font-weight-semibold);
                 color: var(--primary-300);
                 white-space: nowrap;
-                font-variant-numeric: tabular-nums;
+                font-variant-numeric: tabular-nums slashed-zero;
                 inline-size: 3.25rem;
                 flex-shrink: 0;
             }
@@ -2120,7 +2242,7 @@
             }
 
             .dx-modal-suggestion-actions button {
-                font-size: var(--font-size-12);
+                font-size: var(--text-chip);
                 padding: 0.1875rem var(--space-30);
                 font-weight: var(--font-weight-normal);
             }
@@ -2133,7 +2255,7 @@
             }
 
             .dx-modal-suggestion-feedback button {
-                font-size: var(--font-size-12);
+                font-size: var(--text-chip);
                 padding: 0.125rem var(--space-25);
                 background: var(--gray-750);
                 border: 1px solid var(--border-subtle);
@@ -2155,7 +2277,7 @@
             .dx-modal-empty {
                 padding: var(--space-45) 0;
                 text-align: center;
-                font-size: var(--font-size-13);
+                font-size: var(--text-table-body);
                 color: var(--text-secondary);
             }
 
@@ -2234,7 +2356,7 @@
             }
 
             .dx-modal-active-title {
-                font-size: var(--font-size-13);
+                font-size: var(--text-table-body);
                 font-weight: var(--font-weight-semibold);
                 display: inline-flex;
                 align-items: center;
@@ -2257,7 +2379,7 @@
                 gap: var(--space-25);
                 padding: var(--space-25) var(--space-35);
                 padding-inline-end: var(--space-15);
-                font-size: var(--font-size-13);
+                font-size: var(--text-table-body);
             }
 
             .dx-modal-active-row+.dx-modal-active-row {
@@ -2292,7 +2414,7 @@
                 font-weight: var(--font-weight-semibold);
                 color: var(--primary-300);
                 white-space: nowrap;
-                font-variant-numeric: tabular-nums;
+                font-variant-numeric: tabular-nums slashed-zero;
                 inline-size: 3.25rem;
                 flex-shrink: 0;
             }
@@ -2451,6 +2573,31 @@
                 display: none !important;
             }
 
+            /* Prose — long-form reading content (clinical notes, articles) */
+            .prose {
+                text-wrap: pretty;
+                font-variant-numeric: oldstyle-nums proportional-nums;
+                hanging-punctuation: first allow-end last;
+                -webkit-hyphens: auto;
+                -webkit-hyphenate-limit-before: 4;
+                -webkit-hyphenate-limit-after: 3;
+                -webkit-hyphenate-limit-lines: 2;
+                hyphens: auto;
+                hyphenate-limit-chars: 7 4 3;
+                hyphenate-limit-lines: 2;
+                hyphenate-limit-zone: 8%;
+                hyphenate-limit-last: always;
+            }
+
+            .prose>*+* {
+                margin-block-start: var(--flow-space, 1em);
+            }
+
+            .prose :where(h1, h2, h3, h4, h5, h6, pre, code, var, samp, kbd) {
+                -webkit-hyphens: manual;
+                hyphens: manual;
+            }
+
             [popover]:not(#create-menu):not(.ai-info-popover) {
                 border: none;
                 background: var(--primary-100);
@@ -2458,7 +2605,7 @@
                 padding: var(--space-15) var(--space-25);
                 border-radius: var(--radius);
                 box-shadow: var(--elevation-md);
-                font-size: var(--font-size-12);
+                font-size: var(--text-tooltip);
                 max-inline-size: 15rem;
                 margin: 0;
                 inset: auto;
@@ -2500,7 +2647,7 @@
 
             <div class="topbar-actions">
                 <div class="search-wrap" role="search">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
                         <use href="#icon-search" />
                     </svg>
                     <label for="global-search" class="visually-hidden">Search</label>
@@ -2508,31 +2655,31 @@
                 </div>
                 <div class="topbar-divider" aria-hidden="true"></div>
                 <button type="button" class="btn-create" aria-label="Create new" aria-haspopup="true" data-tooltip="tt-create">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
                         <use href="#icon-plus" />
                     </svg>
-                    <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true" class="chevron">
+                    <svg viewBox="0 0 16 16" aria-hidden="true" class="chevron">
                         <use href="#icon-chevron-down-fill" />
                     </svg>
                 </button>
                 <button type="button" class="btn-topbar" aria-label="Scripts" popovertarget="tt-scripts">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
                         <use href="#icon-prescription" />
                     </svg>
                 </button>
                 <button type="button" class="btn-topbar" aria-label="Labs" popovertarget="tt-labs">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
                         <use href="#icon-flask" />
                     </svg>
                 </button>
                 <button type="button" class="btn-topbar" aria-label="Inbox" popovertarget="tt-inbox">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
                         <use href="#icon-inbox" />
                     </svg>
                     <span class="notif-badge" aria-hidden="true"></span>
                 </button>
                 <button type="button" class="btn-topbar" aria-label="Notifications" popovertarget="tt-notifications">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
                         <use href="#icon-bell" />
                     </svg>
                     <span class="notif-badge" aria-hidden="true"></span>
@@ -2540,7 +2687,7 @@
 
                 <button type="button" class="user-menu" aria-label="User menu for Dr. Morganstern">
                     Dr. Morganstern
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
                         <use href="#icon-chevron-down" />
                     </svg>
                 </button>
@@ -2550,34 +2697,35 @@
         <!-- ── Sidenav ── -->
         <nav class="sidenav" aria-label="Main navigation">
             <ul class="sidenav-nav" role="list">
-                <li><a href="#" class="sidenav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <li><a href="#" class="sidenav-item"><svg viewBox="0 0 24 24" aria-hidden="true">
                             <use href="#icon-dashboard" />
                         </svg><span>Dock</span></a></li>
-                <li><a href="#" class="sidenav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <li><a href="#" class="sidenav-item"><svg viewBox="0 0 24 24" aria-hidden="true">
                             <use href="#icon-calendar" />
                         </svg><span>Schedule</span></a></li>
-                <li><a href="#" class="sidenav-item active" aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <li><a href="#" class="sidenav-item active" aria-current="page"><svg viewBox="0 0 24 24" aria-hidden="true">
                             <use href="#icon-charts" />
                         </svg><span>Charts</span></a></li>
-                <li><a href="#" class="sidenav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <li><a href="#" class="sidenav-item"><svg viewBox="0 0 24 24" aria-hidden="true">
                             <use href="#icon-group" />
                         </svg><span>Group</span></a></li>
-                <li><a href="#" class="sidenav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <li><a href="#" class="sidenav-item"><svg viewBox="0 0 24 24" aria-hidden="true">
                             <use href="#icon-dollar" />
                         </svg><span>Billing</span></a></li>
-                <li><a href="#" class="sidenav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <li><a href="#" class="sidenav-item"><svg viewBox="0 0 24 24" aria-hidden="true">
                             <use href="#icon-chart-line" />
                         </svg><span>Reports</span></a></li>
             </ul>
             <div class="sidenav-bottom">
-                <a href="#" class="sidenav-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <a href="#" class="sidenav-item"><svg viewBox="0 0 24 24" aria-hidden="true">
                         <use href="#icon-gear" />
                     </svg><span>Settings</span></a>
             </div>
         </nav>
 
         <!-- ── Main ── -->
-        <div class="app-main">
+        <main class="app-main" id="main-content">
+
             <div class="page-body">
 
                 <!-- ── Left: form column ── -->
@@ -2589,7 +2737,7 @@
                             <span class="dx-main-title">Diagnosis Codes <span class="badge badge-neutral">{{vm.activeDx.length}}</span></span>
                             <label class="dx-main-toggle"><span>Add to note</span><input type="checkbox" ng-model="vm.includeInNote"></label>
                             <button class="btn-xs btn-primary" ng-click="vm.openDxModal()">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" class="btn-icon-sm">
+                                <svg viewBox="0 0 24 24" stroke-width="2.5" class="btn-icon-sm">
                                     <use href="#icon-plus" />
                                 </svg>
                                 Add
@@ -2604,7 +2752,7 @@
                                     <option ng-repeat="s in vm.dxStatuses" value="{{s}}">{{s}}</option>
                                 </select>
                                 <button class="dx-remove-btn" ng-click="vm.removeDx(dx)" aria-label="Remove {{dx.code}}">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <svg viewBox="0 0 24 24">
                                         <use href="#icon-close" />
                                     </svg>
                                 </button>
@@ -2638,10 +2786,10 @@
                 <div class="pn-right"></div><!-- /.pn-right -->
 
             </div><!-- /.page-body -->
-        </div><!-- /.app-main -->
+        </main><!-- /.app-main -->
 
         <button type="button" class="fab-support" aria-label="Support" data-tooltip="tt-support">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
                 <use href="#icon-question" />
             </svg>
         </button>
@@ -2651,19 +2799,19 @@
             <header>
                 <h2>Diagnosis Codes</h2>
                 <button type="button" ng-click="vm.closeDxModal()" aria-label="Close">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <svg viewBox="0 0 24 24">
                         <use href="#icon-close" />
                     </svg>
                 </button>
             </header>
             <div>
                 <div class="dx-modal-search">
-                    <svg class="dx-modal-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" class="dx-modal-search-icon" aria-hidden="true">
                         <use href="#icon-search" />
                     </svg>
                     <input type="search" placeholder="Search by ICD-10 code or description…" ng-model="vm.modalSearch" ng-change="vm.onModalSearchChange()" ng-model-options="{ debounce: 200 }" ng-keydown="vm.onModalSearchKeydown($event)" autocomplete="off">
                     <button ng-if="vm.modalSearch" class="dx-modal-search-clear" ng-click="vm.clearModalSearch()" aria-label="Clear search">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <svg viewBox="0 0 24 24" stroke-width="2.5">
                             <use href="#icon-close" />
                         </svg>
                     </button>
@@ -2685,7 +2833,7 @@
                     <div class="dx-modal-tab-group">
                         <button class="dx-modal-tab" ng-class="{active: vm.modalTab === 'shortlist'}" ng-click="vm.modalTab = 'shortlist'">Shortlist</button>
                         <button class="dx-modal-tab-icon" aria-label="Shortlist settings" data-tooltip-dark="Settings">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
                                 <use href="#icon-gear" />
                             </svg>
                         </button>
@@ -2693,13 +2841,13 @@
                     <div class="dx-modal-tab-group">
                         <button class="dx-modal-tab" ng-class="{active: vm.modalTab === 'aidx'}" ng-click="vm.modalTab = 'aidx'; vm.aidxUnseen = false">AIDx<span class="notif-badge" ng-class="{visible: vm.aidxUnseen}" aria-hidden="true"></span></button>
                         <button class="dx-modal-tab-icon" ng-click="vm.reAnalyze()" ng-class="{spinning: vm.analyzing}" ng-disabled="vm.analyzing" aria-label="Reanalyze note" data-tooltip-dark="Reanalyze">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
                                 <use href="#icon-refresh" />
                             </svg>
                         </button>
                     </div>
                     <button class="dx-icon-btn dx-modal-info-btn" popovertarget="ai-info-popover" aria-label="How AI suggestions work">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
                             <use href="#icon-info" />
                         </svg>
                     </button>
@@ -2713,7 +2861,7 @@
                                 <span class="favorite-chip-name">{{fav.shortName}}</span>
                             </span>
                             <button class="favorite-chip-remove" ng-click="vm.removeFavorite(fav, $event)" aria-label="Remove {{fav.shortName}} from shortlist">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                <svg viewBox="0 0 24 24" stroke-width="2.5">
                                     <use href="#icon-close" />
                                 </svg>
                             </button>
@@ -2759,7 +2907,7 @@
                     <div class="dx-modal-active-header">
                         <span class="dx-modal-active-title">Active Codes <span class="badge badge-neutral">{{vm.activeDx.length}}</span></span>
                         <button class="dx-icon-btn" popovertarget="dx-fields-info" aria-label="About Omit and Rule Out">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
                                 <use href="#icon-info" />
                             </svg>
                         </button>
@@ -2774,7 +2922,7 @@
                             <label class="dx-modal-check"><input type="checkbox" ng-model="dx.omit"> Omit</label>
                             <label class="dx-modal-check"><input type="checkbox" ng-model="dx.ruleOut"> Rule Out</label>
                             <button class="dx-remove-btn" ng-click="vm.removeDx(dx)" aria-label="Remove {{dx.code}}">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <svg viewBox="0 0 24 24">
                                     <use href="#icon-close" />
                                 </svg>
                             </button>
@@ -2797,43 +2945,43 @@
 
         <div id="create-menu" class="create-menu" popover="manual" role="menu">
             <button type="button" role="menuitem">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
                     <use href="#icon-charts" />
                 </svg>
                 Chart
             </button>
             <button type="button" role="menuitem">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
                     <use href="#icon-note" />
                 </svg>
                 Note
             </button>
             <button type="button" role="menuitem">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
                     <use href="#icon-prescription" />
                 </svg>
                 Prescription
             </button>
             <button type="button" role="menuitem">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
                     <use href="#icon-flask" />
                 </svg>
                 Lab Order
             </button>
             <button type="button" role="menuitem">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
                     <use href="#icon-calendar" />
                 </svg>
                 Appointment
             </button>
             <button type="button" role="menuitem">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
                     <use href="#icon-mail" />
                 </svg>
                 Message
             </button>
             <button type="button" role="menuitem">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
                     <use href="#icon-chart-line" />
                 </svg>
                 Report
@@ -2870,7 +3018,7 @@
     <!-- Toasts -->
     <div class="toast-container">
         <div class="toast" ng-class="toast.type" ng-repeat="toast in vm.toasts track by toast.id">
-            <svg ng-if="toast.type === 'success'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg viewBox="0 0 24 24" ng-if="toast.type === 'success'">
                 <use href="#icon-check-circle" />
             </svg>
             {{toast.message}}
@@ -3540,24 +3688,24 @@
 
     <!-- SVG Symbols -->
     <svg xmlns="http://www.w3.org/2000/svg" style="display:none">
-        <symbol id="icon-search" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <symbol id="icon-search">
             <circle cx="11" cy="11" r="8" />
             <line x1="21" y1="21" x2="16.65" y2="16.65" />
         </symbol>
-        <symbol id="icon-close" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <symbol id="icon-close">
             <line x1="18" y1="6" x2="6" y2="18" />
             <line x1="6" y1="6" x2="18" y2="18" />
         </symbol>
-        <symbol id="icon-check-circle" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <symbol id="icon-check-circle">
             <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14" />
             <polyline points="22 4 12 14.01 9 11.01" />
         </symbol>
-        <symbol id="icon-info" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <symbol id="icon-info">
             <circle cx="12" cy="12" r="10" />
             <line x1="12" y1="8" x2="12" y2="8" />
             <line x1="12" y1="12" x2="12" y2="16" />
         </symbol>
-        <symbol id="icon-list" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <symbol id="icon-list">
             <line x1="8" y1="6" x2="21" y2="6" />
             <line x1="8" y1="12" x2="21" y2="12" />
             <line x1="8" y1="18" x2="21" y2="18" />
@@ -3565,7 +3713,7 @@
             <line x1="3" y1="12" x2="3.01" y2="12" />
             <line x1="3" y1="18" x2="3.01" y2="18" />
         </symbol>
-        <symbol id="icon-wand" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <symbol id="icon-wand">
             <path d="m21.64 3.64-1.28-1.28a1.21 1.21 0 0 0-1.72 0L2.36 18.64a1.21 1.21 0 0 0 0 1.72l1.28 1.28a1.2 1.2 0 0 0 1.72 0L21.64 5.36a1.2 1.2 0 0 0 0-1.72" />
             <path d="m14 7 3 3" />
             <path d="M5 6v4" />
@@ -3575,127 +3723,127 @@
             <path d="M21 16h-4" />
             <path d="M11 3H9" />
         </symbol>
-        <symbol id="icon-refresh" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <symbol id="icon-refresh">
             <polyline points="23 4 23 10 17 10" />
             <polyline points="1 20 1 14 7 14" />
             <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15" />
         </symbol>
-        <symbol id="icon-thumbs-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <symbol id="icon-thumbs-down">
             <path d="M9 18.12 10 14H4.17a2 2 0 0 1-1.92-2.56l2.33-8A2 2 0 0 1 6.5 2H20a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2h-2.76a2 2 0 0 0-1.79 1.11L12 22a3.13 3.13 0 0 1-3-3.88Z" />
             <path d="M17 14V2" />
         </symbol>
-        <symbol id="icon-file-text" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <symbol id="icon-file-text">
             <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
             <polyline points="14 2 14 8 20 8" />
             <line x1="16" y1="13" x2="8" y2="13" />
             <line x1="16" y1="17" x2="8" y2="17" />
             <polyline points="10 9 9 9 8 9" />
         </symbol>
-        <symbol id="icon-sparkles" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <symbol id="icon-sparkles">
             <path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z" />
             <path d="M20 2v4" />
             <path d="M22 4h-4" />
             <circle cx="4" cy="20" r="2" />
         </symbol>
-        <symbol id="icon-pencil" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <symbol id="icon-pencil">
             <path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z" />
             <path d="m15 5 4 4" />
         </symbol>
-        <symbol id="icon-trash" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <symbol id="icon-trash">
             <path d="M10 11v6" />
             <path d="M14 11v6" />
             <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" />
             <path d="M3 6h18" />
             <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
         </symbol>
-        <symbol id="icon-circle-question" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <symbol id="icon-circle-question">
             <circle cx="12" cy="12" r="10" />
             <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
             <path d="M12 17h.01" />
         </symbol>
-        <symbol id="icon-thumbs-up" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <symbol id="icon-thumbs-up">
             <path d="M15 5.88 14 10h5.83a2 2 0 0 1 1.92 2.56l-2.33 8A2 2 0 0 1 17.5 22H4a2 2 0 0 1-2-2v-8a2 2 0 0 1 2-2h2.76a2 2 0 0 0 1.79-1.11L12 2a3.13 3.13 0 0 1 3 3.88Z" />
             <path d="M7 10v12" />
         </symbol>
-        <symbol id="icon-file-symlink" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <symbol id="icon-file-symlink">
             <path d="M4 11V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.706.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h7" />
             <path d="M14 2v5a1 1 0 0 0 1 1h5" />
             <path d="m10 18 3-3-3-3" />
         </symbol>
-        <symbol id="icon-chevron-down" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <symbol id="icon-chevron-down">
             <path d="m6 9 6 6 6-6" />
         </symbol>
-        <symbol id="icon-chevron-right" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <symbol id="icon-chevron-right">
             <path d="m9 18 6-6-6-6" />
         </symbol>
-        <symbol id="icon-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <symbol id="icon-plus">
             <path d="M5 12h14" />
             <path d="M12 5v14" />
         </symbol>
-        <symbol id="icon-gear" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <symbol id="icon-gear">
             <path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915" />
             <circle cx="12" cy="12" r="3" />
         </symbol>
-        <symbol id="icon-prescription" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <symbol id="icon-prescription">
             <path d="M18 11h-4a1 1 0 0 0-1 1v5a1 1 0 0 0 1 1h4" />
             <path d="M6 7v13a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7" />
             <rect width="16" height="5" x="4" y="2" rx="1" />
         </symbol>
-        <symbol id="icon-flask" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <symbol id="icon-flask">
             <path d="M14 2v6a2 2 0 0 0 .245.96l5.51 10.08A2 2 0 0 1 18 22H6a2 2 0 0 1-1.755-2.96l5.51-10.08A2 2 0 0 0 10 8V2" />
             <path d="M6.453 15h11.094" />
             <path d="M8.5 2h7" />
         </symbol>
-        <symbol id="icon-inbox" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <symbol id="icon-inbox">
             <polyline points="22 12 16 12 14 15 10 15 8 12 2 12" />
             <path d="M5.45 5.11 2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z" />
         </symbol>
-        <symbol id="icon-bell" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <symbol id="icon-bell">
             <path d="M10.268 21a2 2 0 0 0 3.464 0" />
             <path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326" />
         </symbol>
-        <symbol id="icon-dashboard" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <symbol id="icon-dashboard">
             <rect width="7" height="9" x="3" y="3" rx="1" />
             <rect width="7" height="5" x="14" y="3" rx="1" />
             <rect width="7" height="9" x="14" y="12" rx="1" />
             <rect width="7" height="5" x="3" y="16" rx="1" />
         </symbol>
-        <symbol id="icon-calendar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <symbol id="icon-calendar">
             <path d="M8 2v4" />
             <path d="M16 2v4" />
             <rect width="18" height="18" x="3" y="4" rx="2" />
             <path d="M3 10h18" />
         </symbol>
-        <symbol id="icon-charts" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <symbol id="icon-charts">
             <path d="M20 5a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H9a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h2.5a1.5 1.5 0 0 1 1.2.6l.6.8a1.5 1.5 0 0 0 1.2.6z" />
             <path d="M3 8.268a2 2 0 0 0-1 1.738V19a2 2 0 0 0 2 2h11a2 2 0 0 0 1.732-1" />
         </symbol>
-        <symbol id="icon-group" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <symbol id="icon-group">
             <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
             <path d="M16 3.128a4 4 0 0 1 0 7.744" />
             <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
             <circle cx="9" cy="7" r="4" />
         </symbol>
-        <symbol id="icon-dollar" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <symbol id="icon-dollar">
             <line x1="12" x2="12" y1="2" y2="22" />
             <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
         </symbol>
-        <symbol id="icon-chart-line" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <symbol id="icon-chart-line">
             <path d="M3 3v16a2 2 0 0 0 2 2h16" />
             <path d="m19 9-5 5-4-4-3 3" />
         </symbol>
-        <symbol id="icon-question" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <symbol id="icon-question">
             <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
             <path d="M12 17h.01" />
         </symbol>
-        <symbol id="icon-note" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <symbol id="icon-note">
             <path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z" />
             <path d="M14 2v5a1 1 0 0 0 1 1h5" />
             <path d="M10 9H8" />
             <path d="M16 13H8" />
             <path d="M16 17H8" />
         </symbol>
-        <symbol id="icon-mail" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <symbol id="icon-mail">
             <rect width="20" height="16" x="2" y="4" rx="2" />
             <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
         </symbol>
