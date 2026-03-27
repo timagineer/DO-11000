@@ -8,6 +8,9 @@
     <link rel="preconnect" href="https://ajax.googleapis.com">
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.3/angular.min.js"></script>
     <style>
+        * {
+            /* outline: .5px dashed deeppink */
+        }
 
         @layer config, base, components, utils;
 
@@ -1699,6 +1702,7 @@
             .dx-main-title {
                 font-size: var(--text-label);
                 font-weight: var(--font-weight-semibold);
+                line-height: var(--leading-normal);
                 display: flex;
                 align-items: center;
                 gap: var(--space-25);
@@ -2366,6 +2370,7 @@
             .dx-modal-active-title {
                 font-size: var(--text-table-body);
                 font-weight: var(--font-weight-semibold);
+                line-height: var(--leading-normal);
                 display: inline-flex;
                 align-items: center;
                 gap: var(--space-25);
