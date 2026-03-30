@@ -2120,6 +2120,66 @@
                 block-size: 0.875rem;
             }
 
+            .dx-modal-search-row {
+                display: flex;
+                align-items: center;
+                gap: var(--space-30);
+                margin-block-end: var(--space-40);
+            }
+
+            .dx-modal-search-row .dx-modal-search {
+                flex: 1;
+                margin-block-end: 0;
+            }
+
+            .dx-modal-dsm-toggle {
+                display: flex;
+                align-items: center;
+                gap: var(--space-20);
+                font-size: var(--text-ui-sm);
+                color: var(--text-secondary);
+                white-space: nowrap;
+                cursor: pointer;
+                user-select: none;
+            }
+
+            .dx-modal-dsm-toggle input[type="checkbox"] {
+                inline-size: 1.75rem;
+                block-size: 0.875rem;
+                appearance: none;
+                background: var(--gray-400);
+                border-radius: var(--radius-full);
+                position: relative;
+                cursor: pointer;
+                transition: background var(--duration-3) var(--ease-hover);
+                flex-shrink: 0;
+            }
+
+            .dx-modal-dsm-toggle input[type="checkbox"]:checked {
+                background: var(--secondary-300);
+            }
+
+            .dx-modal-dsm-toggle input[type="checkbox"]::before {
+                content: '';
+                position: absolute;
+                inline-size: 0.625rem;
+                block-size: 0.625rem;
+                background: var(--surface);
+                border-radius: 50%;
+                inset-block-start: 0.125rem;
+                inset-inline-start: 0.125rem;
+                transition: transform var(--duration-3) var(--ease-in-out);
+            }
+
+            .dx-modal-dsm-toggle input[type="checkbox"]:checked::before {
+                transform: translateX(0.875rem);
+            }
+
+            .dx-modal-dsm-toggle input[type="checkbox"]:focus-visible {
+                outline: none;
+                box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--focus-ring);
+            }
+
             .search-result-item.is-active {
                 cursor: default;
             }
@@ -2887,16 +2947,17 @@
                 </button>
             </header>
             <div>
-                <div class="dx-modal-search">
-                    <svg viewBox="0 0 24 24" class="dx-modal-search-icon" aria-hidden="true">
-                        <use href="#icon-search" />
-                    </svg>
-                    <input type="search" placeholder="Search by ICD-10 code or description…" ng-model="vm.modalSearch" ng-change="vm.onModalSearchChange()" ng-model-options="{ debounce: 200 }" ng-keydown="vm.onModalSearchKeydown($event)" autocomplete="off">
-                    <button ng-if="vm.modalSearch" class="dx-modal-search-clear" ng-click="vm.clearModalSearch()" aria-label="Clear search">
-                        <svg viewBox="0 0 24 24" stroke-width="2.5">
-                            <use href="#icon-close" />
+                <div class="dx-modal-search-row">
+                    <div class="dx-modal-search">
+                        <svg viewBox="0 0 24 24" class="dx-modal-search-icon" aria-hidden="true">
+                            <use href="#icon-search" />
                         </svg>
-                    </button>
+                        <input type="search" placeholder="Search by ICD-10, DSM-5, or description…" ng-model="vm.modalSearch" ng-change="vm.onModalSearchChange()" ng-model-options="{ debounce: 200 }" ng-keydown="vm.onModalSearchKeydown($event)" autocomplete="off">
+                        <button ng-if="vm.modalSearch" class="dx-modal-search-clear" ng-click="vm.clearModalSearch()" aria-label="Clear search">
+                            <svg viewBox="0 0 24 24" stroke-width="2.5">
+                                <use href="#icon-close" />
+                            </svg>
+                        </button>
                     <div class="search-results" ng-if="vm.modalSearchResults.length > 0 && vm.modalSearch.length >= 2">
                         <div class="search-result-item" ng-class="{'is-active': vm.isDxActive(r.code), 'kb-active': vm.modalSearchIndex === $index}" ng-repeat="r in vm.modalSearchResults track by r.code" ng-click="vm.onModalResultClick(r)" ng-mouseenter="vm.modalSearchIndex = $index">
                             <span class="search-result-code">{{r.code}}</span>
@@ -2909,8 +2970,9 @@
                     <div class="search-results" ng-if="vm.modalSearch.length >= 2 && vm.modalSearchResults.length === 0">
                         <div class="search-no-results">No codes matching "{{vm.modalSearch}}"</div>
                     </div>
+                    </div>
+                    <label class="dx-modal-dsm-toggle"><input type="checkbox" ng-model="vm.dsmOnly" ng-change="vm.onModalSearchChange()"> <span>DSM only</span></label>
                 </div>
-
                 <nav class="dx-modal-tabs" aria-label="Code sources">
                     <div class="dx-modal-tab-group">
                         <button class="dx-modal-tab" ng-class="{active: vm.modalTab === 'shortlist'}" ng-click="vm.modalTab = 'shortlist'">Shortlist</button>
@@ -3115,74 +3177,74 @@
 
                 // ── Mock ICD-10 database ──
                 var icd10DB = [
-                    { code: 'F32.0', description: 'Major depressive disorder, single episode, mild' },
-                    { code: 'F32.1', description: 'Major depressive disorder, single episode, moderate' },
-                    { code: 'F32.2', description: 'Major depressive disorder, single episode, severe without psychotic features' },
-                    { code: 'F32.3', description: 'Major depressive disorder, single episode, severe with psychotic features' },
-                    { code: 'F32.9', description: 'Major depressive disorder, single episode, unspecified' },
-                    { code: 'F33.0', description: 'Major depressive disorder, recurrent, mild' },
-                    { code: 'F33.1', description: 'Major depressive disorder, recurrent, moderate' },
-                    { code: 'F33.2', description: 'Major depressive disorder, recurrent, severe without psychotic features' },
-                    { code: 'F33.3', description: 'Major depressive disorder, recurrent, severe with psychotic features' },
-                    { code: 'F33.9', description: 'Major depressive disorder, recurrent, unspecified' },
-                    { code: 'F41.0', description: 'Panic disorder [episodic paroxysmal anxiety]' },
-                    { code: 'F41.1', description: 'Generalized anxiety disorder' },
-                    { code: 'F41.8', description: 'Other specified anxiety disorders' },
-                    { code: 'F41.9', description: 'Anxiety disorder, unspecified' },
-                    { code: 'F43.10', description: 'Post-traumatic stress disorder, unspecified' },
+                    { code: 'F32.0', dsm: true, description: 'Major depressive disorder, single episode, mild' },
+                    { code: 'F32.1', dsm: true, description: 'Major depressive disorder, single episode, moderate' },
+                    { code: 'F32.2', dsm: true, description: 'Major depressive disorder, single episode, severe without psychotic features' },
+                    { code: 'F32.3', dsm: true, description: 'Major depressive disorder, single episode, severe with psychotic features' },
+                    { code: 'F32.9', dsm: true, description: 'Major depressive disorder, single episode, unspecified' },
+                    { code: 'F33.0', dsm: true, description: 'Major depressive disorder, recurrent, mild' },
+                    { code: 'F33.1', dsm: true, description: 'Major depressive disorder, recurrent, moderate' },
+                    { code: 'F33.2', dsm: true, description: 'Major depressive disorder, recurrent, severe without psychotic features' },
+                    { code: 'F33.3', dsm: true, description: 'Major depressive disorder, recurrent, severe with psychotic features' },
+                    { code: 'F33.9', dsm: true, description: 'Major depressive disorder, recurrent, unspecified' },
+                    { code: 'F41.0', dsm: true, description: 'Panic disorder [episodic paroxysmal anxiety]' },
+                    { code: 'F41.1', dsm: true, description: 'Generalized anxiety disorder' },
+                    { code: 'F41.8', dsm: true, description: 'Other specified anxiety disorders' },
+                    { code: 'F41.9', dsm: true, description: 'Anxiety disorder, unspecified' },
+                    { code: 'F43.10', dsm: true, description: 'Post-traumatic stress disorder, unspecified' },
                     { code: 'F43.11', description: 'Post-traumatic stress disorder, acute' },
                     { code: 'F43.12', description: 'Post-traumatic stress disorder, chronic' },
-                    { code: 'F43.20', description: 'Adjustment disorder, unspecified' },
-                    { code: 'F43.21', description: 'Adjustment disorder with depressed mood' },
-                    { code: 'F43.22', description: 'Adjustment disorder with anxiety' },
-                    { code: 'F43.23', description: 'Adjustment disorder with mixed anxiety and depressed mood' },
-                    { code: 'F43.24', description: 'Adjustment disorder with disturbance of conduct' },
-                    { code: 'F43.25', description: 'Adjustment disorder with mixed disturbance of emotions and conduct' },
-                    { code: 'F10.10', description: 'Alcohol abuse, uncomplicated' },
-                    { code: 'F10.20', description: 'Alcohol dependence, uncomplicated' },
+                    { code: 'F43.20', dsm: true, description: 'Adjustment disorder, unspecified' },
+                    { code: 'F43.21', dsm: true, description: 'Adjustment disorder with depressed mood' },
+                    { code: 'F43.22', dsm: true, description: 'Adjustment disorder with anxiety' },
+                    { code: 'F43.23', dsm: true, description: 'Adjustment disorder with mixed anxiety and depressed mood' },
+                    { code: 'F43.24', dsm: true, description: 'Adjustment disorder with disturbance of conduct' },
+                    { code: 'F43.25', dsm: true, description: 'Adjustment disorder with mixed disturbance of emotions and conduct' },
+                    { code: 'F10.10', dsm: true, description: 'Alcohol abuse, uncomplicated' },
+                    { code: 'F10.20', dsm: true, description: 'Alcohol dependence, uncomplicated' },
                     { code: 'F10.21', description: 'Alcohol dependence, in remission' },
-                    { code: 'F11.10', description: 'Opioid abuse, uncomplicated' },
-                    { code: 'F11.20', description: 'Opioid dependence, uncomplicated' },
+                    { code: 'F11.10', dsm: true, description: 'Opioid abuse, uncomplicated' },
+                    { code: 'F11.20', dsm: true, description: 'Opioid dependence, uncomplicated' },
                     { code: 'F11.21', description: 'Opioid dependence, in remission' },
-                    { code: 'F12.10', description: 'Cannabis abuse, uncomplicated' },
-                    { code: 'F12.20', description: 'Cannabis dependence, uncomplicated' },
-                    { code: 'F31.0', description: 'Bipolar disorder, current episode hypomanic' },
+                    { code: 'F12.10', dsm: true, description: 'Cannabis abuse, uncomplicated' },
+                    { code: 'F12.20', dsm: true, description: 'Cannabis dependence, uncomplicated' },
+                    { code: 'F31.0', dsm: true, description: 'Bipolar disorder, current episode hypomanic' },
                     { code: 'F31.10', description: 'Bipolar disorder, current episode manic without psychotic features, unspecified' },
                     { code: 'F31.30', description: 'Bipolar disorder, current episode depressed, mild or moderate severity, unspecified' },
-                    { code: 'F31.9', description: 'Bipolar disorder, unspecified' },
+                    { code: 'F31.9', dsm: true, description: 'Bipolar disorder, unspecified' },
                     { code: 'F20.0', description: 'Paranoid schizophrenia' },
-                    { code: 'F20.9', description: 'Schizophrenia, unspecified' },
-                    { code: 'F25.0', description: 'Schizoaffective disorder, bipolar type' },
-                    { code: 'F25.1', description: 'Schizoaffective disorder, depressive type' },
+                    { code: 'F20.9', dsm: true, description: 'Schizophrenia, unspecified' },
+                    { code: 'F25.0', dsm: true, description: 'Schizoaffective disorder, bipolar type' },
+                    { code: 'F25.1', dsm: true, description: 'Schizoaffective disorder, depressive type' },
                     { code: 'F50.00', description: 'Anorexia nervosa, unspecified' },
-                    { code: 'F50.01', description: 'Anorexia nervosa, restricting type' },
-                    { code: 'F50.02', description: 'Anorexia nervosa, binge eating/purging type' },
-                    { code: 'F50.2', description: 'Bulimia nervosa' },
+                    { code: 'F50.01', dsm: true, description: 'Anorexia nervosa, restricting type' },
+                    { code: 'F50.02', dsm: true, description: 'Anorexia nervosa, binge eating/purging type' },
+                    { code: 'F50.2', dsm: true, description: 'Bulimia nervosa' },
                     { code: 'F50.81', description: 'Binge eating disorder' },
                     { code: 'F51.01', description: 'Primary insomnia' },
                     { code: 'F51.02', description: 'Adjustment insomnia' },
-                    { code: 'F60.3', description: 'Borderline personality disorder' },
-                    { code: 'F90.0', description: 'Attention-deficit hyperactivity disorder, predominantly inattentive type' },
-                    { code: 'F90.1', description: 'Attention-deficit hyperactivity disorder, predominantly hyperactive type' },
-                    { code: 'F90.2', description: 'Attention-deficit hyperactivity disorder, combined type' },
-                    { code: 'F90.9', description: 'Attention-deficit hyperactivity disorder, unspecified type' },
+                    { code: 'F60.3', dsm: true, description: 'Borderline personality disorder' },
+                    { code: 'F90.0', dsm: true, description: 'Attention-deficit hyperactivity disorder, predominantly inattentive type' },
+                    { code: 'F90.1', dsm: true, description: 'Attention-deficit hyperactivity disorder, predominantly hyperactive type' },
+                    { code: 'F90.2', dsm: true, description: 'Attention-deficit hyperactivity disorder, combined type' },
+                    { code: 'F90.9', dsm: true, description: 'Attention-deficit hyperactivity disorder, unspecified type' },
                     { code: 'F42.2', description: 'Mixed obsessional thoughts and acts' },
                     { code: 'F42.9', description: 'Obsessive-compulsive disorder, unspecified' },
                     { code: 'F02.A1', description: 'Dementia in other diseases classified elsewhere, mild, with behavioral disturbance' },
-                    { code: 'G47.00', description: 'Insomnia, unspecified' },
-                    { code: 'G47.33', description: 'Obstructive sleep apnea' },
+                    { code: 'G47.00', dsm: true, description: 'Insomnia, unspecified' },
+                    { code: 'G47.33', dsm: true, description: 'Obstructive sleep apnea' },
                     { code: 'R45.851', description: 'Suicidal ideations' },
-                    { code: 'F84.0', description: 'Autistic disorder' },
-                    { code: 'F40.10', description: 'Social phobia, unspecified' },
+                    { code: 'F84.0', dsm: true, description: 'Autistic disorder' },
+                    { code: 'F40.10', dsm: true, description: 'Social phobia, unspecified' },
                     { code: 'F40.11', description: 'Social phobia, generalized' },
-                    { code: 'F34.1', description: 'Dysthymic disorder' },
+                    { code: 'F34.1', dsm: true, description: 'Dysthymic disorder' },
                     { code: 'F39', description: 'Unspecified mood [affective] disorder' },
-                    { code: 'F44.81', description: 'Dissociative identity disorder' },
-                    { code: 'F45.1', description: 'Undifferentiated somatoform disorder' },
-                    { code: 'F48.1', description: 'Depersonalization-derealization syndrome' },
-                    { code: 'F13.10', description: 'Sedative, hypnotic or anxiolytic abuse, uncomplicated' },
-                    { code: 'F14.10', description: 'Cocaine abuse, uncomplicated' },
-                    { code: 'F15.10', description: 'Other stimulant abuse, uncomplicated' },
+                    { code: 'F44.81', dsm: true, description: 'Dissociative identity disorder' },
+                    { code: 'F45.1', dsm: true, description: 'Undifferentiated somatoform disorder' },
+                    { code: 'F48.1', dsm: true, description: 'Depersonalization-derealization syndrome' },
+                    { code: 'F13.10', dsm: true, description: 'Sedative, hypnotic or anxiolytic abuse, uncomplicated' },
+                    { code: 'F14.10', dsm: true, description: 'Cocaine abuse, uncomplicated' },
+                    { code: 'F15.10', dsm: true, description: 'Other stimulant abuse, uncomplicated' },
                     { code: 'F19.10', description: 'Other psychoactive substance abuse, uncomplicated' },
                     { code: 'F17.210', description: 'Nicotine dependence, cigarettes, uncomplicated' },
                     { code: 'E66.01', description: 'Morbid (severe) obesity due to excess calories' },
@@ -3190,40 +3252,400 @@
                     { code: 'E11.9', description: 'Type 2 diabetes mellitus without complications' },
                     { code: 'E78.5', description: 'Hyperlipidemia, unspecified' },
                     { code: 'G43.909', description: 'Migraine, unspecified, not intractable, without status migrainosus' },
-                    { code: 'M54.5', description: 'Low back pain' }
+                    { code: 'M54.5', description: 'Low back pain' },
+                    { code: 'Z55.9', description: 'Academic or educational problem', dsm: true },
+                    { code: 'V62.3', description: 'Academic or educational problem', dsm: true },
+                    { code: 'Z60.3', description: 'Acculturation difficulty', dsm: true },
+                    { code: 'V62.4', description: 'Acculturation difficulty', dsm: true },
+                    { code: 'F43.0', description: 'Acute stress disorder', dsm: true },
+                    { code: '308.3', description: 'Acute stress disorder', dsm: true },
+                    { code: '309.9', description: 'Adjustment disorder, Unspecified', dsm: true },
+                    { code: '309.24', description: 'Adjustment disorder, With anxiety', dsm: true },
+                    { code: '309', description: 'Adjustment disorder, With depressed mood', dsm: true },
+                    { code: '309.3', description: 'Adjustment disorder, With disturbance of conduct', dsm: true },
+                    { code: '309.28', description: 'Adjustment disorder, With mixed anxiety and depressed mood', dsm: true },
+                    { code: '309.4', description: 'Adjustment disorder, With mixed disturbance of emotions and conduct', dsm: true },
+                    { code: 'F98.5', description: 'Adult-onset fluency disorder', dsm: true },
+                    { code: '307', description: 'Adult-onset fluency disorder', dsm: true },
+                    { code: 'F40.00', description: 'Agoraphobia', dsm: true },
+                    { code: '300.22', description: 'Agoraphobia', dsm: true },
+                    { code: '303', description: 'Alcohol intoxication', dsm: true },
+                    { code: 'F10.121', description: 'Alcohol intoxication delirium, With mild use disorder', dsm: true },
+                    { code: 'F10.221', description: 'Alcohol intoxication delirium, With moderate or severe use disorder', dsm: true },
+                    { code: 'F10.129', description: 'Alcohol intoxication, With mild use disorder', dsm: true },
+                    { code: 'F10.229', description: 'Alcohol intoxication, With moderate or severe use disorder', dsm: true },
+                    { code: '305', description: 'Alcohol use disorder, Mild', dsm: true },
+                    { code: '303.9', description: 'Alcohol use disorder, Moderate', dsm: true },
+                    { code: 'F10.231', description: 'Alcohol withdrawal delirium', dsm: true },
+                    { code: '291', description: 'Alcohol withdrawal delirium', dsm: true },
+                    { code: 'F10.232', description: 'Alcohol withdrawal, With perceptual disturbances', dsm: true },
+                    { code: 'F10.239', description: 'Alcohol withdrawal, Without perceptual disturbances', dsm: true },
+                    { code: 'F10.180', description: 'Alcohol-induced anxiety disorder, With mild use disorder', dsm: true },
+                    { code: 'F10.280', description: 'Alcohol-induced anxiety disorder, With moderate or severe use disorder', dsm: true },
+                    { code: 'F10.14', description: 'Alcohol-induced bipolar and related disorder, With mild use disorder', dsm: true },
+                    { code: 'F10.24', description: 'Alcohol-induced bipolar and related disorder, With moderate or severe use disorder', dsm: true },
+                    { code: 'F10.26', description: 'Alcohol-induced major neurocognitive disorder, Amnestic confabulatory type, With moderate or severe use disorder', dsm: true },
+                    { code: 'F10.27', description: 'Alcohol-induced major neurocognitive disorder, Nonamnestic confabulatory type, With moderate or severe use disorder', dsm: true },
+                    { code: 'F10.288', description: 'Alcohol-induced mild neurocognitive disorder, With moderate or severe use disorder', dsm: true },
+                    { code: 'F10.159', description: 'Alcohol-induced psychotic disorder, With mild use disorder', dsm: true },
+                    { code: 'F10.259', description: 'Alcohol-induced psychotic disorder, With moderate or severe use disorder', dsm: true },
+                    { code: 'F10.181', description: 'Alcohol-induced sexual dysfunction, With mild use disorder', dsm: true },
+                    { code: 'F10.281', description: 'Alcohol-induced sexual dysfunction, With moderate or severe use disorder', dsm: true },
+                    { code: 'F10.182', description: 'Alcohol-induced sleep disorder, With mild use disorder', dsm: true },
+                    { code: 'F10.282', description: 'Alcohol-induced sleep disorder, With moderate or severe use disorder', dsm: true },
+                    { code: 'F15.121', description: 'Amphetamine (or other stimulant) intoxication delirium, With mild use disorder', dsm: true },
+                    { code: 'F15.221', description: 'Amphetamine (or other stimulant) intoxication delirium, With moderate or severe use disorder', dsm: true },
+                    { code: 'F15.180', description: 'Amphetamine (or other stimulant)-induced anxiety disorder, With mild use disorder', dsm: true },
+                    { code: 'F15.280', description: 'Amphetamine (or other stimulant)-induced anxiety disorder, With moderate or severe use disorder', dsm: true },
+                    { code: 'F15.14', description: 'Amphetamine (or other stimulant)-induced bipolar and related disorder, With mild use disorder', dsm: true },
+                    { code: 'F15.24', description: 'Amphetamine (or other stimulant)-induced bipolar and related disorder, With moderate or severe use disorder', dsm: true },
+                    { code: 'F15.188', description: 'Amphetamine (or other stimulant)-induced obsessive-compulsive and related disorder, With mild use disorder', dsm: true },
+                    { code: 'F15.288', description: 'Amphetamine (or other stimulant)-induced obsessive-compulsive and related disorder, With moderate or severe use disorder', dsm: true },
+                    { code: 'F15.159', description: 'Amphetamine (or other stimulant)-induced psychotic disorder, With mild use disorder', dsm: true },
+                    { code: 'F15.259', description: 'Amphetamine (or other stimulant)-induced psychotic disorder, With moderate or severe use disorder', dsm: true },
+                    { code: 'F15.181', description: 'Amphetamine (or other stimulant)-induced sexual dysfunction, With mild use disorder', dsm: true },
+                    { code: 'F15.281', description: 'Amphetamine (or other stimulant)-induced sexual dysfunction, With moderate or severe use disorder', dsm: true },
+                    { code: 'F15.182', description: 'Amphetamine (or other stimulant)-induced sleep disorder, With mild use disorder', dsm: true },
+                    { code: 'F15.282', description: 'Amphetamine (or other stimulant)-induced sleep disorder, With moderate or severe use disorder', dsm: true },
+                    { code: 'F15.122', description: 'Amphetamine or other stimulant intoxication, With perceptual disturbances, With mild use disorder', dsm: true },
+                    { code: 'F15.222', description: 'Amphetamine or other stimulant intoxication, With perceptual disturbances, With moderate or severe use disorder', dsm: true },
+                    { code: 'F15.129', description: 'Amphetamine or other stimulant intoxication, Without perceptual disturbances, With mild use disorder', dsm: true },
+                    { code: 'F15.229', description: 'Amphetamine or other stimulant intoxication, Without perceptual disturbances, With moderate or severe use disorder', dsm: true },
+                    { code: 'F15.23', description: 'Amphetamine or other stimulant withdrawal', dsm: true },
+                    { code: '292', description: 'Amphetamine or other stimulant withdrawal', dsm: true },
+                    { code: '305.7', description: 'Amphetamine-type substance use disorder, Mild', dsm: true },
+                    { code: 'F15.20', description: 'Amphetamine-type substance use disorder, Moderate', dsm: true },
+                    { code: '304.4', description: 'Amphetamine-type substance use disorder, Moderate', dsm: true },
+                    { code: '307.1', description: 'Anorexia nervosa', dsm: true },
+                    { code: 'F60.2', description: 'Antisocial personality disorder', dsm: true },
+                    { code: '301.7', description: 'Antisocial personality disorder', dsm: true },
+                    { code: 'F06.4', description: 'Anxiety disorder due to another medical condition', dsm: true },
+                    { code: '293.84', description: 'Anxiety disorder due to another medical condition', dsm: true },
+                    { code: '314.01', description: 'Attention-deficit/hyperactivity disorder, Combined presentation', dsm: true },
+                    { code: '314.01', description: 'Attention-deficit/hyperactivity disorder, Predominantly hyperactive/impulsive presentation', dsm: true },
+                    { code: '314', description: 'Attention-deficit/hyperactivity disorder, Predominantly inattentive presentation', dsm: true },
+                    { code: '299', description: 'Autism spectrum disorder', dsm: true },
+                    { code: 'G47.419', description: 'Autosomal dominant cerebellar ataxia, deafness, and narcolepsy', dsm: true },
+                    { code: '347', description: 'Autosomal dominant cerebellar ataxia, deafness, and narcolepsy', dsm: true },
+                    { code: 'F60.6', description: 'Avoidant personality disorder', dsm: true },
+                    { code: '301.82', description: 'Avoidant personality disorder', dsm: true },
+                    { code: 'F50.8', description: 'Avoidant/restrictive food intake disorder', dsm: true },
+                    { code: '307.59', description: 'Avoidant/restrictive food intake disorder', dsm: true },
+                    { code: 'F06.33', description: 'Bipolar and related disorder due to another medical condition, With manic features', dsm: true },
+                    { code: 'F06.34', description: 'Bipolar and related disorder due to another medical condition, With mixed features', dsm: true },
+                    { code: 'F31.76', description: 'Bipolar I disorder, Current or most recent episode depressed, In full remission', dsm: true },
+                    { code: '296.56', description: 'Bipolar I disorder, Current or most recent episode depressed, In full remission', dsm: true },
+                    { code: 'F31.75', description: 'Bipolar I disorder, Current or most recent episode depressed, In partial remission', dsm: true },
+                    { code: '296.55', description: 'Bipolar I disorder, Current or most recent episode depressed, In partial remission', dsm: true },
+                    { code: 'F31.31', description: 'Bipolar I disorder, Current or most recent episode depressed, Mild', dsm: true },
+                    { code: '296.51', description: 'Bipolar I disorder, Current or most recent episode depressed, Mild', dsm: true },
+                    { code: 'F31.32', description: 'Bipolar I disorder, Current or most recent episode depressed, Moderate', dsm: true },
+                    { code: '296.52', description: 'Bipolar I disorder, Current or most recent episode depressed, Moderate', dsm: true },
+                    { code: 'F31.4', description: 'Bipolar I disorder, Current or most recent episode depressed, Severe', dsm: true },
+                    { code: '296.53', description: 'Bipolar I disorder, Current or most recent episode depressed, Severe', dsm: true },
+                    { code: '296.5', description: 'Bipolar I disorder, Current or most recent episode depressed, Unspecified', dsm: true },
+                    { code: 'F31.5', description: 'Bipolar I disorder, Current or most recent episode depressed, With psychotic features', dsm: true },
+                    { code: '296.54', description: 'Bipolar I disorder, Current or most recent episode depressed, With psychotic features', dsm: true },
+                    { code: '296.4', description: 'Bipolar I disorder, Current or most recent episode hypomanic', dsm: true },
+                    { code: 'F31.74', description: 'Bipolar I disorder, Current or most recent episode hypomanic, In full remission', dsm: true },
+                    { code: '296.46', description: 'Bipolar I disorder, Current or most recent episode hypomanic, In full remission', dsm: true },
+                    { code: 'F31.73', description: 'Bipolar I disorder, Current or most recent episode hypomanic, In partial remission', dsm: true },
+                    { code: '296.45', description: 'Bipolar I disorder, Current or most recent episode hypomanic, In partial remission', dsm: true },
+                    { code: 'F31.11', description: 'Bipolar I disorder, Current or most recent episode manic, Mild', dsm: true },
+                    { code: '296.41', description: 'Bipolar I disorder, Current or most recent episode manic, Mild', dsm: true },
+                    { code: 'F31.12', description: 'Bipolar I disorder, Current or most recent episode manic, Moderate', dsm: true },
+                    { code: '296.42', description: 'Bipolar I disorder, Current or most recent episode manic, Moderate', dsm: true },
+                    { code: 'F31.13', description: 'Bipolar I disorder, Current or most recent episode manic, Severe', dsm: true },
+                    { code: '296.43', description: 'Bipolar I disorder, Current or most recent episode manic, Severe', dsm: true },
+                    { code: 'F31.2', description: 'Bipolar I disorder, Current or most recent episode manic, With psychotic features', dsm: true },
+                    { code: '296.44', description: 'Bipolar I disorder, Current or most recent episode manic, With psychotic features', dsm: true },
+                    { code: 'F31.81', description: 'Bipolar II disorder', dsm: true },
+                    { code: '296.89', description: 'Bipolar II disorder', dsm: true },
+                    { code: 'F45.22', description: 'Body dysmorphic disorder', dsm: true },
+                    { code: '300.7', description: 'Body dysmorphic disorder', dsm: true },
+                    { code: '301.83', description: 'Borderline personality disorder', dsm: true },
+                    { code: '307.51', description: 'Bulimia nervosa', dsm: true },
+                    { code: 'F12.121', description: 'Cannabis intoxication delirium, With mild use disorder', dsm: true },
+                    { code: 'F12.221', description: 'Cannabis intoxication delirium, With moderate or severe use disorder', dsm: true },
+                    { code: 'F12.122', description: 'Cannabis intoxication, With perceptual disturbances, With mild use disorder', dsm: true },
+                    { code: 'F12.222', description: 'Cannabis intoxication, With perceptual disturbances, With moderate or severe use disorder', dsm: true },
+                    { code: 'F12.129', description: 'Cannabis intoxication, Without perceptual disturbances, With mild use disorder', dsm: true },
+                    { code: 'F12.229', description: 'Cannabis intoxication, Without perceptual disturbances, With moderate or severe use disorder', dsm: true },
+                    { code: '305.2', description: 'Cannabis use disorder, Mild', dsm: true },
+                    { code: '304.3', description: 'Cannabis use disorder, Moderate', dsm: true },
+                    { code: 'F12.288', description: 'Cannabis withdrawal', dsm: true },
+                    { code: '292', description: 'Cannabis withdrawal', dsm: true },
+                    { code: 'F12.180', description: 'Cannabis-induced anxiety disorder, With mild use disorder', dsm: true },
+                    { code: 'F12.280', description: 'Cannabis-induced anxiety disorder, With moderate or severe use disorder', dsm: true },
+                    { code: 'F12.159', description: 'Cannabis-induced psychotic disorder, With mild use disorder', dsm: true },
+                    { code: 'F12.259', description: 'Cannabis-induced psychotic disorder, With moderate or severe use disorder', dsm: true },
+                    { code: 'F12.188', description: 'Cannabis-induced sleep disorder, With mild use disorder', dsm: true },
+                    { code: 'F06.1', description: 'Catatonia associated with another mental disorder (catatonia specifier)', dsm: true },
+                    { code: '293.89', description: 'Catatonia associated with another mental disorder (catatonia specifier)', dsm: true },
+                    { code: 'G47.37', description: 'Central sleep apnea comorbid with opioid use', dsm: true },
+                    { code: '780.57', description: 'Central sleep apnea comorbid with opioid use', dsm: true },
+                    { code: 'G47.22', description: 'Circadian rhythm sleep-wake disorders, Advanced sleep phase type', dsm: true },
+                    { code: '307.45', description: 'Circadian rhythm sleep-wake disorders, Advanced sleep phase type', dsm: true },
+                    { code: 'G47.21', description: 'Circadian rhythm sleep-wake disorders, Delayed sleep phase type', dsm: true },
+                    { code: '307.45', description: 'Circadian rhythm sleep-wake disorders, Delayed sleep phase type', dsm: true },
+                    { code: 'G47.23', description: 'Circadian rhythm sleep-wake disorders, Irregular sleep-wake type', dsm: true },
+                    { code: '307.45', description: 'Circadian rhythm sleep-wake disorders, Irregular sleep-wake type', dsm: true },
+                    { code: 'G47.24', description: 'Circadian rhythm sleep-wake disorders, Non-24-hour sleep-wake type', dsm: true },
+                    { code: '307.45', description: 'Circadian rhythm sleep-wake disorders, Non-24-hour sleep-wake type', dsm: true },
+                    { code: 'G47.26', description: 'Circadian rhythm sleep-wake disorders, Shift work type', dsm: true },
+                    { code: '307.45', description: 'Circadian rhythm sleep-wake disorders, Shift work type', dsm: true },
+                    { code: 'G47.20', description: 'Circadian rhythm sleep-wake disorders, Unspecified type', dsm: true },
+                    { code: '307.45', description: 'Circadian rhythm sleep-wake disorders, Unspecified type', dsm: true },
+                    { code: 'F14.121', description: 'Cocaine intoxication delirium, With mild use disorder', dsm: true },
+                    { code: 'F14.122', description: 'Cocaine intoxication, With perceptual disturbances, With mild use disorder', dsm: true },
+                    { code: 'F14.129', description: 'Cocaine intoxication, Without perceptual disturbances, With mild use disorder', dsm: true },
+                    { code: '305.6', description: 'Cocaine use disorder, Mild', dsm: true },
+                    { code: 'F14.180', description: 'Cocaine-induced anxiety disorder, With mild use disorder', dsm: true },
+                    { code: 'F14.14', description: 'Cocaine-induced bipolar and related disorder, With mild use disorder', dsm: true },
+                    { code: 'F14.188', description: 'Cocaine-induced obsessive-compulsive and related disorder, With mild use disorder', dsm: true },
+                    { code: 'F14.159', description: 'Cocaine-induced psychotic disorder, With mild use disorder', dsm: true },
+                    { code: 'F14.181', description: 'Cocaine-induced sexual dysfunction, With mild use disorder', dsm: true },
+                    { code: 'F14.182', description: 'Cocaine-induced sleep disorder, With mild use disorder', dsm: true },
+                    { code: 'G47.36', description: 'Comorbid sleep-related hypoventilation', dsm: true },
+                    { code: '327.26', description: 'Comorbid sleep-related hypoventilation', dsm: true },
+                    { code: 'G47.35', description: 'Congenital central alveolar hypoventilation', dsm: true },
+                    { code: '327.25', description: 'Congenital central alveolar hypoventilation', dsm: true },
+                    { code: '300.11', description: 'Conversion disorder (functional neurological symptom disorder)', dsm: true },
+                    { code: 'F44.4', description: 'Conversion disorder (functional neurological symptom disorder), With abnormal movement', dsm: true },
+                    { code: 'F44.6', description: 'Conversion disorder (functional neurological symptom disorder), With anesthesia or sensory loss', dsm: true },
+                    { code: 'F44.5', description: 'Conversion disorder (functional neurological symptom disorder), With attacks or seizures', dsm: true },
+                    { code: 'F44.7', description: 'Conversion disorder (functional neurological symptom disorder), With mixed symptoms', dsm: true },
+                    { code: 'Z65.0', description: 'Conviction in civil or criminal proceedings without imprisonment', dsm: true },
+                    { code: 'V62.5', description: 'Conviction in civil or criminal proceedings without imprisonment', dsm: true },
+                    { code: 'F34.0', description: 'Cyclothymic disorder', dsm: true },
+                    { code: '301.13', description: 'Cyclothymic disorder', dsm: true },
+                    { code: 'F60.7', description: 'Dependent personality disorder', dsm: true },
+                    { code: '301.6', description: 'Dependent personality disorder', dsm: true },
+                    { code: '300.6', description: 'Depersonalization/derealization disorder', dsm: true },
+                    { code: 'F06.31', description: 'Depressive disorder due to another medical condition, With depressive features', dsm: true },
+                    { code: 'F06.32', description: 'Depressive disorder due to another medical condition, With major depressive-like episode', dsm: true },
+                    { code: 'Z63.5', description: 'Disruption of family by separation or divorce', dsm: true },
+                    { code: 'V61.03', description: 'Disruption of family by separation or divorce', dsm: true },
+                    { code: 'F34.8', description: 'Disruptive mood dysregulation disorder', dsm: true },
+                    { code: '296.99', description: 'Disruptive mood dysregulation disorder', dsm: true },
+                    { code: 'F44.0', description: 'Dissociative amnesia', dsm: true },
+                    { code: '300.12', description: 'Dissociative amnesia', dsm: true },
+                    { code: 'F44.1', description: 'Dissociative amnesia, with dissociative fugue', dsm: true },
+                    { code: '300.13', description: 'Dissociative amnesia, with dissociative fugue', dsm: true },
+                    { code: '300.14', description: 'Dissociative identity disorder', dsm: true },
+                    { code: 'Z65.5', description: 'Exposure to disaster, war, or other hostilities', dsm: true },
+                    { code: 'V62.22', description: 'Exposure to disaster, war, or other hostilities', dsm: true },
+                    { code: '300.02', description: 'Generalized anxiety disorder', dsm: true },
+                    { code: 'Z63.8', description: 'High expressed emotion level within family', dsm: true },
+                    { code: 'V61.8', description: 'High expressed emotion level within family', dsm: true },
+                    { code: 'F60.4', description: 'Histrionic personality disorder', dsm: true },
+                    { code: '301.5', description: 'Histrionic personality disorder', dsm: true },
+                    { code: 'F42', description: 'Hoarding disorder', dsm: true },
+                    { code: '300.3', description: 'Hoarding disorder', dsm: true },
+                    { code: 'G47.10', description: 'Hypersomnolence disorder', dsm: true },
+                    { code: '780.54', description: 'Hypersomnolence disorder', dsm: true },
+                    { code: 'G47.31', description: 'Idiopathic central sleep apnea', dsm: true },
+                    { code: '327.21', description: 'Idiopathic central sleep apnea', dsm: true },
+                    { code: 'G47.34', description: 'Idiopathic hypoventilation', dsm: true },
+                    { code: '327.24', description: 'Idiopathic hypoventilation', dsm: true },
+                    { code: 'F45.21', description: 'Illness anxiety disorder', dsm: true },
+                    { code: '300.7', description: 'Illness anxiety disorder', dsm: true },
+                    { code: 'Z65.1', description: 'Imprisonment or other incarceration', dsm: true },
+                    { code: 'V62.5', description: 'Imprisonment or other incarceration', dsm: true },
+                    { code: '780.52', description: 'Insomnia disorder', dsm: true },
+                    { code: 'F33.42', description: 'Major depressive disorder, Recurrent episode, In full remission', dsm: true },
+                    { code: '296.36', description: 'Major depressive disorder, Recurrent episode, In full remission', dsm: true },
+                    { code: 'F33.41', description: 'Major depressive disorder, Recurrent episode, In partial remission', dsm: true },
+                    { code: '296.35', description: 'Major depressive disorder, Recurrent episode, In partial remission', dsm: true },
+                    { code: '296.31', description: 'Major depressive disorder, Recurrent episode, Mild', dsm: true },
+                    { code: '296.32', description: 'Major depressive disorder, Recurrent episode, Moderate', dsm: true },
+                    { code: '296.33', description: 'Major depressive disorder, Recurrent episode, Severe', dsm: true },
+                    { code: '296.3', description: 'Major depressive disorder, Recurrent episode, Unspecified', dsm: true },
+                    { code: '296.34', description: 'Major depressive disorder, Recurrent episode, With psychotic features', dsm: true },
+                    { code: 'F32.5', description: 'Major depressive disorder, Single episode, In full remission', dsm: true },
+                    { code: '296.26', description: 'Major depressive disorder, Single episode, In full remission', dsm: true },
+                    { code: 'F32.4', description: 'Major depressive disorder, Single episode, In partial remission', dsm: true },
+                    { code: '296.25', description: 'Major depressive disorder, Single episode, In partial remission', dsm: true },
+                    { code: '296.21', description: 'Major depressive disorder, Single episode, Mild', dsm: true },
+                    { code: '296.22', description: 'Major depressive disorder, Single episode, Moderate', dsm: true },
+                    { code: '296.23', description: 'Major depressive disorder, Single episode, Severe', dsm: true },
+                    { code: '296.2', description: 'Major depressive disorder, Single episode, Unspecified', dsm: true },
+                    { code: '296.24', description: 'Major depressive disorder, Single episode, With psychotic features', dsm: true },
+                    { code: 'F60.81', description: 'Narcissistic personality disorder', dsm: true },
+                    { code: '301.81', description: 'Narcissistic personality disorder', dsm: true },
+                    { code: 'G47.429', description: 'Narcolepsy secondary to another medical condition', dsm: true },
+                    { code: '347.1', description: 'Narcolepsy secondary to another medical condition', dsm: true },
+                    { code: 'G47.411', description: 'Narcolepsy with cataplexy but without hypocretin deficiency', dsm: true },
+                    { code: '347.01', description: 'Narcolepsy with cataplexy but without hypocretin deficiency', dsm: true },
+                    { code: 'F51.5', description: 'Nightmare disorder', dsm: true },
+                    { code: '307.47', description: 'Nightmare disorder', dsm: true },
+                    { code: 'F51.4', description: 'Non-rapid eye movement sleep arousal disorders, Sleep terror type', dsm: true },
+                    { code: '307.46', description: 'Non-rapid eye movement sleep arousal disorders, Sleep terror type', dsm: true },
+                    { code: 'F51.3', description: 'Non-rapid eye movement sleep arousal disorders, Sleepwalking type', dsm: true },
+                    { code: '307.46', description: 'Non-rapid eye movement sleep arousal disorders, Sleepwalking type', dsm: true },
+                    { code: 'F06.8', description: 'Obsessive-compulsive and related disorder due to another medical condition', dsm: true },
+                    { code: '294.8', description: 'Obsessive-compulsive and related disorder due to another medical condition', dsm: true },
+                    { code: 'F60.5', description: 'Obsessive-compulsive personality disorder', dsm: true },
+                    { code: '301.4', description: 'Obsessive-compulsive personality disorder', dsm: true },
+                    { code: '327.23', description: 'Obstructive sleep apnea hypopnea', dsm: true },
+                    { code: 'F11.121', description: 'Opioid intoxication delirium, With mild use disorder', dsm: true },
+                    { code: 'F11.221', description: 'Opioid intoxication delirium, With moderate or severe use disorder', dsm: true },
+                    { code: 'F11.122', description: 'Opioid intoxication, With perceptual disturbances, With mild use disorder', dsm: true },
+                    { code: 'F11.222', description: 'Opioid intoxication, With perceptual disturbances, With moderate or severe use disorder', dsm: true },
+                    { code: 'F11.129', description: 'Opioid intoxication, Without perceptual disturbances, With mild use disorder', dsm: true },
+                    { code: 'F11.229', description: 'Opioid intoxication, Without perceptual disturbances, With moderate or severe use disorder', dsm: true },
+                    { code: '305.5', description: 'Opioid use disorder, Mild', dsm: true },
+                    { code: '304', description: 'Opioid use disorder, Moderate', dsm: true },
+                    { code: 'F11.23', description: 'Opioid withdrawal', dsm: true },
+                    { code: '292', description: 'Opioid withdrawal', dsm: true },
+                    { code: 'F11.188', description: 'Opioid-induced anxiety disorder, With mild use disorder', dsm: true },
+                    { code: 'F11.288', description: 'Opioid-induced anxiety disorder, With moderate or severe use disorder', dsm: true },
+                    { code: 'F11.14', description: 'Opioid-induced depressive disorder, With mild use disorder', dsm: true },
+                    { code: 'F11.24', description: 'Opioid-induced depressive disorder, With moderate or severe use disorder', dsm: true },
+                    { code: 'F11.181', description: 'Opioid-induced sexual dysfunction, With mild use disorder', dsm: true },
+                    { code: 'F11.281', description: 'Opioid-induced sexual dysfunction, With moderate or severe use disorder', dsm: true },
+                    { code: 'F11.182', description: 'Opioid-induced sleep disorder, With mild use disorder', dsm: true },
+                    { code: 'F11.282', description: 'Opioid-induced sleep disorder, With moderate or severe use disorder', dsm: true },
+                    { code: 'Z65.8', description: 'Other problem related to psychosocial circumstances', dsm: true },
+                    { code: 'V62.89', description: 'Other problem related to psychosocial circumstances', dsm: true },
+                    { code: '300.09', description: 'Other specified anxiety disorder', dsm: true },
+                    { code: 'F90.8', description: 'Other specified attention-deficit/hyperactivity disorder', dsm: true },
+                    { code: '314.01', description: 'Other specified attention-deficit/hyperactivity disorder', dsm: true },
+                    { code: 'F31.89', description: 'Other specified bipolar and related disorder', dsm: true },
+                    { code: '296.89', description: 'Other specified bipolar and related disorder', dsm: true },
+                    { code: 'F32.8', description: 'Other specified depressive disorder', dsm: true },
+                    { code: '311', description: 'Other specified depressive disorder', dsm: true },
+                    { code: 'F44.89', description: 'Other specified dissociative disorder', dsm: true },
+                    { code: '300.15', description: 'Other specified dissociative disorder', dsm: true },
+                    { code: 'G47.19', description: 'Other specified hypersomnolence disorder', dsm: true },
+                    { code: '780.54', description: 'Other specified hypersomnolence disorder', dsm: true },
+                    { code: 'G47.09', description: 'Other specified insomnia disorder', dsm: true },
+                    { code: '780.52', description: 'Other specified insomnia disorder', dsm: true },
+                    { code: 'F60.89', description: 'Other specified personality disorder', dsm: true },
+                    { code: '301.89', description: 'Other specified personality disorder', dsm: true },
+                    { code: 'G47.8', description: 'Other specified sleep-wake disorder', dsm: true },
+                    { code: '780.59', description: 'Other specified sleep-wake disorder', dsm: true },
+                    { code: 'F45.8', description: 'Other specified somatic symptom and related disorder', dsm: true },
+                    { code: '300.89', description: 'Other specified somatic symptom and related disorder', dsm: true },
+                    { code: 'F43.8', description: 'Other specified trauma- and stressor-related disorder', dsm: true },
+                    { code: '309.89', description: 'Other specified trauma- and stressor-related disorder', dsm: true },
+                    { code: '300.01', description: 'Panic disorder', dsm: true },
+                    { code: 'F60.0', description: 'Paranoid personality disorder', dsm: true },
+                    { code: '301', description: 'Paranoid personality disorder', dsm: true },
+                    { code: '300.4', description: 'Persistent depressive disorder (dysthymia)', dsm: true },
+                    { code: 'Z60.0', description: 'Phase of life problem', dsm: true },
+                    { code: 'V62.89', description: 'Phase of life problem', dsm: true },
+                    { code: '309.81', description: 'Posttraumatic stress disorder', dsm: true },
+                    { code: 'Z60.2', description: 'Problem related to living alone', dsm: true },
+                    { code: 'V60.3', description: 'Problem related to living alone', dsm: true },
+                    { code: 'Z65.3', description: 'Problems related to other legal circumstances', dsm: true },
+                    { code: 'V62.5', description: 'Problems related to other legal circumstances', dsm: true },
+                    { code: 'Z65.2', description: 'Problems related to release from prison', dsm: true },
+                    { code: 'V62.5', description: 'Problems related to release from prison', dsm: true },
+                    { code: 'F06.2', description: 'Psychotic disorder due to another medical condition, With delusions', dsm: true },
+                    { code: '293.81', description: 'Psychotic disorder due to another medical condition, With delusions', dsm: true },
+                    { code: 'F06.0', description: 'Psychotic disorder due to another medical condition, With hallucinations', dsm: true },
+                    { code: '293.82', description: 'Psychotic disorder due to another medical condition, With hallucinations', dsm: true },
+                    { code: 'G47.52', description: 'Rapid eye movement sleep behavior disorder', dsm: true },
+                    { code: '327.42', description: 'Rapid eye movement sleep behavior disorder', dsm: true },
+                    { code: 'Z63.0', description: 'Relationship distress with spouse or intimate partner', dsm: true },
+                    { code: 'V61.10', description: 'Relationship distress with spouse or intimate partner', dsm: true },
+                    { code: '295.7', description: 'Schizoaffective disorder, Bipolar type', dsm: true },
+                    { code: '295.7', description: 'Schizoaffective disorder, Depressive type', dsm: true },
+                    { code: 'F60.1', description: 'Schizoid personality disorder', dsm: true },
+                    { code: '301.2', description: 'Schizoid personality disorder', dsm: true },
+                    { code: '295.9', description: 'Schizophrenia', dsm: true },
+                    { code: 'F20.81', description: 'Schizophreniform disorder', dsm: true },
+                    { code: '295.4', description: 'Schizophreniform disorder', dsm: true },
+                    { code: 'F13.121', description: 'Sedative, hypnotic, or anxiolytic intoxication delirium, With mild use disorder', dsm: true },
+                    { code: 'F13.129', description: 'Sedative, hypnotic, or anxiolytic intoxication, With mild use disorder', dsm: true },
+                    { code: '305.4', description: 'Sedative, hypnotic, or anxiolytic use disorder, Mild', dsm: true },
+                    { code: 'F13.180', description: 'Sedative-, hypnotic-, or anxiolytic-induced anxiety disorder, With mild use disorder', dsm: true },
+                    { code: 'F13.14', description: 'Sedative-, hypnotic-, or anxiolytic-induced bipolar and related disorder, With mild use disorder', dsm: true },
+                    { code: 'F13.159', description: 'Sedative-, hypnotic-, or anxiolytic-induced psychotic disorder, With mild use disorder', dsm: true },
+                    { code: 'F13.181', description: 'Sedative-, hypnotic-, or anxiolytic-induced sexual dysfunction, With mild use disorder', dsm: true },
+                    { code: 'F13.182', description: 'Sedative-, hypnotic-, or anxiolytic-induced sleep disorder, With mild use disorder', dsm: true },
+                    { code: '300.23', description: 'Social anxiety disorder (social phobia)', dsm: true },
+                    { code: 'Z60.4', description: 'Social exclusion or rejection', dsm: true },
+                    { code: 'V62.4', description: 'Social exclusion or rejection', dsm: true },
+                    { code: '300.82', description: 'Somatic symptom disorder', dsm: true },
+                    { code: 'F40.218', description: 'Specific phobia, Animal', dsm: true },
+                    { code: '300.29', description: 'Specific phobia, Animal', dsm: true },
+                    { code: '300.29', description: 'Specific phobia, Blood-injection-injury', dsm: true },
+                    { code: 'F40.230', description: 'Specific phobia, Fear of blood', dsm: true },
+                    { code: 'F40.231', description: 'Specific phobia, Fear of injections and transfusions', dsm: true },
+                    { code: 'F40.233', description: 'Specific phobia, Fear of injury', dsm: true },
+                    { code: 'F40.232', description: 'Specific phobia, Fear of other medical care', dsm: true },
+                    { code: 'F40.228', description: 'Specific phobia, Natural environment', dsm: true },
+                    { code: '300.29', description: 'Specific phobia, Natural environment', dsm: true },
+                    { code: 'F40.298', description: 'Specific phobia, Other', dsm: true },
+                    { code: '300.29', description: 'Specific phobia, Other', dsm: true },
+                    { code: 'F40.248', description: 'Specific phobia, Situational', dsm: true },
+                    { code: '300.29', description: 'Specific phobia, Situational', dsm: true },
+                    { code: 'Z60.5', description: 'Target of (perceived) adverse discrimination or persecution', dsm: true },
+                    { code: 'V62.4', description: 'Target of (perceived) adverse discrimination or persecution', dsm: true },
+                    { code: 'F17.200', description: 'Tobacco use disorder, Moderate', dsm: true },
+                    { code: '305.1', description: 'Tobacco use disorder, Moderate', dsm: true },
+                    { code: 'F17.203', description: 'Tobacco withdrawal', dsm: true },
+                    { code: '292', description: 'Tobacco withdrawal', dsm: true },
+                    { code: 'F17.208', description: 'Tobacco-induced sleep disorder, With moderate or severe use disorder', dsm: true },
+                    { code: 'Z63.4', description: 'Uncomplicated bereavement', dsm: true },
+                    { code: 'V62.82', description: 'Uncomplicated bereavement', dsm: true },
+                    { code: '300', description: 'Unspecified anxiety disorder', dsm: true },
+                    { code: '314.01', description: 'Unspecified attention-deficit/hyperactivity disorder', dsm: true },
+                    { code: 'F44.9', description: 'Unspecified dissociative disorder', dsm: true },
+                    { code: '300.15', description: 'Unspecified dissociative disorder', dsm: true },
+                    { code: 'F50.9', description: 'Unspecified feeding or eating disorder', dsm: true },
+                    { code: '307.5', description: 'Unspecified feeding or eating disorder', dsm: true },
+                    { code: 'F60.9', description: 'Unspecified personality disorder', dsm: true },
+                    { code: '301.9', description: 'Unspecified personality disorder', dsm: true },
+                    { code: 'Z60.9', description: 'Unspecified problem related to social environment', dsm: true },
+                    { code: 'V62.9', description: 'Unspecified problem related to social environment', dsm: true },
+                    { code: 'Z65.9', description: 'Unspecified problem related to unspecified psychosocial circumstances', dsm: true },
+                    { code: 'V62.9', description: 'Unspecified problem related to unspecified psychosocial circumstances', dsm: true },
+                    { code: 'G47.9', description: 'Unspecified sleep-wake disorder', dsm: true },
+                    { code: '780.59', description: 'Unspecified sleep-wake disorder', dsm: true },
+                    { code: 'F45.9', description: 'Unspecified somatic symptom and related disorder', dsm: true },
+                    { code: '300.82', description: 'Unspecified somatic symptom and related disorder', dsm: true },
+                    { code: 'F17.209', description: 'Unspecified tobacco-related disorder', dsm: true },
+                    { code: '292.9', description: 'Unspecified tobacco-related disorder', dsm: true },
+                    { code: 'F43.9', description: 'Unspecified trauma- and stressor-related disorder', dsm: true },
+                    { code: '309.9', description: 'Unspecified trauma- and stressor-related disorder', dsm: true },
+                    { code: 'Z65.4', description: 'Victim of crime', dsm: true },
+                    { code: 'V62.89', description: 'Victim of crime', dsm: true }
                 ];
 
                 // ── State ──
                 vm.includeInNote = true;
 
                 vm.activeDx = [
-                    { code: 'F33.1', description: 'Major depressive disorder, recurrent, moderate', status: 'Active', aiSuggested: true },
-                    { code: 'F41.1', description: 'Generalized anxiety disorder', status: 'Active', aiSuggested: false },
+                    { code: 'F33.1', dsm: true, description: 'Major depressive disorder, recurrent, moderate', status: 'Active', aiSuggested: true },
+                    { code: 'F41.1', dsm: true, description: 'Generalized anxiety disorder', status: 'Active', aiSuggested: false },
                     { code: 'F51.01', description: 'Primary insomnia', status: 'Chronic', aiSuggested: false },
-                    { code: 'F10.10', description: 'Alcohol abuse, uncomplicated', status: 'Active', aiSuggested: false },
+                    { code: 'F10.10', dsm: true, description: 'Alcohol abuse, uncomplicated', status: 'Active', aiSuggested: false },
                     { code: 'I10', description: 'Essential (primary) hypertension', status: 'Chronic', aiSuggested: false },
-                    { code: 'F90.2', description: 'ADHD, combined type', status: 'Active', aiSuggested: false }
+                    { code: 'F90.2', dsm: true, description: 'ADHD, combined type', status: 'Active', aiSuggested: false }
                 ];
 
                 vm.favorites = [
-                    { code: 'F33.1', shortName: 'MDD recur mod', category: 'Mood' },
-                    { code: 'F33.2', shortName: 'MDD recur severe', category: 'Mood' },
-                    { code: 'F32.1', shortName: 'MDD single mod', category: 'Mood' },
-                    { code: 'F34.1', shortName: 'Dysthymia', category: 'Mood' },
-                    { code: 'F31.9', shortName: 'Bipolar NOS', category: 'Mood' },
-                    { code: 'F41.1', shortName: 'GAD', category: 'Anxiety' },
-                    { code: 'F41.0', shortName: 'Panic d/o', category: 'Anxiety' },
+                    { code: 'F33.1', dsm: true, shortName: 'MDD recur mod', category: 'Mood' },
+                    { code: 'F33.2', dsm: true, shortName: 'MDD recur severe', category: 'Mood' },
+                    { code: 'F32.1', dsm: true, shortName: 'MDD single mod', category: 'Mood' },
+                    { code: 'F34.1', dsm: true, shortName: 'Dysthymia', category: 'Mood' },
+                    { code: 'F31.9', dsm: true, shortName: 'Bipolar NOS', category: 'Mood' },
+                    { code: 'F41.1', dsm: true, shortName: 'GAD', category: 'Anxiety' },
+                    { code: 'F41.0', dsm: true, shortName: 'Panic d/o', category: 'Anxiety' },
                     { code: 'F42.9', shortName: 'OCD', category: 'Anxiety' },
-                    { code: 'F43.10', shortName: 'PTSD', category: 'Trauma / Adjustment' },
-                    { code: 'F43.23', shortName: 'Adjust mixed', category: 'Trauma / Adjustment' },
-                    { code: 'F90.2', shortName: 'ADHD combined', category: 'Neurodevelopmental' },
-                    { code: 'F90.0', shortName: 'ADHD inattentive', category: 'Neurodevelopmental' },
-                    { code: 'F60.3', shortName: 'Borderline PD', category: 'Personality' },
-                    { code: 'F10.10', shortName: 'Alcohol abuse', category: 'Substance' },
-                    { code: 'F10.20', shortName: 'Alcohol dep', category: 'Substance' },
-                    { code: 'F11.20', shortName: 'Opioid dep', category: 'Substance' },
+                    { code: 'F43.10', dsm: true, shortName: 'PTSD', category: 'Trauma / Adjustment' },
+                    { code: 'F43.23', dsm: true, shortName: 'Adjust mixed', category: 'Trauma / Adjustment' },
+                    { code: 'F90.2', dsm: true, shortName: 'ADHD combined', category: 'Neurodevelopmental' },
+                    { code: 'F90.0', dsm: true, shortName: 'ADHD inattentive', category: 'Neurodevelopmental' },
+                    { code: 'F60.3', dsm: true, shortName: 'Borderline PD', category: 'Personality' },
+                    { code: 'F10.10', dsm: true, shortName: 'Alcohol abuse', category: 'Substance' },
+                    { code: 'F10.20', dsm: true, shortName: 'Alcohol dep', category: 'Substance' },
+                    { code: 'F11.20', dsm: true, shortName: 'Opioid dep', category: 'Substance' },
                     { code: 'F51.01', shortName: 'Insomnia', category: 'Sleep' },
-                    { code: 'G47.00', shortName: 'Insomnia NOS', category: 'Sleep' },
+                    { code: 'G47.00', dsm: true, shortName: 'Insomnia NOS', category: 'Sleep' },
                     { code: 'I10', shortName: 'HTN', category: 'Medical' },
                     { code: 'E11.9', shortName: 'T2DM', category: 'Medical' }
                 ];
@@ -3350,14 +3772,14 @@
                 ];
 
                 var mockSuggestionsC = [
-                    { code: 'F41.9', description: 'Anxiety disorder, unspecified', confidence: 'high', confidenceLabel: 'High', rationale: 'Excessive worry, GAD-7 score of 14.', showRationale: false, dismissed: false, showFeedback: false, feedbackReason: null, feedbackText: '' },
-                    { code: 'F33.1', description: 'Major depressive disorder, recurrent, moderate', confidence: 'high', confidenceLabel: 'High', rationale: 'PHQ-9 score of 16, recurrent episodes documented.', showRationale: false, dismissed: false, showFeedback: false, feedbackReason: null, feedbackText: '' },
-                    { code: 'G47.00', description: 'Insomnia, unspecified', confidence: 'high', confidenceLabel: 'High', rationale: 'Chronic sleep-onset and maintenance insomnia reported.', showRationale: false, dismissed: false, showFeedback: false, feedbackReason: null, feedbackText: '' },
-                    { code: 'F43.10', description: 'Post-traumatic stress disorder, unspecified', confidence: 'moderate', confidenceLabel: 'Medium', rationale: 'Hypervigilance, nightmares, avoidance behaviors.', showRationale: false, dismissed: false, showFeedback: false, feedbackReason: null, feedbackText: '' },
-                    { code: 'F43.20', description: 'Adjustment disorder, unspecified', confidence: 'moderate', confidenceLabel: 'Medium', rationale: 'Recent psychosocial stressors with emotional symptoms.', showRationale: false, dismissed: false, showFeedback: false, feedbackReason: null, feedbackText: '' },
-                    { code: 'F40.10', description: 'Social anxiety disorder', confidence: 'moderate', confidenceLabel: 'Medium', rationale: 'Avoidance of social situations, fear of judgment.', showRationale: false, dismissed: false, showFeedback: false, feedbackReason: null, feedbackText: '' },
-                    { code: 'F32.1', description: 'Major depressive disorder, single episode, moderate', confidence: 'low', confidenceLabel: 'Low', rationale: 'If first episode rather than recurrent, F32.1 may apply.', showRationale: false, dismissed: false, showFeedback: false, feedbackReason: null, feedbackText: '' },
-                    { code: 'F45.1', description: 'Undifferentiated somatoform disorder', confidence: 'low', confidenceLabel: 'Low', rationale: 'Multiple somatic complaints without medical explanation.', showRationale: false, dismissed: false, showFeedback: false, feedbackReason: null, feedbackText: '' }
+                    { code: 'F41.9', dsm: true, description: 'Anxiety disorder, unspecified', confidence: 'high', confidenceLabel: 'High', rationale: 'Excessive worry, GAD-7 score of 14.', showRationale: false, dismissed: false, showFeedback: false, feedbackReason: null, feedbackText: '' },
+                    { code: 'F33.1', dsm: true, description: 'Major depressive disorder, recurrent, moderate', confidence: 'high', confidenceLabel: 'High', rationale: 'PHQ-9 score of 16, recurrent episodes documented.', showRationale: false, dismissed: false, showFeedback: false, feedbackReason: null, feedbackText: '' },
+                    { code: 'G47.00', dsm: true, description: 'Insomnia, unspecified', confidence: 'high', confidenceLabel: 'High', rationale: 'Chronic sleep-onset and maintenance insomnia reported.', showRationale: false, dismissed: false, showFeedback: false, feedbackReason: null, feedbackText: '' },
+                    { code: 'F43.10', dsm: true, description: 'Post-traumatic stress disorder, unspecified', confidence: 'moderate', confidenceLabel: 'Medium', rationale: 'Hypervigilance, nightmares, avoidance behaviors.', showRationale: false, dismissed: false, showFeedback: false, feedbackReason: null, feedbackText: '' },
+                    { code: 'F43.20', dsm: true, description: 'Adjustment disorder, unspecified', confidence: 'moderate', confidenceLabel: 'Medium', rationale: 'Recent psychosocial stressors with emotional symptoms.', showRationale: false, dismissed: false, showFeedback: false, feedbackReason: null, feedbackText: '' },
+                    { code: 'F40.10', dsm: true, description: 'Social anxiety disorder', confidence: 'moderate', confidenceLabel: 'Medium', rationale: 'Avoidance of social situations, fear of judgment.', showRationale: false, dismissed: false, showFeedback: false, feedbackReason: null, feedbackText: '' },
+                    { code: 'F32.1', dsm: true, description: 'Major depressive disorder, single episode, moderate', confidence: 'low', confidenceLabel: 'Low', rationale: 'If first episode rather than recurrent, F32.1 may apply.', showRationale: false, dismissed: false, showFeedback: false, feedbackReason: null, feedbackText: '' },
+                    { code: 'F45.1', dsm: true, description: 'Undifferentiated somatoform disorder', confidence: 'low', confidenceLabel: 'Low', rationale: 'Multiple somatic complaints without medical explanation.', showRationale: false, dismissed: false, showFeedback: false, feedbackReason: null, feedbackText: '' }
                 ];
 
                 var mockSets = [mockSuggestions, mockSuggestionsB, mockSuggestionsC];
@@ -3541,6 +3963,7 @@
                 vm.modalSearch = '';
                 vm.modalSearchResults = [];
                 vm.modalSearchIndex = -1;
+                vm.dsmOnly = false;
 
                 vm.clearModalSearch = function () {
                     vm.modalSearch = '';
@@ -3555,7 +3978,8 @@
                         return;
                     }
                     var q = vm.modalSearch.toLowerCase();
-                    vm.modalSearchResults = icd10DB.filter(function (c) {
+                    var pool = vm.dsmOnly ? icd10DB.filter(function (c) { return c.dsm; }) : icd10DB;
+                    vm.modalSearchResults = pool.filter(function (c) {
                         return c.code.toLowerCase().indexOf(q) !== -1 || c.description.toLowerCase().indexOf(q) !== -1;
                     }).slice(0, 12);
                 };
