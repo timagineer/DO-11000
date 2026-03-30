@@ -87,6 +87,7 @@
                     --tracking-wide: 0.05em;
 
                     /* Weights */
+                    --font-weight-light: 300;
                     --font-weight-normal: 400;
                     --font-weight-medium: 500;
                     --font-weight-semibold: 600;
@@ -365,7 +366,7 @@
             @layer config.color.semantic {
                 :where(:host, :root) {
                     /* Semantic tokens */
-                    --text: var(--primary-50);
+                    --text: var(--primary-100);
                     --text-secondary: var(--gray-250);
                     --text-tertiary: var(--gray-350);
                     --bg: var(--gray-700);
@@ -374,7 +375,8 @@
                     --border-subtle: var(--gray-500);
 
                     --focus-ring: var(--secondary-300);
-                    --hover-bg: var(--secondary-700);
+                    /* --hover-bg: var(--gray-750); */
+                    --hover-bg: var(--secondary-650);
                     --hover-border: var(--primary-300);
 
                     --button-primary-bg: var(--primary-300);
@@ -638,7 +640,7 @@
                 position: sticky;
                 inset-block-start: 0;
                 z-index: 60;
-                padding-inline-end: var(--space-30);
+                padding-inline-end: var(--space-40);
             }
 
             .topbar-logo-slot {
@@ -699,12 +701,29 @@
 
                 /* Plus spins and fades out */
                 @keyframes logoWindUp {
-                    0% { rotate: 0deg; }
-                    40% { rotate: -28deg; }
-                    65% { rotate: -95deg; }
-                    82% { rotate: -155deg; }
-                    90% { rotate: -145deg; }
-                    100% { rotate: -150deg; }
+                    0% {
+                        rotate: 0deg;
+                    }
+
+                    40% {
+                        rotate: -28deg;
+                    }
+
+                    65% {
+                        rotate: -95deg;
+                    }
+
+                    82% {
+                        rotate: -155deg;
+                    }
+
+                    90% {
+                        rotate: -145deg;
+                    }
+
+                    100% {
+                        rotate: -150deg;
+                    }
                 }
 
                 @keyframes logoPlusSpin {
@@ -818,7 +837,7 @@
                 padding-inline-start: var(--space-60);
                 padding-inline-end: var(--space-40);
                 font-size: var(--text-ui-sm);
-                background: var(--bg);
+                background: var(--gray-750);
                 color: var(--text);
             }
 
@@ -886,6 +905,7 @@
                 border: 1px solid var(--border);
                 color: var(--text-secondary);
                 padding: var(--space-25);
+                block-size: 2rem;
                 border-radius: var(--radius);
                 display: flex;
                 align-items: center;
@@ -903,7 +923,7 @@
             }
 
             .btn-create:hover {
-                background: var(--hover-bg);
+                background: var(--gray-750);
                 color: var(--text);
                 border-color: var(--border);
             }
@@ -932,7 +952,7 @@
             }
 
             .btn-topbar:hover {
-                background: var(--hover-bg);
+                background: var(--gray-750);
                 color: var(--text);
                 border-color: var(--border);
             }
@@ -954,30 +974,31 @@
                 pointer-events: none;
             }
 
-            .user-menu {
+            .user-avatar {
                 display: flex;
                 align-items: center;
-                gap: var(--space-20);
-                padding: var(--space-25) var(--space-30);
-                border-radius: var(--radius);
+                justify-content: center;
+                inline-size: 2.125rem;
+                block-size: 2.125rem;
+                border-radius: 50%;
                 background: none;
-                border: none;
-                color: var(--text);
-                font-size: var(--text-ui-sm);
-                font-weight: var(--font-weight-medium);
-            }
-
-            .user-menu svg {
-                inline-size: 0.875rem;
-                block-size: 0.875rem;
+                border: 1px solid var(--border);
                 color: var(--text-secondary);
+                font-size: var(--text-heading-lg);
+                font-weight: var(--font-weight-light);
+                line-height: var(--leading-none);
+                font-feature-settings: 'cv05';
+                padding: 0;
+                padding-block-end: 0.0625rem;
             }
 
-            .user-menu:hover {
-                background: var(--bg);
+            .user-avatar:hover {
+                background: var(--gray-750);
+                color: var(--text);
+                border-color: var(--border);
             }
 
-            .user-menu:focus-visible {
+            .user-avatar:focus-visible {
                 outline: none;
                 box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--focus-ring);
             }
@@ -1110,12 +1131,16 @@
                 inline-size: 1rem;
                 block-size: 1rem;
                 flex-shrink: 0;
-                color: var(--text-secondary);
+                color: var(--text-tertiary);
             }
 
             .create-menu button:hover {
                 background: var(--hover-bg);
                 border-color: transparent;
+            }
+
+            .create-menu button:hover svg {
+                color: var(--text-secondary);
             }
 
             .fab-support {
@@ -1125,8 +1150,8 @@
                 z-index: 50;
                 border-radius: 50%;
                 background: var(--surface);
-                color: hsl(216, 12%, 52%);
-                border: 3px solid hsl(216, 12%, 52%);
+                color: var(--text-tertiary);
+                border: 2px solid var(--border);
                 box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15), 0 1px 4px rgba(0, 0, 0, 0.1);
                 padding: var(--space-15);
                 display: flex;
@@ -1139,15 +1164,21 @@
                 block-size: 2.25rem;
             }
 
+            .fab-support:active {
+                transform: scale(0.97);
+            }
+
+            /* FAB — special case: blue icon on hover is intentional, not a system pattern */
             .fab-support:hover {
                 background: var(--hover-bg);
-                color: var(--hover-border);
-                box-shadow: 0 6px 16px rgba(0, 0, 0, 0.18), 0 2px 6px rgba(0, 0, 0, 0.12);
+                color: var(--primary-300);
+                border-color: var(--secondary-350);
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15), 0 1px 4px rgba(0, 0, 0, 0.1);
             }
 
             @media (prefers-reduced-motion: no-preference) {
                 .fab-support {
-                    transition: color var(--duration-short-2) var(--ease-hover), background-color var(--duration-short-2) var(--ease-hover), box-shadow var(--duration-short-2) var(--ease-hover);
+                    transition: color var(--duration-2) var(--ease-hover), background-color var(--duration-2) var(--ease-hover), box-shadow var(--duration-2) var(--ease-hover);
                 }
             }
 
@@ -1191,7 +1222,13 @@
             }
 
             button:active {
-                background: var(--gray-650);
+                transform: scale(0.97);
+            }
+
+            .btn-topbar:active,
+            .btn-create:active,
+            .user-avatar:active {
+                transform: none;
             }
 
             button:disabled {
@@ -1230,7 +1267,7 @@
             }
 
             .btn-primary:active {
-                background: var(--primary-200);
+                transform: scale(0.97);
             }
 
             .btn-xs {
@@ -1350,7 +1387,7 @@
 
             .dx-icon-btn:hover {
                 color: var(--text);
-                background: var(--gray-600);
+                background: transparent;
                 border-color: transparent;
             }
 
@@ -1370,7 +1407,7 @@
                 gap: var(--space-15);
                 padding: var(--space-20) var(--space-25) var(--space-20) var(--space-30);
                 background: var(--surface);
-                border: 1px solid var(--border-subtle);
+                border: 1px dotted var(--border);
                 border-radius: var(--radius-full);
                 font-size: var(--text-chip);
                 white-space: nowrap;
@@ -1386,6 +1423,7 @@
             .favorite-chip:hover {
                 background: var(--hover-bg);
                 border-color: var(--hover-border);
+                border-style: solid;
             }
 
             .favorite-chip-add {
@@ -1424,11 +1462,16 @@
             }
 
             .favorite-chip-remove:hover {
-                background: var(--warning-650);
+                background: var(--warning-700);
                 color: var(--warning-300);
             }
 
+            .dx-remove-btn:active {
+                transform: scale(0.97);
+            }
+
             .favorite-chip-remove:active {
+                transform: scale(0.97);
                 background: var(--surface);
                 color: var(--warning-300);
                 box-shadow: 0 0 0 1px var(--warning-300);
@@ -1459,7 +1502,7 @@
 
             .dx-remove-btn:hover {
                 color: var(--warning-300);
-                background: var(--warning-750);
+                background: var(--warning-700);
                 border-color: transparent;
             }
 
@@ -1768,7 +1811,7 @@
 
             .dx-main-row .dx-remove-btn:hover {
                 color: var(--warning-300);
-                background: var(--warning-650);
+                background: var(--warning-700);
                 border-color: transparent;
             }
 
@@ -2185,7 +2228,7 @@
 
             .dx-modal-tab-icon:hover {
                 color: var(--text);
-                background: var(--gray-600);
+                background: transparent;
                 border-color: transparent;
             }
 
@@ -2202,6 +2245,10 @@
                 display: flex;
                 flex-wrap: wrap;
                 gap: var(--space-20);
+                max-block-size: 6.25rem;
+                overflow-y: auto;
+                scrollbar-width: thin;
+                scrollbar-color: var(--gray-500) transparent;
             }
 
             /* ── AIDx suggestion rows ── */
@@ -2254,29 +2301,35 @@
                 font-size: var(--text-chip);
                 padding: 0.1875rem var(--space-30);
                 font-weight: var(--font-weight-normal);
+                border-color: var(--border);
+            }
+
+            .dx-modal-suggestion-actions button:hover {
+                background: var(--hover-bg);
+                border-color: var(--hover-border);
             }
 
             .dx-modal-suggestion-feedback {
                 display: flex;
                 align-items: center;
-                gap: var(--space-15, 0.1875rem);
+                gap: var(--space-20);
                 flex-shrink: 0;
             }
 
             .dx-modal-suggestion-feedback button {
                 font-size: var(--text-chip);
-                padding: 0.125rem var(--space-25);
-                background: var(--gray-750);
-                border: 1px solid var(--border-subtle);
+                padding: 0.1875rem var(--space-30);
+                background: var(--surface);
+                border: 1px dotted var(--border);
                 color: var(--text-secondary);
                 border-radius: var(--radius-full);
                 white-space: nowrap;
             }
 
             .dx-modal-suggestion-feedback button:hover {
-                background: var(--gray-650);
+                background: var(--hover-bg);
                 border-color: var(--hover-border);
-                color: var(--text);
+                border-style: solid;
             }
 
             .dx-modal-suggestion-feedback button:active {
@@ -2330,7 +2383,7 @@
             .dx-modal-suggestions-list {
                 border: 1px solid var(--border-subtle);
                 border-radius: var(--radius);
-                max-block-size: 11.5rem;
+                max-block-size: 7.25rem;
                 overflow-y: auto;
                 scrollbar-gutter: stable;
                 scrollbar-width: thin;
@@ -2376,7 +2429,7 @@
             .dx-modal-active-list {
                 border: 1px solid var(--border-subtle);
                 border-radius: var(--radius);
-                max-block-size: 11.5rem;
+                max-block-size: 15.75rem;
                 overflow-y: auto;
                 scrollbar-gutter: stable;
                 scrollbar-width: thin;
@@ -2410,7 +2463,7 @@
 
             .dx-modal-active-row .dx-remove-btn:hover {
                 color: var(--warning-300);
-                background: var(--warning-650);
+                background: var(--warning-700);
                 border-color: transparent;
             }
 
@@ -2695,12 +2748,7 @@
                     <span class="notif-badge" aria-hidden="true"></span>
                 </button>
 
-                <button type="button" class="user-menu" aria-label="User menu for Dr. Morganstern">
-                    Dr. Morganstern
-                    <svg viewBox="0 0 24 24" aria-hidden="true">
-                        <use href="#icon-chevron-down" />
-                    </svg>
-                </button>
+                <button type="button" class="user-avatar" aria-label="User menu for Ira Morganstern" popovertarget="tt-user">I</button>
             </div>
         </header>
 
@@ -2953,6 +3001,7 @@
         <div id="tt-notifications" popover>Notifications</div>
         <div id="tt-create" popover>Create new…</div>
         <div id="tt-support" popover>Support</div>
+        <div id="tt-user" popover>User menu</div>
 
         <div id="create-menu" class="create-menu" popover="manual" role="menu">
             <button type="button" role="menuitem">
@@ -3005,7 +3054,7 @@
     <div id="ai-info-popover" class="ai-info-popover" popover="auto">
         <dl class="ai-info-dl">
             <dt>How AI Suggestions Work</dt>
-            <dd>ICD-10 suggestions are ranked by relevance to your note and the patient's history. Non-billable codes are automatically filtered out.</dd>
+            <dd>ICD-10 code suggestions are ranked by relevance to your note and the patient's history. Non-billable codes are automatically filtered out.</dd>
         </dl>
         <div class="ai-info-notice"><strong>AI suggestions require your review</strong><br>Nothing is saved or pre-filled automatically.</div>
     </div>
@@ -3695,7 +3744,6 @@
             }
         });
     </script>
-
 
     <!-- SVG Symbols -->
     <svg xmlns="http://www.w3.org/2000/svg" style="display:none">
