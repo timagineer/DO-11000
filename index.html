@@ -872,7 +872,7 @@
                 color: var(--text-secondary);
                 line-height: var(--leading-slight);
                 display: flex;
-                gap: var(--space-20);
+                gap: 0;
                 justify-content: center;
             }
 
@@ -882,8 +882,31 @@
                 text-decoration: none;
             }
 
+            .topbar-context-secondary a+a::before {
+                content: '\2758';
+                padding-inline: var(--space-20);
+                color: var(--gray-400);
+                pointer-events: none;
+                font-size: var(--font-size-10);
+            }
+
             .topbar-context-secondary a:hover {
                 text-decoration: underline;
+                text-decoration-skip-ink: auto;
+            }
+
+            .topbar-context-secondary a:hover::before {
+                display: inline-block;
+                color: var(--gray-400);
+                text-decoration: none;
+            }
+
+            .topbar-context-secondary .no-sep::before {
+                content: none;
+            }
+
+            .topbar-slash {
+                color: var(--gray-400);
             }
 
             .topbar-actions {
@@ -981,9 +1004,9 @@
                 inline-size: 2.125rem;
                 block-size: 2.125rem;
                 border-radius: 50%;
-                background: none;
-                border: 1px solid var(--border);
-                color: var(--text-secondary);
+                background: var(--primary-400);
+                border: none;
+                color: var(--primary-750);
                 font-size: var(--text-heading-lg);
                 font-weight: var(--font-weight-light);
                 line-height: var(--leading-none);
@@ -993,9 +1016,9 @@
             }
 
             .user-avatar:hover {
-                background: var(--gray-750);
-                color: var(--text);
-                border-color: var(--border);
+                background: var(--primary-350);
+                /* color: var(--primary-750);
+                border-color: transparent; */
             }
 
             .user-avatar:focus-visible {
@@ -1487,7 +1510,7 @@
 
             .favorite-chip.already-added:hover {
                 background: var(--surface);
-                border-color: var(--border-subtle);
+                border-color: var(--gray-400);
             }
 
             .dx-remove-btn {
@@ -2705,7 +2728,7 @@
 
             <div class="topbar-context">
                 <p class="topbar-context-primary">Progress Note 03/16/2026 &middot; Maria Johnson &middot; DOB 06/01/1980 (45) &middot; MRN 10482</p>
-                <p class="topbar-context-secondary"><a href="#">Demographics</a> &middot; <a href="#">Appointments</a> &middot; <a href="#">Results</a> &middot; <a href="#">Notes</a> &middot; <a href="#">Form</a> &middot; <a href="#">Message</a> &middot; <a href="#">Insurance</a> &middot; <a href="#">Account</a></p>
+                <p class="topbar-context-secondary"><a href="#">Notes</a><a href="#">Appointments</a><a href="#">Rx</a><span class="topbar-slash">/</span><a href="#" class="no-sep">Labs</a><a href="#">Docs</a><a href="#">Forms</a><a href="#">Message</a><a href="#">Insurance</a><a href="#">Account</a><a href="#">Info</a></p>
             </div>
 
             <div class="topbar-actions">
@@ -2995,7 +3018,7 @@
             </footer>
         </dialog>
 
-        <div id="tt-scripts" popover>Scripts</div>
+        <div id="tt-scripts" popover>Rx</div>
         <div id="tt-labs" popover>Labs</div>
         <div id="tt-inbox" popover>Messages</div>
         <div id="tt-notifications" popover>Notifications</div>
