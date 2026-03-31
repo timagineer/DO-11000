@@ -7,7 +7,11 @@
     <title>Prototype: AI Diagnosis Codes (AIDx) [DO-11000]</title>
     <link rel="preconnect" href="https://ajax.googleapis.com">
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.3/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.3/angular-sanitize.min.js"></script>
     <style>
+        * {
+            /* outline: .5px dashed deeppink */
+        }
 
         @layer config, base, components, utils;
 
@@ -84,7 +88,7 @@
                     /* Tracking */
                     --tracking-tight: 0;
                     --tracking-normal: 0.015em;
-                    --tracking-wide: 0.05em;
+                    --tracking-wide: 0.03em;
 
                     /* Weights */
                     --font-weight-light: 300;
@@ -576,6 +580,11 @@
             button {
                 font: inherit;
                 cursor: pointer;
+            }
+
+            abbr {
+                letter-spacing: var(--tracking-wide);
+                text-decoration: none;
             }
 
             a {
@@ -2792,7 +2801,7 @@
             </div>
 
             <div class="topbar-context">
-                <p class="topbar-context-primary">Progress Note 03/16/2026 &middot; Maria Johnson &middot; DOB 06/01/1980 (45) &middot; MRN 10482</p>
+                <p class="topbar-context-primary">Progress Note 03/16/2026 &middot; Maria Johnson &middot; <abbr>DOB</abbr> 06/01/1980 (45) &middot; <abbr>MRN</abbr> 10482</p>
                 <p class="topbar-context-secondary"><a href="#">Notes</a><a href="#">Appointments</a><a href="#">Rx</a><span class="topbar-slash">/</span><a href="#" class="no-sep">Labs</a><a href="#">Docs</a><a href="#">Forms</a><a href="#">Message</a><a href="#">Insurance</a><a href="#">Account</a><a href="#">Info</a></p>
             </div>
 
@@ -2820,7 +2829,7 @@
                 </button>
                 <button type="button" class="btn-topbar" aria-label="Labs" popovertarget="tt-labs">
                     <svg viewBox="0 0 24 24" aria-hidden="true">
-                        <use href="#icon-flask" />
+                        <use href="#icon-test-tube" />
                     </svg>
                 </button>
                 <button type="button" class="btn-topbar" aria-label="Inbox" popovertarget="tt-inbox">
@@ -2957,7 +2966,7 @@
                         <svg viewBox="0 0 24 24" class="dx-modal-search-icon" aria-hidden="true">
                             <use href="#icon-search" />
                         </svg>
-                        <input type="search" placeholder="Search by ICD-10, DSM-5, or description…" ng-model="vm.modalSearch" ng-change="vm.onModalSearchChange()" ng-model-options="{ debounce: 200 }" ng-keydown="vm.onModalSearchKeydown($event)" autocomplete="off">
+                        <input type="search" placeholder="Search by ICD, DSM, or description…" ng-model="vm.modalSearch" ng-change="vm.onModalSearchChange()" ng-model-options="{ debounce: 200 }" ng-keydown="vm.onModalSearchKeydown($event)" autocomplete="off">
                         <button ng-if="vm.modalSearch" class="dx-modal-search-clear" ng-click="vm.clearModalSearch()" aria-label="Clear search">
                             <svg viewBox="0 0 24 24" stroke-width="2.5">
                                 <use href="#icon-close" />
@@ -2976,7 +2985,7 @@
                             <div class="search-no-results">No codes matching "{{vm.modalSearch}}"</div>
                         </div>
                     </div>
-                    <label class="dx-modal-dsm-toggle"><input type="checkbox" ng-model="vm.dsmOnly" ng-change="vm.onModalSearchChange()"> <span>DSM only</span></label>
+                    <label class="dx-modal-dsm-toggle"><input type="checkbox" ng-model="vm.dsmOnly" ng-change="vm.onModalSearchChange()"> <span><abbr>DSM</abbr> only</span></label>
                 </div>
                 <nav class="dx-modal-tabs" aria-label="Code sources">
                     <div class="dx-modal-tab-group">
@@ -3007,7 +3016,7 @@
                         <div class="favorite-chip" ng-repeat="fav in vm.favorites track by fav.code" ng-class="{'already-added': vm.isDxActive(fav.code)}" title="{{fav.code}} {{fav.fullDescription}}">
                             <span class="favorite-chip-add" ng-click="!vm.isDxActive(fav.code) && vm.addFromFavorite(fav)">
                                 <span class="favorite-chip-code">{{fav.code}}</span>
-                                <span class="favorite-chip-name">{{fav.shortName}}</span>
+                                <span class="favorite-chip-name" ng-bind-html="fav.shortName | abbrWrap"></span>
                             </span>
                             <button class="favorite-chip-remove" ng-click="vm.removeFavorite(fav, $event)" aria-label="Remove {{fav.shortName}} from shortlist">
                                 <svg viewBox="0 0 24 24" stroke-width="2.5">
@@ -3114,7 +3123,7 @@
             </button>
             <button type="button" role="menuitem">
                 <svg viewBox="0 0 24 24" aria-hidden="true">
-                    <use href="#icon-flask" />
+                    <use href="#icon-test-tube" />
                 </svg>
                 Lab Order
             </button>
@@ -3176,7 +3185,13 @@
     </div>
 
     <script>
-        angular.module('aidxApp', [])
+        angular.module('aidxApp', ['ngSanitize'])
+            .filter('abbrWrap', function () {
+                return function (text) {
+                    if (!text) return text;
+                    return text.replace(/\b([A-Z\/]{2,}\d*[A-Z]*)\b/g, '<abbr>$1</abbr>');
+                };
+            })
             .controller('AidxCtrl', ['$timeout', '$scope', function ($timeout, $scope) {
                 var vm = this;
 
@@ -3968,7 +3983,7 @@
                 vm.modalSearch = '';
                 vm.modalSearchResults = [];
                 vm.modalSearchIndex = -1;
-                vm.dsmOnly = false;
+                vm.dsmOnly = true;
 
                 vm.clearModalSearch = function () {
                     vm.modalSearch = '';
@@ -4300,7 +4315,7 @@
             <path d="M6 7v13a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V7" />
             <rect width="16" height="5" x="4" y="2" rx="1" />
         </symbol>
-        <symbol id="icon-flask">
+        <symbol id="icon-test-tube">
             <path d="M14 2v6a2 2 0 0 0 .245.96l5.51 10.08A2 2 0 0 1 18 22H6a2 2 0 0 1-1.755-2.96l5.51-10.08A2 2 0 0 0 10 8V2" />
             <path d="M6.453 15h11.094" />
             <path d="M8.5 2h7" />
