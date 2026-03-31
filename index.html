@@ -705,30 +705,34 @@
                         rotate: 0deg;
                     }
 
-                    40% {
-                        rotate: -28deg;
+                    30% {
+                        rotate: -40deg;
                     }
 
-                    65% {
-                        rotate: -95deg;
+                    55% {
+                        rotate: -120deg;
                     }
 
-                    82% {
-                        rotate: -155deg;
+                    75% {
+                        rotate: -170deg;
                     }
 
-                    90% {
-                        rotate: -145deg;
+                    85% {
+                        rotate: -185deg;
+                    }
+
+                    92% {
+                        rotate: -218deg;
                     }
 
                     100% {
-                        rotate: -150deg;
+                        rotate: -222deg;
                     }
                 }
 
                 @keyframes logoPlusSpin {
                     0% {
-                        rotate: -150deg;
+                        rotate: -222deg;
                         opacity: 1;
                     }
 
@@ -1938,6 +1942,7 @@
                 max-block-size: 85vh;
                 opacity: 0;
                 transform: translateY(0.3125rem) scale(0.99);
+                color: var(--text);
             }
 
             @media (prefers-reduced-motion: no-preference) {
@@ -2958,18 +2963,18 @@
                                 <use href="#icon-close" />
                             </svg>
                         </button>
-                    <div class="search-results" ng-if="vm.modalSearchResults.length > 0 && vm.modalSearch.length >= 2">
-                        <div class="search-result-item" ng-class="{'is-active': vm.isDxActive(r.code), 'kb-active': vm.modalSearchIndex === $index}" ng-repeat="r in vm.modalSearchResults track by r.code" ng-click="vm.onModalResultClick(r)" ng-mouseenter="vm.modalSearchIndex = $index">
-                            <span class="search-result-code">{{r.code}}</span>
-                            <span class="search-result-description">{{r.description}}</span>
-                            <span class="search-result-add" ng-if="!vm.isDxActive(r.code)">+ Add</span>
-                            <span class="search-result-exists" ng-if="vm.isDxActive(r.code)">Added</span>
-                            <span class="search-result-remove" ng-if="vm.isDxActive(r.code)">− Remove</span>
+                        <div class="search-results" ng-if="vm.modalSearchResults.length > 0 && vm.modalSearch.length >= 2">
+                            <div class="search-result-item" ng-class="{'is-active': vm.isDxActive(r.code), 'kb-active': vm.modalSearchIndex === $index}" ng-repeat="r in vm.modalSearchResults track by r.code" ng-click="vm.onModalResultClick(r)" ng-mouseenter="vm.modalSearchIndex = $index">
+                                <span class="search-result-code">{{r.code}}</span>
+                                <span class="search-result-description">{{r.description}}</span>
+                                <span class="search-result-add" ng-if="!vm.isDxActive(r.code)">+ Add</span>
+                                <span class="search-result-exists" ng-if="vm.isDxActive(r.code)">Added</span>
+                                <span class="search-result-remove" ng-if="vm.isDxActive(r.code)">− Remove</span>
+                            </div>
                         </div>
-                    </div>
-                    <div class="search-results" ng-if="vm.modalSearch.length >= 2 && vm.modalSearchResults.length === 0">
-                        <div class="search-no-results">No codes matching "{{vm.modalSearch}}"</div>
-                    </div>
+                        <div class="search-results" ng-if="vm.modalSearch.length >= 2 && vm.modalSearchResults.length === 0">
+                            <div class="search-no-results">No codes matching "{{vm.modalSearch}}"</div>
+                        </div>
                     </div>
                     <label class="dx-modal-dsm-toggle"><input type="checkbox" ng-model="vm.dsmOnly" ng-change="vm.onModalSearchChange()"> <span>DSM only</span></label>
                 </div>
@@ -3621,9 +3626,9 @@
                 vm.activeDx = [
                     { code: 'F33.1', dsm: true, description: 'Major depressive disorder, recurrent, moderate', status: 'Active', aiSuggested: true },
                     { code: 'F41.1', dsm: true, description: 'Generalized anxiety disorder', status: 'Active', aiSuggested: false },
+                    { code: '300.02', dsm: true, description: 'Generalized anxiety disorder', status: 'Active', aiSuggested: false, omit: true },
                     { code: 'F51.01', description: 'Primary insomnia', status: 'Chronic', aiSuggested: false },
-                    { code: 'F10.10', dsm: true, description: 'Alcohol abuse, uncomplicated', status: 'Active', aiSuggested: false },
-                    { code: 'I10', description: 'Essential (primary) hypertension', status: 'Chronic', aiSuggested: false },
+                    { code: 'F10.10', dsm: true, description: 'Alcohol abuse, uncomplicated', status: 'Full Remission', aiSuggested: false, ruleOut: true },
                     { code: 'F90.2', dsm: true, description: 'ADHD, combined type', status: 'Active', aiSuggested: false }
                 ];
 
