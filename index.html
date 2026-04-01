@@ -9,7 +9,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.3/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.3/angular-sanitize.min.js"></script>
     <style>
-
+        
         @layer config, base, components, utils;
 
         @layer config {
@@ -1460,6 +1460,17 @@
                 border-style: solid;
             }
 
+            .favorite-chip:has(.favorite-chip-remove:hover) {
+                background: var(--surface);
+                border-style: solid;
+            }
+
+            .favorite-chip:has(.favorite-chip-remove:active) {
+                background: var(--surface);
+                border-color: var(--warning-300);
+                border-style: solid;
+            }
+
             .favorite-chip-add {
                 cursor: pointer;
                 flex-shrink: 0;
@@ -1796,6 +1807,15 @@
                 border-block-end: 1px solid var(--border-subtle);
                 font-size: var(--text-table-body);
                 min-block-size: 2rem;
+            }
+
+            .dx-main-row:hover {
+                background: var(--hover-bg);
+            }
+
+            .dx-main-row:has(.dx-remove-btn:hover),
+            .dx-main-row:has(.dx-remove-btn:active) {
+                background: var(--surface);
             }
 
             .dx-main-row:last-child {
@@ -2359,6 +2379,10 @@
                 max-block-size: 3rem;
             }
 
+            .dx-modal-suggestion:hover {
+                background: var(--hover-bg);
+            }
+
             @media (prefers-reduced-motion: no-preference) {
                 .dx-modal-suggestion {
                     animation: suggestionFadeIn var(--duration-5) var(--ease-out) both;
@@ -2539,6 +2563,15 @@
                 padding: var(--space-25) var(--space-35);
                 padding-inline-end: var(--space-15);
                 font-size: var(--text-table-body);
+            }
+
+            .dx-modal-active-row:hover {
+                background: var(--hover-bg);
+            }
+
+            .dx-modal-active-row:has(.dx-remove-btn:hover),
+            .dx-modal-active-row:has(.dx-remove-btn:active) {
+                background: var(--surface);
             }
 
             .dx-modal-active-row+.dx-modal-active-row {
@@ -2724,8 +2757,8 @@
                 position: absolute;
                 inset-block-end: var(--space-30);
                 inset-inline-start: var(--space-30);
-                inline-size: var(--space-30);
-                block-size: var(--space-30);
+                inline-size: var(--space-35);
+                block-size: var(--space-35);
                 border-radius: var(--radius-full);
                 pointer-events: auto;
                 cursor: help;
@@ -2735,6 +2768,7 @@
                 /* background: var(--primary-550); */
                 background: var(--primary-450);
                 /* outline: 1px solid var(--primary-450); */
+                outline: 10px solid transparent;
             }
 
             .pn-legend-yellow {
@@ -2748,7 +2782,6 @@
                 background: var(--warning-450);
                 /* outline: 1px solid var(--warning-425); */
             }
-
 
         }
 
@@ -2769,8 +2802,8 @@
                 display: none !important;
             }
 
-            /* Prose — long-form reading content (clinical notes, articles) */
-            .prose {
+            /* Long-form reading content (clinical notes, articles) */
+            .note-content {
                 text-wrap: pretty;
                 font-variant-numeric: oldstyle-nums proportional-nums;
                 hanging-punctuation: first allow-end last;
@@ -2785,11 +2818,11 @@
                 hyphenate-limit-last: always;
             }
 
-            .prose>*+* {
+            .note-content>*+* {
                 margin-block-start: var(--flow-space, 1em);
             }
 
-            .prose :where(h1, h2, h3, h4, h5, h6, pre, code, var, samp, kbd) {
+            .note-content :where(h1, h2, h3, h4, h5, h6, pre, code, var, samp, kbd) {
                 -webkit-hyphens: manual;
                 hyphens: manual;
             }
@@ -2837,8 +2870,8 @@
             </div>
 
             <div class="topbar-context">
-                <p class="topbar-context-primary">Progress Note 03/16/2026 &middot; Maria Johnson &middot; <abbr>DOB</abbr> 06/01/1980 (45) &middot; <abbr>MRN</abbr> 10482</p>
-                <p class="topbar-context-secondary"><a href="#">Notes</a><a href="#">Appointments</a><a href="#">Rx</a><span class="topbar-slash">/</span><a href="#" class="no-sep">Labs</a><a href="#">Docs</a><a href="#">Forms</a><a href="#">Message</a><a href="#">Insurance</a><a href="#">Account</a><a href="#">Info</a></p>
+                <p class="topbar-context-primary">Progress Note 03/16/2026 &middot; Maria Johnson &middot; <abbr>DOB</abbr> 06/01/1980 (45) &middot; <abbr>ID</abbr> 0482</p>
+                <p class="topbar-context-secondary"><a href="#">Chart</a><a href="#">Schedule</a><a href="#">Orders</a><a href="#">Docs</a><a href="#">Forms</a><a href="#">Message</a><a href="#">Insurance</a><a href="#">Account</a><a href="#">Info</a></p>
             </div>
 
             <div class="topbar-actions">
@@ -2847,7 +2880,7 @@
                         <use href="#icon-search" />
                     </svg>
                     <label for="global-search" class="visually-hidden">Search</label>
-                    <input type="search" id="global-search" class="search-input" placeholder="Search" autocomplete="off">
+                    <input type="search" id="global-search" class="search-input" placeholder="Search charts…" autocomplete="off">
                 </div>
                 <div class="topbar-divider" aria-hidden="true"></div>
                 <button type="button" class="btn-create" aria-label="Create new" aria-haspopup="true" data-tooltip="tt-create">
