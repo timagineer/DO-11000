@@ -9,6 +9,9 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.3/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.3/angular-sanitize.min.js"></script>
     <style>
+        * {
+            /* outline: .5px dashed deeppink */
+        }
 
         @layer config, base, components, utils;
 
@@ -325,7 +328,7 @@
                     --notice-700: hsl(44, 100%, 97%);
                     --notice-750: hsl(42, 100%, 98%);
                     --notice-800: hsl(48, 100%, 99%);
-                    --tufte-bg: hsl(60, 100%, 99%);
+                    --tufte-bg: hsl(60, 100%, 98%);
 
                     --warning-50: hsl(352, 92%, 12%);
                     --warning-100: hsl(352, 92%, 18%);
@@ -910,14 +913,6 @@
                 display: inline-block;
                 color: var(--gray-400);
                 text-decoration: none;
-            }
-
-            .topbar-context-secondary .no-sep::before {
-                content: none;
-            }
-
-            .topbar-slash {
-                color: var(--gray-400);
             }
 
             .topbar-actions {
@@ -2692,17 +2687,18 @@
                 display: flex;
                 flex-direction: column;
                 gap: var(--space-40);
-                padding: var(--space-45);
-                padding-inline-end: var(--space-30);
+                padding-block: var(--space-45);
+                padding-inline: var(--space-45) var(--space-30);
                 overflow-y: auto;
                 background: var(--bg);
             }
 
             .pn-right {
                 flex: 1;
-                margin: var(--space-45);
-                margin-inline-start: var(--space-30);
-                background: var(--surface);
+                margin-block: var(--space-45);
+                margin-inline: var(--space-30) var(--space-45);
+                /* background: var(--surface); */
+                background: var(--notice-700);
                 border: 1px solid var(--border-subtle);
                 border-radius: var(--radius-lg);
                 box-shadow: var(--elevation-sm);
@@ -2765,22 +2761,15 @@
             }
 
             .pn-legend-blue {
-                /* background: var(--primary-550); */
                 background: var(--primary-450);
-                /* outline: 1px solid var(--primary-450); */
-                outline: 10px solid transparent;
             }
 
             .pn-legend-yellow {
-                /* background: var(--notice-500); */
                 background: var(--notice-350);
-                /* outline: 1px solid var(--notice-300); */
             }
 
             .pn-legend-pink {
-                /* background: var(--warning-550); */
                 background: var(--warning-450);
-                /* outline: 1px solid var(--warning-425); */
             }
 
         }
