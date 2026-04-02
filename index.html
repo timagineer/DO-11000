@@ -9,9 +9,6 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.3/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.3/angular-sanitize.min.js"></script>
     <style>
-        * {
-            /* outline: .5px dashed deeppink */
-        }
 
         @layer config, base, components, utils;
 
@@ -1794,6 +1791,34 @@
                 margin-inline: calc(-1 * var(--space-20));
             }
 
+            .dx-drag-handle {
+                display: flex;
+                align-items: center;
+                cursor: grab;
+                color: var(--text-secondary);
+                flex-shrink: 0;
+                padding: var(--space-10);
+                margin-inline-start: calc(-1 * var(--space-25));
+                margin-inline-end: calc(-1 * var(--space-15));
+            }
+
+            .dx-drag-handle svg {
+                inline-size: 1rem;
+                block-size: 1rem;
+            }
+
+            .dx-drag-handle:active {
+                cursor: grabbing;
+            }
+
+            :is(.dx-main-row, .dx-modal-active-row).dragging {
+                opacity: 0.4;
+            }
+
+            :is(.dx-main-row, .dx-modal-active-row).drag-over {
+                box-shadow: inset 0 -2px 0 var(--primary-400);
+            }
+
             .dx-main-row {
                 display: flex;
                 align-items: center;
@@ -2283,7 +2308,8 @@
                 margin: 0;
                 inline-size: 0.375rem;
                 block-size: 0.375rem;
-                margin-inline-start: calc(-1 * var(--space-25));
+                /* margin-inline-start: calc(-1 * var(--space-25)); */
+                margin-inline-start: calc(-1 * var(--space-20));
                 border: none;
                 align-self: flex-start;
                 margin-block-start: 0.1875rem;
@@ -2958,7 +2984,12 @@
                         </header>
 
                         <div class="dx-main-list" ng-if="vm.activeDx.length > 0">
-                            <div class="dx-main-row" ng-repeat="dx in vm.activeDx | limitTo: (vm.dxExpanded ? vm.activeDx.length : 3) track by dx.code" ng-class="{'just-added': dx.justAdded}">
+                            <div class="dx-main-row" ng-repeat="dx in vm.activeDx | limitTo: (vm.dxExpanded ? vm.activeDx.length : 3) track by dx.code" ng-class="{'just-added': dx.justAdded}" draggable="true" ng-dragstart="vm.dragStart($event, $index)" ng-dragover="vm.dragOver($event, $index)" ng-dragend="vm.dragEnd($event)" ng-drop="vm.drop($event, $index)">
+                                <span class="dx-drag-handle" aria-label="Reorder">
+                                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                                        <use href="#icon-grip" />
+                                    </svg>
+                                </span>
                                 <span class="dx-main-code">{{dx.code}}</span>
                                 <span class="dx-main-desc" title="{{dx.code}} {{dx.description}}">{{dx.description}}</span>
                                 <select class="dx-main-status" ng-model="dx.status">
@@ -3056,7 +3087,8 @@
                         </button>
                     </div>
                     <div class="dx-modal-tab-group">
-                        <button class="dx-modal-tab" ng-class="{active: vm.modalTab === 'aidx'}" ng-click="vm.modalTab = 'aidx'; vm.aidxUnseen = false">AIDx<span class="notif-badge" ng-class="{visible: vm.aidxUnseen}" aria-hidden="true"></span></button>
+                        <!-- <button class="dx-modal-tab" ng-class="{active: vm.modalTab === 'aidx'}" ng-click="vm.modalTab = 'aidx'; vm.aidxUnseen = false">AIDx<span class="notif-badge" ng-class="{visible: vm.aidxUnseen}" aria-hidden="true"></span></button> -->
+                        <button class="dx-modal-tab" ng-class="{active: vm.modalTab === 'aidx'}" ng-click="vm.modalTab = 'aidx'; vm.aidxUnseen = false">AI-suggested<span class="notif-badge" ng-class="{visible: vm.aidxUnseen}" aria-hidden="true"></span></button>
                         <button class="dx-modal-tab-icon" ng-click="vm.reAnalyze()" ng-class="{spinning: vm.analyzing}" ng-disabled="vm.analyzing" aria-label="Reanalyze note" data-tooltip-dark="Reanalyze">
                             <svg viewBox="0 0 24 24" aria-hidden="true">
                                 <use href="#icon-refresh" />
@@ -3130,7 +3162,12 @@
                         </button>
                     </header>
                     <div class="dx-modal-active-list" ng-if="vm.activeDx.length > 0">
-                        <div class="dx-modal-active-row" ng-repeat="dx in vm.activeDx track by dx.code">
+                        <div class="dx-modal-active-row" ng-repeat="dx in vm.activeDx track by dx.code" draggable="true" ng-dragstart="vm.dragStart($event, $index)" ng-dragover="vm.dragOver($event, $index)" ng-dragend="vm.dragEnd($event)" ng-drop="vm.drop($event, $index)">
+                            <span class="dx-drag-handle" aria-label="Reorder">
+                                <svg viewBox="0 0 24 24" aria-hidden="true">
+                                    <use href="#icon-grip" />
+                                </svg>
+                            </span>
                             <span class="dx-modal-active-code">{{dx.code}}</span>
                             <span class="dx-modal-active-desc" title="{{dx.code}} {{dx.description}}">{{dx.description}}</span>
                             <select class="dx-main-status" ng-model="dx.status">
@@ -3250,6 +3287,26 @@
                 return function (text) {
                     if (!text) return text;
                     return text.replace(/\b([A-Z\/]{2,}\d*[A-Z]*)\b/g, '<abbr>$1</abbr>');
+                };
+            })
+            .directive('ngDragstart', function () {
+                return function (scope, el, attrs) {
+                    el[0].addEventListener('dragstart', function (e) { scope.$apply(function () { scope.$eval(attrs.ngDragstart, { $event: e }); }); });
+                };
+            })
+            .directive('ngDragover', function () {
+                return function (scope, el, attrs) {
+                    el[0].addEventListener('dragover', function (e) { e.preventDefault(); scope.$apply(function () { scope.$eval(attrs.ngDragover, { $event: e }); }); });
+                };
+            })
+            .directive('ngDragend', function () {
+                return function (scope, el, attrs) {
+                    el[0].addEventListener('dragend', function (e) { scope.$apply(function () { scope.$eval(attrs.ngDragend, { $event: e }); }); });
+                };
+            })
+            .directive('ngDrop', function () {
+                return function (scope, el, attrs) {
+                    el[0].addEventListener('drop', function (e) { e.preventDefault(); scope.$apply(function () { scope.$eval(attrs.ngDrop, { $event: e }); }); });
                 };
             })
             .controller('AidxCtrl', ['$timeout', '$scope', function ($timeout, $scope) {
@@ -4039,11 +4096,46 @@
 
                 vm.dxExpanded = false;
 
+                // ── Drag to reorder ──
+                var dragIndex = null;
+
+                vm.dragStart = function ($event, index) {
+                    dragIndex = index;
+                    $event.dataTransfer.effectAllowed = 'move';
+                    $event.dataTransfer.setData('text/plain', index);
+                    var row = $event.target.closest('.dx-main-row, .dx-modal-active-row');
+                    if (row) row.classList.add('dragging');
+                };
+
+                vm.dragOver = function ($event, index) {
+                    var rows = $event.target.closest('.dx-main-list, .dx-modal-active-list');
+                    if (rows) {
+                        rows.querySelectorAll('.drag-over').forEach(function (el) { el.classList.remove('drag-over'); });
+                    }
+                    var row = $event.target.closest('.dx-main-row, .dx-modal-active-row');
+                    if (row && index !== dragIndex) row.classList.add('drag-over');
+                };
+
+                vm.dragEnd = function ($event) {
+                    document.querySelectorAll('.dragging, .drag-over').forEach(function (el) {
+                        el.classList.remove('dragging', 'drag-over');
+                    });
+                    dragIndex = null;
+                };
+
+                vm.drop = function ($event, toIndex) {
+                    if (dragIndex === null || dragIndex === toIndex) return;
+                    var item = vm.activeDx.splice(dragIndex, 1)[0];
+                    vm.activeDx.splice(toIndex, 0, item);
+                    vm.logAudit('Reordered ' + item.code + ' from position ' + (dragIndex + 1) + ' to ' + (toIndex + 1));
+                    dragIndex = null;
+                };
+
                 vm.modalTab = 'shortlist';
                 vm.modalSearch = '';
                 vm.modalSearchResults = [];
                 vm.modalSearchIndex = -1;
-                vm.dsmOnly = true;
+                vm.dsmOnly = false;
 
                 vm.clearModalSearch = function () {
                     vm.modalSearch = '';
@@ -4277,6 +4369,14 @@
         <symbol id="icon-search">
             <circle cx="11" cy="11" r="8" />
             <line x1="21" y1="21" x2="16.65" y2="16.65" />
+        </symbol>
+        <symbol id="icon-grip" class="fill-icon">
+            <circle cx="9" cy="12" r="1.5" fill="currentColor" />
+            <circle cx="9" cy="5" r="1.5" fill="currentColor" />
+            <circle cx="9" cy="19" r="1.5" fill="currentColor" />
+            <circle cx="15" cy="12" r="1.5" fill="currentColor" />
+            <circle cx="15" cy="5" r="1.5" fill="currentColor" />
+            <circle cx="15" cy="19" r="1.5" fill="currentColor" />
         </symbol>
         <symbol id="icon-close">
             <line x1="18" y1="6" x2="6" y2="18" />
