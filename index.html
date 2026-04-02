@@ -9,6 +9,9 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.3/angular.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.3/angular-sanitize.min.js"></script>
     <style>
+        /* * {
+            outline: .5px dashed deeppink
+        } */
 
         @layer config, base, components, utils;
 
@@ -3760,7 +3763,6 @@
                 vm.activeDx = [
                     { code: 'F33.1', dsm: true, description: 'Major depressive disorder, recurrent, moderate', status: 'Active', aiSuggested: true },
                     { code: 'F41.1', dsm: true, description: 'Generalized anxiety disorder', status: 'Active', aiSuggested: false },
-                    { code: '300.02', dsm: true, description: 'Generalized anxiety disorder', status: 'Active', aiSuggested: false, omit: true },
                     { code: 'F51.01', description: 'Primary insomnia', status: 'Chronic', aiSuggested: false },
                     { code: 'F10.10', dsm: true, description: 'Alcohol abuse, uncomplicated', status: 'Full Remission', aiSuggested: false, ruleOut: true },
                     { code: 'F90.2', dsm: true, description: 'ADHD, combined type', status: 'Active', aiSuggested: false }
@@ -4154,6 +4156,7 @@
                     var q = vm.modalSearch.toLowerCase();
                     var pool = vm.dsmOnly ? icd10DB.filter(function (c) { return c.dsm; }) : icd10DB;
                     vm.modalSearchResults = pool.filter(function (c) {
+                        if (/^\d/.test(c.code)) return false;
                         return c.code.toLowerCase().indexOf(q) !== -1 || c.description.toLowerCase().indexOf(q) !== -1;
                     }).slice(0, 12);
                 };
