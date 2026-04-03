@@ -578,6 +578,10 @@
                 margin-block-end: var(--space-40);
             }
 
+            h3 {
+                color: var(--gray-150);
+            }
+
             button {
                 font: inherit;
                 cursor: pointer;
@@ -2900,7 +2904,7 @@
                         <use href="#icon-search" />
                     </svg>
                     <label for="global-search" class="visually-hidden">Search</label>
-                    <input type="search" id="global-search" class="search-input" placeholder="Search charts…" autocomplete="off">
+                    <input type="search" id="global-search" class="search-input" placeholder="Search…" autocomplete="off">
                 </div>
                 <div class="topbar-divider" aria-hidden="true"></div>
                 <button type="button" class="btn-create" aria-label="Create new" aria-haspopup="true" data-tooltip="tt-create">
@@ -2934,7 +2938,7 @@
                     <span class="notif-badge" aria-hidden="true"></span>
                 </button>
 
-                <button type="button" class="user-avatar" aria-label="User menu for Ira Morganstern" popovertarget="tt-user">I</button>
+                <button type="button" class="user-avatar" aria-label="User menu for logged in user" popovertarget="tt-user">I</button>
             </div>
         </header>
 
@@ -3763,7 +3767,7 @@
                 vm.activeDx = [
                     { code: 'F33.1', dsm: true, description: 'Major depressive disorder, recurrent, moderate', status: 'Active', aiSuggested: true },
                     { code: 'F41.1', dsm: true, description: 'Generalized anxiety disorder', status: 'Active', aiSuggested: false },
-                    { code: 'F51.01', description: 'Primary insomnia', status: 'Chronic', aiSuggested: false },
+                    { code: 'F51.01', description: 'Primary insomnia', status: 'Chronic', aiSuggested: false, omit: true },
                     { code: 'F10.10', dsm: true, description: 'Alcohol abuse, uncomplicated', status: 'Full Remission', aiSuggested: false, ruleOut: true },
                     { code: 'F90.2', dsm: true, description: 'ADHD, combined type', status: 'Active', aiSuggested: false }
                 ];
@@ -3818,7 +3822,7 @@
                 vm.toasts = [];
                 vm.auditLog = [];
 
-                vm.dismissReasons = ['Not relevant', 'Too specific', 'Too broad', 'Not today', 'Incorrect'];
+                vm.dismissReasons = ['Not clinically relevant', 'Too specific', 'Too broad', 'Diagnosis deferred', 'Incorrect', 'Does not meet criteria'];
                 vm.dxStatuses = ['Select…', 'Active', 'Resolved', 'Chronic', 'Partial Remission', 'Full Remission', 'Maint. Therapy', 'Relapse', 'Inactive', 'Recurrence', 'Provisional'];
 
                 // ── AI Suggestion mock data ──
@@ -3961,7 +3965,7 @@
                     vm.logAudit('Dismissed AI suggestion: ' + s.code, 'AI Suggested');
                     $timeout(function () {
                         if (s.showFeedback) vm.finishDismiss(s);
-                    }, 4000);
+                    }, 6000);
                 };
 
                 vm.quickFeedback = function (s, reason) {
