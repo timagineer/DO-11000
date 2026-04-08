@@ -171,17 +171,17 @@
 
             @layer config.spacing {
                 :where(:host, :root) {
-                    --space-0: 0;
-                    --space-00: var(--space-0);
-                    --space-05: 0.0625rem;
-                    --space-10: 0.09375rem;
-                    --space-15: 0.125rem;
-                    --space-20: 0.25rem;
-                    --space-25: 0.375rem;
-                    --space-30: 0.5rem;
-                    --space-35: 0.625rem;
-                    --space-40: 0.75rem;
-                    --space-45: 1rem;
+                    /* 20-step primitives 1–160px */
+                    --space-00: 0.0625rem;
+                    --space-05: 0.09375rem;
+                    --space-10: 0.125rem;
+                    --space-15: 0.25rem;
+                    --space-20: 0.375rem;
+                    --space-25: 0.5rem;
+                    --space-30: 0.625rem;
+                    --space-35: 0.75rem;
+                    --space-40: 1rem;
+                    --space-45: 1.125rem;
                     --space-50: 1.25rem;
                     --space-55: 1.5rem;
                     --space-60: 2rem;
@@ -193,9 +193,9 @@
                     --space-90: 8rem;
                     --space-95: 10rem;
 
-                    --radius: var(--space-25);
-                    --radius-lg: var(--space-40);
-                    --radius-full: var(--space-45);
+                    --radius: var(--space-20);
+                    --radius-lg: var(--space-35);
+                    --radius-full: var(--space-40);
 
                     --sidenav-width: 4.5rem;
                     --topbar-height: 3.25rem;
@@ -575,7 +575,7 @@
 
             h2 {
                 font-size: var(--text-heading-sm);
-                margin-block-end: var(--space-40);
+                margin-block-end: var(--space-35);
             }
 
             h3 {
@@ -624,9 +624,9 @@
 
             .skip-link {
                 position: absolute;
-                inset-block-start: var(--space-20);
-                inset-inline-start: var(--space-20);
-                padding: var(--space-25) var(--space-40);
+                inset-block-start: var(--space-15);
+                inset-inline-start: var(--space-15);
+                padding: var(--space-20) var(--space-35);
                 background: var(--surface);
                 color: var(--primary-350);
                 border-radius: var(--radius);
@@ -650,11 +650,11 @@
                 background: var(--surface);
                 display: flex;
                 align-items: center;
-                gap: var(--space-30);
+                gap: var(--space-25);
                 position: sticky;
                 inset-block-start: 0;
                 z-index: 60;
-                padding-inline-end: var(--space-40);
+                padding-inline-end: var(--space-35);
             }
 
             .topbar-logo-slot {
@@ -663,7 +663,7 @@
                 flex-shrink: 0;
                 display: flex;
                 align-items: center;
-                padding-inline-start: var(--space-35);
+                padding-inline-start: var(--space-30);
                 overflow: visible;
             }
 
@@ -839,7 +839,7 @@
             .search-wrap svg {
                 position: absolute;
                 inset-block-start: 50%;
-                inset-inline-start: var(--space-40);
+                inset-inline-start: var(--space-35);
                 transform: translateY(-50%);
                 inline-size: 0.875rem;
                 block-size: 0.875rem;
@@ -853,7 +853,7 @@
                 border: 1px solid var(--border);
                 border-radius: var(--radius);
                 padding-inline-start: var(--space-60);
-                padding-inline-end: var(--space-40);
+                padding-inline-end: var(--space-35);
                 font-size: var(--text-ui-sm);
                 background: var(--gray-750);
                 color: var(--text);
@@ -872,7 +872,7 @@
             .topbar-context {
                 display: flex;
                 flex-direction: column;
-                gap: var(--space-20);
+                gap: var(--space-15);
                 flex: 1;
                 align-items: center;
                 text-align: center;
@@ -902,7 +902,7 @@
 
             .topbar-context-secondary a+a::before {
                 content: '\2758';
-                padding-inline: var(--space-25);
+                padding-inline: var(--space-20);
                 color: var(--gray-400);
                 pointer-events: none;
                 font-size: var(--font-size-10);
@@ -922,7 +922,7 @@
             .topbar-actions {
                 display: flex;
                 align-items: center;
-                gap: var(--space-30);
+                gap: var(--space-25);
                 margin-inline-start: auto;
             }
 
@@ -937,12 +937,12 @@
                 background: none;
                 border: 1px solid var(--border);
                 color: var(--text-secondary);
-                padding: var(--space-25);
+                padding: var(--space-20);
                 block-size: 2rem;
                 border-radius: var(--radius);
                 display: flex;
                 align-items: center;
-                gap: var(--space-15);
+                gap: var(--space-10);
             }
 
             .btn-create svg {
@@ -970,7 +970,7 @@
                 background: none;
                 border: 1px solid var(--border);
                 color: var(--text-secondary);
-                padding: var(--space-25);
+                padding: var(--space-20);
                 block-size: 2rem;
                 border-radius: var(--radius);
                 display: flex;
@@ -1060,9 +1060,9 @@
                 flex-direction: column;
                 align-items: stretch;
                 inline-size: 100%;
-                padding-block-start: var(--space-40);
+                padding-block-start: var(--space-35);
                 flex: 1;
-                gap: var(--space-35);
+                gap: var(--space-30);
             }
 
             .sidenav-item {
@@ -1070,9 +1070,9 @@
                 flex-direction: column;
                 align-items: center;
                 justify-content: center;
-                gap: var(--space-20);
+                gap: var(--space-15);
                 inline-size: 100%;
-                padding-block: var(--space-40);
+                padding-block: var(--space-35);
                 padding-inline: 0;
                 background: none;
                 border: none;
@@ -1129,11 +1129,11 @@
                 flex-direction: column;
                 align-items: center;
                 inline-size: 100%;
-                padding-block-end: var(--space-20);
+                padding-block-end: var(--space-15);
             }
 
             .create-menu {
-                padding: var(--space-20) 0;
+                padding: var(--space-15) 0;
                 min-inline-size: 11rem;
                 background: var(--surface);
                 color: var(--text);
@@ -1149,9 +1149,9 @@
             .create-menu button {
                 display: flex;
                 align-items: center;
-                gap: var(--space-30);
+                gap: var(--space-25);
                 inline-size: 100%;
-                padding: var(--space-25) var(--space-45);
+                padding: var(--space-20) var(--space-40);
                 background: none;
                 border: none;
                 color: var(--text);
@@ -1178,15 +1178,15 @@
 
             .fab-support {
                 position: fixed;
-                inset-block-end: var(--space-40);
-                inset-inline-end: var(--space-40);
+                inset-block-end: var(--space-35);
+                inset-inline-end: var(--space-35);
                 z-index: 50;
                 border-radius: 50%;
                 background: var(--surface);
                 color: var(--text-tertiary);
                 border: 2px solid var(--border);
                 box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15), 0 1px 4px rgba(0, 0, 0, 0.1);
-                padding: var(--space-15);
+                padding: var(--space-10);
                 display: flex;
                 align-items: center;
                 justify-content: center;
@@ -1241,7 +1241,7 @@
 
             /* Buttons */
             button {
-                padding: var(--space-30) var(--space-40);
+                padding: var(--space-25) var(--space-35);
                 border: 1px solid var(--border);
                 background: var(--surface);
                 font-size: var(--text-popover-body);
@@ -1313,8 +1313,8 @@
             .badge {
                 display: inline-flex;
                 align-items: center;
-                gap: var(--space-20);
-                padding: 0.125rem var(--space-30);
+                gap: var(--space-15);
+                padding: 0.125rem var(--space-25);
                 font-size: var(--text-badge);
                 font-weight: var(--font-weight-semibold);
                 border-radius: var(--radius);
@@ -1340,7 +1340,7 @@
                 position: absolute;
                 z-index: 100;
                 inset-inline: 0;
-                margin-block-start: var(--space-20);
+                margin-block-start: var(--space-15);
                 background: var(--surface);
                 border: 1px solid var(--border);
                 border-radius: var(--radius);
@@ -1354,8 +1354,8 @@
                 display: flex;
                 align-items: flex-start;
                 justify-content: space-between;
-                gap: var(--space-35);
-                padding: var(--space-30) var(--space-40);
+                gap: var(--space-30);
+                padding: var(--space-25) var(--space-35);
                 border-block-end: 1px solid var(--border-subtle);
                 cursor: pointer;
             }
@@ -1402,7 +1402,7 @@
             }
 
             .search-no-results {
-                padding: var(--space-40);
+                padding: var(--space-35);
                 text-align: center;
                 font-size: var(--text-table-body);
                 color: var(--text-secondary);
@@ -1412,7 +1412,7 @@
                 background: transparent;
                 border: none;
                 color: var(--text-secondary);
-                padding: var(--space-20);
+                padding: var(--space-15);
                 border-radius: var(--radius);
                 display: flex;
                 align-items: center;
@@ -1437,8 +1437,8 @@
             .favorite-chip {
                 display: inline-flex;
                 align-items: center;
-                gap: var(--space-15);
-                padding: var(--space-20) var(--space-25) var(--space-20) var(--space-30);
+                gap: var(--space-10);
+                padding: var(--space-15) var(--space-20) var(--space-15) var(--space-25);
                 background: var(--surface);
                 border: 1px dotted var(--border);
                 border-radius: var(--radius-full);
@@ -1497,7 +1497,7 @@
                 color: var(--text-secondary);
                 cursor: pointer;
                 padding: 0;
-                margin-inline-start: var(--space-10);
+                margin-inline-start: var(--space-05);
             }
 
             .favorite-chip-remove svg {
@@ -1538,7 +1538,7 @@
                 background: transparent;
                 border: none;
                 color: var(--text-secondary);
-                padding: var(--space-15);
+                padding: var(--space-10);
                 border-radius: var(--radius);
                 display: flex;
                 align-items: center;
@@ -1573,7 +1573,7 @@
                 flex-direction: column;
                 align-items: center;
                 justify-content: center;
-                gap: var(--space-30);
+                gap: var(--space-25);
                 z-index: 1;
                 background: hsla(0, 0%, 100%, 0.6);
                 border-radius: var(--radius);
@@ -1651,7 +1651,7 @@
             }
 
             .ai-info-popover p {
-                margin-block-end: var(--space-25);
+                margin-block-end: var(--space-20);
                 font-size: var(--text-helper);
                 color: var(--text-secondary);
                 line-height: var(--leading-normal);
@@ -1675,7 +1675,7 @@
             .ai-info-dl dd {
                 margin: 0;
                 color: var(--text-secondary);
-                margin-block-end: var(--space-35);
+                margin-block-end: var(--space-30);
             }
 
             .ai-info-dl dd:last-child {
@@ -1683,8 +1683,8 @@
             }
 
             .ai-info-notice {
-                margin-block-start: var(--space-35);
-                padding: var(--space-30);
+                margin-block-start: var(--space-30);
+                padding: var(--space-25);
                 background: var(--notice-600);
                 border: 1px solid var(--notice-500);
                 border-radius: var(--radius);
@@ -1705,15 +1705,15 @@
                 z-index: 9999;
                 display: flex;
                 flex-direction: column;
-                gap: var(--space-30);
+                gap: var(--space-25);
                 pointer-events: none;
             }
 
             .toast {
                 display: flex;
                 align-items: center;
-                gap: var(--space-30);
-                padding: var(--space-40) var(--space-50);
+                gap: var(--space-25);
+                padding: var(--space-35) var(--space-50);
                 border-radius: var(--radius);
                 font-size: var(--text-toast);
                 font-weight: var(--font-weight-medium);
@@ -1776,7 +1776,7 @@
                 background: var(--surface);
                 border: 1px solid var(--border-subtle);
                 border-radius: var(--radius-lg);
-                padding: var(--space-40) var(--space-45) var(--space-25);
+                padding: var(--space-35) var(--space-40) var(--space-20);
                 box-shadow: var(--elevation-sm);
                 position: relative;
             }
@@ -1785,7 +1785,7 @@
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
-                margin-block-end: var(--space-30);
+                margin-block-end: var(--space-25);
             }
 
             .dx-main-title {
@@ -1794,12 +1794,12 @@
                 line-height: var(--leading-normal);
                 display: flex;
                 align-items: center;
-                gap: var(--space-25);
+                gap: var(--space-20);
             }
 
             .dx-main-list {
                 border-block-start: 1px solid var(--border-subtle);
-                margin-inline: calc(-1 * var(--space-20));
+                margin-inline: calc(-1 * var(--space-15));
             }
 
             .dx-drag-handle {
@@ -1808,9 +1808,9 @@
                 cursor: grab;
                 color: var(--text-secondary);
                 flex-shrink: 0;
-                padding: var(--space-10);
-                margin-inline-start: calc(-1 * var(--space-25));
-                margin-inline-end: calc(-1 * var(--space-15));
+                padding: var(--space-05);
+                margin-inline-start: calc(-1 * var(--space-20));
+                margin-inline-end: calc(-1 * var(--space-10));
             }
 
             .dx-drag-handle svg {
@@ -1833,8 +1833,8 @@
             .dx-main-row {
                 display: flex;
                 align-items: center;
-                gap: var(--space-25);
-                padding: var(--space-25) var(--space-20);
+                gap: var(--space-20);
+                padding: var(--space-20) var(--space-15);
                 border-block-end: 1px solid var(--border-subtle);
                 font-size: var(--text-table-body);
                 min-block-size: 2rem;
@@ -1877,10 +1877,10 @@
 
             .dx-main-status {
                 font-size: var(--text-table-body);
-                padding: var(--space-10) var(--space-50) var(--space-10) var(--space-30);
+                padding: var(--space-05) var(--space-50) var(--space-05) var(--space-25);
                 border: 1px solid var(--border);
                 border-radius: var(--radius);
-                background: var(--surface) url("data:image/svg+xml,%3Csvg width='10' height='7' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%23596372' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right var(--space-30) center;
+                background: var(--surface) url("data:image/svg+xml,%3Csvg width='10' height='7' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%23596372' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") no-repeat right var(--space-25) center;
                 appearance: none;
                 color: var(--text-secondary);
                 max-inline-size: 10rem;
@@ -1890,8 +1890,8 @@
 
             .dx-main-row .dx-remove-btn {
                 color: var(--text-secondary);
-                padding: var(--space-25);
-                margin-inline-end: calc(-1 * var(--space-25));
+                padding: var(--space-20);
+                margin-inline-end: calc(-1 * var(--space-20));
                 border: 1px solid transparent;
             }
 
@@ -1917,7 +1917,7 @@
             }
 
             .dx-main-empty {
-                padding: var(--space-45) 0;
+                padding: var(--space-40) 0;
                 text-align: center;
                 font-size: var(--text-table-body);
                 color: var(--text-secondary);
@@ -1927,7 +1927,7 @@
             .dx-main-expand {
                 display: block;
                 width: 100%;
-                padding: var(--space-20) 0 0;
+                padding: var(--space-15) 0 0;
                 background: none;
                 border: none;
                 font-size: var(--text-helper);
@@ -1945,9 +1945,9 @@
             .dx-main-toggle {
                 display: flex;
                 align-items: center;
-                gap: var(--space-25);
+                gap: var(--space-20);
                 margin-inline-start: auto;
-                margin-inline-end: var(--space-45);
+                margin-inline-end: var(--space-40);
                 font-size: var(--text-ui-sm);
                 color: var(--text-secondary);
                 cursor: pointer;
@@ -2053,7 +2053,7 @@
             .dx-modal>header {
                 background: var(--primary-300);
                 color: var(--gray-850);
-                padding: var(--space-40) var(--space-55);
+                padding: var(--space-35) var(--space-55);
                 border-start-start-radius: var(--radius-lg);
                 border-start-end-radius: var(--radius-lg);
                 display: flex;
@@ -2071,12 +2071,12 @@
                 background: none;
                 border: none;
                 color: var(--gray-850);
-                padding: var(--space-30);
+                padding: var(--space-25);
                 display: flex;
                 align-items: center;
                 justify-content: center;
                 border-radius: var(--radius);
-                margin-inline-end: calc(-1 * var(--space-40));
+                margin-inline-end: calc(-1 * var(--space-35));
             }
 
             @media (prefers-reduced-motion: no-preference) {
@@ -2115,12 +2115,12 @@
 
             .dx-modal-search {
                 position: relative;
-                margin-block-end: var(--space-40);
+                margin-block-end: var(--space-35);
             }
 
             .dx-modal-search svg.dx-modal-search-icon {
                 position: absolute;
-                inset-inline-start: var(--space-35);
+                inset-inline-start: var(--space-30);
                 inset-block-start: 50%;
                 transform: translateY(-50%);
                 inline-size: 0.875rem;
@@ -2131,9 +2131,9 @@
 
             .dx-modal-search input {
                 inline-size: 100%;
-                padding: var(--space-30) var(--space-40);
-                padding-inline-start: calc(var(--space-35) + 0.875rem + var(--space-25));
-                padding-inline-end: calc(var(--space-40) + 1.25rem);
+                padding: var(--space-25) var(--space-35);
+                padding-inline-start: calc(var(--space-30) + 0.875rem + var(--space-20));
+                padding-inline-end: calc(var(--space-35) + 1.25rem);
                 border: 1px solid var(--border);
                 border-radius: var(--radius);
                 font-size: var(--text-input-sm);
@@ -2160,7 +2160,7 @@
 
             .dx-modal-search-clear {
                 position: absolute;
-                inset-inline-end: var(--space-40);
+                inset-inline-end: var(--space-35);
                 inset-block-start: 50%;
                 transform: translateY(-50%);
                 display: flex;
@@ -2187,8 +2187,8 @@
             .dx-modal-search-row {
                 display: flex;
                 align-items: center;
-                gap: var(--space-30);
-                margin-block-end: var(--space-40);
+                gap: var(--space-25);
+                margin-block-end: var(--space-35);
             }
 
             .dx-modal-search-row .dx-modal-search {
@@ -2199,7 +2199,7 @@
             .dx-modal-dsm-toggle {
                 display: flex;
                 align-items: center;
-                gap: var(--space-20);
+                gap: var(--space-15);
                 font-size: var(--text-ui-sm);
                 color: var(--text-secondary);
                 white-space: nowrap;
@@ -2285,16 +2285,16 @@
 
             .dx-modal-tabs {
                 display: flex;
-                gap: var(--space-05);
+                gap: var(--space-00);
                 border-block-end: 1px solid var(--border-subtle);
-                margin-block-end: var(--space-40);
+                margin-block-end: var(--space-35);
             }
 
             .dx-modal-tab {
                 display: inline-flex;
                 align-items: center;
-                gap: var(--space-25);
-                padding: var(--space-25) var(--space-40);
+                gap: var(--space-20);
+                padding: var(--space-20) var(--space-35);
                 font-size: var(--text-table-body);
                 font-weight: var(--font-weight-medium);
                 color: var(--text-secondary);
@@ -2363,13 +2363,13 @@
             }
 
             .dx-modal-tab-group .dx-modal-tab-icon {
-                margin-inline: var(--space-20);
+                margin-inline: var(--space-15);
             }
 
             .dx-modal-tab-icon {
                 display: flex;
                 align-items: center;
-                padding: var(--space-20);
+                padding: var(--space-15);
                 background: none;
                 border: none;
                 border-radius: var(--radius);
@@ -2394,7 +2394,7 @@
             .dx-modal-shortlist {
                 display: flex;
                 flex-wrap: wrap;
-                gap: var(--space-20);
+                gap: var(--space-15);
                 max-block-size: 6.25rem;
                 overflow-y: auto;
                 scrollbar-width: thin;
@@ -2406,9 +2406,9 @@
             .dx-modal-suggestion {
                 display: flex;
                 align-items: center;
-                gap: var(--space-25);
-                padding: var(--space-25) var(--space-35) var(--space-25) var(--space-35);
-                padding-inline-end: var(--space-25);
+                gap: var(--space-20);
+                padding: var(--space-20) var(--space-30) var(--space-20) var(--space-30);
+                padding-inline-end: var(--space-20);
                 font-size: var(--text-table-body);
                 max-block-size: 3rem;
             }
@@ -2447,13 +2447,13 @@
             .dx-modal-suggestion-actions {
                 display: flex;
                 align-items: center;
-                gap: var(--space-20);
+                gap: var(--space-15);
                 flex-shrink: 0;
             }
 
             .dx-modal-suggestion-actions button {
                 font-size: var(--text-chip);
-                padding: 0.1875rem var(--space-30);
+                padding: 0.1875rem var(--space-25);
                 font-weight: var(--font-weight-normal);
                 border-color: var(--border);
             }
@@ -2466,13 +2466,13 @@
             .dx-modal-suggestion-feedback {
                 display: flex;
                 align-items: center;
-                gap: var(--space-20);
+                gap: var(--space-15);
                 flex-shrink: 0;
             }
 
             .dx-modal-suggestion-feedback button {
                 font-size: var(--text-chip);
-                padding: 0.1875rem var(--space-30);
+                padding: 0.1875rem var(--space-25);
                 background: var(--surface);
                 border: 1px dotted var(--border);
                 color: var(--text-secondary);
@@ -2491,7 +2491,7 @@
             }
 
             .dx-modal-empty {
-                padding: var(--space-30) 0;
+                padding: var(--space-25) 0;
                 text-align: center;
                 font-size: var(--text-table-body);
                 color: var(--text-secondary);
@@ -2559,16 +2559,16 @@
             }
 
             .dx-modal-active {
-                margin-block-start: var(--space-45);
+                margin-block-start: var(--space-40);
                 border-block-start: 1px solid var(--border-subtle);
-                padding-block-start: var(--space-40);
+                padding-block-start: var(--space-35);
             }
 
             .dx-modal-active-header {
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
-                margin-block-end: var(--space-25);
+                margin-block-end: var(--space-20);
             }
 
             .dx-modal-active-title {
@@ -2577,7 +2577,7 @@
                 line-height: var(--leading-normal);
                 display: inline-flex;
                 align-items: center;
-                gap: var(--space-25);
+                gap: var(--space-20);
             }
 
             .dx-modal-active-list {
@@ -2593,9 +2593,9 @@
             .dx-modal-active-row {
                 display: flex;
                 align-items: center;
-                gap: var(--space-25);
-                padding: var(--space-25) var(--space-35);
-                padding-inline-end: var(--space-15);
+                gap: var(--space-20);
+                padding: var(--space-20) var(--space-30);
+                padding-inline-end: var(--space-10);
                 font-size: var(--text-table-body);
             }
 
@@ -2620,7 +2620,7 @@
 
             .dx-modal-active-row .dx-remove-btn {
                 color: var(--text-secondary);
-                padding: var(--space-25);
+                padding: var(--space-20);
                 border: 1px solid transparent;
             }
 
@@ -2656,7 +2656,7 @@
             .dx-modal-check {
                 display: flex;
                 align-items: center;
-                gap: var(--space-20);
+                gap: var(--space-15);
                 color: var(--text-secondary);
                 white-space: nowrap;
                 cursor: pointer;
@@ -2707,8 +2707,8 @@
             .dx-modal>footer {
                 display: flex;
                 justify-content: flex-end;
-                gap: var(--space-30);
-                padding: var(--space-35) var(--space-55);
+                gap: var(--space-25);
+                padding: var(--space-30) var(--space-55);
                 border-block-start: 1px solid var(--border-subtle);
                 background: var(--bg);
                 border-end-start-radius: var(--radius-lg);
@@ -2716,7 +2716,7 @@
             }
 
             .dx-modal>footer button:last-child {
-                margin-inline-end: calc(-1 * var(--space-30) - 3px);
+                margin-inline-end: calc(-1 * var(--space-25) - 3px);
             }
 
             /* ── PN layout ── */
@@ -2725,17 +2725,17 @@
                 flex-shrink: 0;
                 display: flex;
                 flex-direction: column;
-                gap: var(--space-40);
-                padding-block: var(--space-45);
-                padding-inline: var(--space-45) var(--space-30);
+                gap: var(--space-35);
+                padding-block: var(--space-40);
+                padding-inline: var(--space-40) var(--space-25);
                 overflow-y: auto;
                 background: var(--bg);
             }
 
             .pn-right {
                 flex: 1;
-                margin-block: var(--space-45);
-                margin-inline: var(--space-30) var(--space-45);
+                margin-block: var(--space-40);
+                margin-inline: var(--space-25) var(--space-40);
                 /* background: var(--surface); */
                 background: var(--notice-700);
                 border: 1px solid var(--border-subtle);
@@ -2759,7 +2759,7 @@
                 display: grid;
                 grid-template-columns: 1fr 1fr;
                 grid-auto-rows: 1fr;
-                gap: var(--space-20);
+                gap: var(--space-15);
                 flex: 1;
                 min-block-size: 9rem;
             }
@@ -2783,17 +2783,17 @@
             .pn-pink-grid {
                 display: grid;
                 grid-template-columns: 1fr 1fr;
-                gap: var(--space-20);
+                gap: var(--space-15);
                 flex: 1;
             }
 
             /* Legend key circles */
             .pn-legend {
                 position: absolute;
-                inset-block-end: var(--space-30);
-                inset-inline-start: var(--space-30);
-                inline-size: var(--space-35);
-                block-size: var(--space-35);
+                inset-block-end: var(--space-25);
+                inset-inline-start: var(--space-25);
+                inline-size: var(--space-30);
+                block-size: var(--space-30);
                 border-radius: var(--radius-full);
                 pointer-events: auto;
                 cursor: help;
@@ -2859,7 +2859,7 @@
                 border: none;
                 background: var(--primary-100);
                 color: var(--gray-850);
-                padding: var(--space-15) var(--space-25);
+                padding: var(--space-10) var(--space-20);
                 border-radius: var(--radius);
                 box-shadow: var(--elevation-md);
                 font-size: var(--text-tooltip);
