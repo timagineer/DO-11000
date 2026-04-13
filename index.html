@@ -60,7 +60,8 @@
                     --font-mono: ;
                     /* future: 'Inconsolata', ui-monospace, monospace */
 
-                    /* Size scale */
+                    /* Font size ramp */
+                    --font-size-09: 0.5625rem;
                     --font-size-10: 0.625rem;
                     --font-size-11: 0.6875rem;
                     --font-size-12: 0.75rem;
@@ -68,8 +69,15 @@
                     --font-size-14: 0.875rem;
                     --font-size-15: 0.9375rem;
                     --font-size-16: 1rem;
+                    --font-size-17: 1.0625rem;
                     --font-size-18: 1.125rem;
+                    --font-size-19: 1.1875rem;
+                    /* sc 1.4.3 aa large scale text 14pt = 19px 3:1 */
                     --font-size-20: 1.25rem;
+                    --font-size-21: 1.3125rem;
+                    --font-size-22: 1.375rem;
+                    --font-size-23: 1.4375rem;
+                    /* sc 1.4.3 aa large scale text 18pt = 24px 3:1 */
                     --font-size-24: 1.5rem;
                     --font-size-28: 1.75rem;
                     --font-size-32: 2rem;
@@ -195,7 +203,7 @@
 
                     --radius: var(--space-20);
                     --radius-lg: var(--space-35);
-                    --radius-full: var(--space-40);
+                    --radius-10: var(--space-40);
 
                     --sidenav-width: 4.5rem;
                     --topbar-height: 3.25rem;
@@ -384,8 +392,9 @@
                     --hover-bg: var(--secondary-650);
                     --hover-border: var(--primary-300);
 
-                    --button-primary-bg: var(--primary-300);
-                    --button-primary-hover: var(--primary-250);
+                    --button-primary-bg: var(--primary-350);
+                    --button-primary-hover: var(--primary-300);
+                    --button-primary-active: var(--primary-250);
                     --button-primary-text: var(--gray-850);
 
                     /* AI semantic — minimal palette */
@@ -1198,7 +1207,7 @@
             }
 
             .fab-support:active {
-                transform: scale(0.97);
+                transform: scale(0.98);
             }
 
             /* FAB — special case: blue icon on hover is intentional, not a system pattern */
@@ -1300,6 +1309,7 @@
             }
 
             .btn-primary:active {
+                background: var(--button-primary-active);
                 transform: scale(0.97);
             }
 
@@ -1441,7 +1451,7 @@
                 padding: var(--space-15) var(--space-20) var(--space-15) var(--space-25);
                 background: var(--surface);
                 border: 1px dotted var(--border);
-                border-radius: var(--radius-full);
+                border-radius: var(--radius-10);
                 font-size: var(--text-chip);
                 white-space: nowrap;
                 flex-shrink: 0;
@@ -1493,7 +1503,7 @@
                 block-size: 1.25rem;
                 border: none;
                 background: transparent;
-                border-radius: var(--radius-full);
+                border-radius: var(--radius-10);
                 color: var(--text-secondary);
                 cursor: pointer;
                 padding: 0;
@@ -1596,14 +1606,14 @@
                 block-size: 0.125rem;
                 inline-size: 8rem;
                 background: var(--gray-600);
-                border-radius: var(--radius-full);
+                border-radius: var(--radius-10);
                 overflow: hidden;
             }
 
             .ai-analyzing-bar-inner {
                 block-size: 100%;
                 inline-size: 100%;
-                border-radius: var(--radius-full);
+                border-radius: var(--radius-10);
                 background: linear-gradient(90deg, transparent 0%, var(--ai-accent) 50%, transparent 100%);
                 background-size: 200% 100%;
                 animation: shimmer 1.5s ease-in-out infinite;
@@ -1958,7 +1968,7 @@
                 block-size: 0.875rem;
                 appearance: none;
                 background: var(--gray-400);
-                border-radius: var(--radius-full);
+                border-radius: var(--radius-10);
                 position: relative;
                 cursor: pointer;
                 transition: background var(--duration-3) var(--ease-hover), box-shadow var(--duration-3) var(--ease-out);
@@ -2212,7 +2222,7 @@
                 block-size: 0.875rem;
                 appearance: none;
                 background: var(--gray-400);
-                border-radius: var(--radius-full);
+                border-radius: var(--radius-10);
                 position: relative;
                 cursor: pointer;
                 transition: background var(--duration-3) var(--ease-hover);
@@ -2476,7 +2486,7 @@
                 background: var(--surface);
                 border: 1px dotted var(--border);
                 color: var(--text-secondary);
-                border-radius: var(--radius-full);
+                border-radius: var(--radius-10);
                 white-space: nowrap;
             }
 
@@ -2794,7 +2804,7 @@
                 inset-inline-start: var(--space-25);
                 inline-size: var(--space-30);
                 block-size: var(--space-30);
-                border-radius: var(--radius-full);
+                border-radius: var(--radius-10);
                 pointer-events: auto;
                 cursor: help;
             }
